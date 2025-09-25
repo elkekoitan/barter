@@ -1,0 +1,433 @@
+{
+  "app_name": "Boğaziçi Barter",
+  "smart_barter_platform": "Türkiye'nin İlk Akıllı Takas Platformu",
+
+  "welcome": "Hoş Geldiniz",
+  "welcome_back": "Tekrar Hoş Geldiniz",
+  "discover_amazing_barters": "Harika takas fırsatlarını keşfedin",
+
+  "explore": "Keşfet",
+  "categories": "Kategoriler",
+  "create_listing": "İlan Oluştur",
+  "messages": "Mesajlar",
+  "profile": "Profil",
+
+  "popular_categories": "Popüler Kategoriler",
+  "quick_actions": "Hızlı İşlemler",
+
+  "electronics": "Elektronik",
+  "fashion": "Moda",
+  "home_garden": "Ev & Bahçe",
+  "vehicles": "Araçlar",
+  "services": "Hizmetler",
+  "other": "Diğer",
+
+  "browse_listings": "İlanlara Gözat",
+  "find_what_you_need": "İhtiyacınız olanı bulun",
+  "share_what_you_have": "Sahip olduğunuzu paylaşın",
+
+  "no_recent_activity": "Henüz aktivite yok",
+  "start_exploring_barters": "Takas fırsatlarını keşfetmeye başlayın",
+
+  "login": "Giriş Yap",
+  "register": "Kayıt Ol",
+  "logout": "Çıkış Yap",
+  "forgot_password": "Şifremi Unuttum",
+  "reset_password": "Şifreyi Sıfırla",
+
+  "email": "E-posta",
+  "password": "Şifre",
+  "confirm_password": "Şifreyi Onayla",
+  "phone": "Telefon",
+  "full_name": "Ad Soyad",
+
+  "next": "İleri",
+  "previous": "Geri",
+  "continue": "Devam Et",
+  "cancel": "İptal",
+  "confirm": "Onayla",
+  "save": "Kaydet",
+  "delete": "Sil",
+  "edit": "Düzenle",
+
+  "loading": "Yükleniyor...",
+  "error": "Hata",
+  "success": "Başarılı",
+  "warning": "Uyarı",
+  "info": "Bilgi",
+
+  "payment": "Ödeme",
+  "payment_methods": "Ödeme Yöntemleri",
+  "payment_success": "Ödeme Başarılı",
+  "payment_failed": "Ödeme Başarısız",
+  "payment_cancelled": "Ödeme İptal Edildi",
+
+  "barter": "Takas",
+  "escrow": "Emanet",
+  "commission": "Komisyon",
+  "fees": "Ücretler",
+
+  "search": "Ara",
+  "filter": "Filtrele",
+  "sort": "Sırala",
+  "sort_by": "Sıralama",
+  "price_range": "Fiyat Aralığı",
+
+  "new": "Yeni",
+  "used": "Kullanılmış",
+  "refurbished": "Yenilenmiş",
+  "damaged": "Hasarlı",
+
+  "cash": "Nakit",
+  "cash_difference": "Nakit Farkı",
+  "direct_swap": "Direkt Takas",
+  "barter_pool": "Takas Havuzu",
+
+  "delivery": "Teslimat",
+  "shipping": "Kargo",
+  "pickup": "Alış",
+  "in_person": "Yüz Yüze",
+
+  "kyc": "KYC Doğrulama",
+  "verification": "Doğrulama",
+  "identity_verification": "Kimlik Doğrulama",
+  "face_recognition": "Yüz Tanıma",
+  "address_verification": "Adres Doğrulama",
+
+  "notifications": "Bildirimler",
+  "notification_settings": "Bildirim Ayarları",
+  "push_notifications": "Anlık Bildirimler",
+  "email_notifications": "E-posta Bildirimleri",
+  "sms_notifications": "SMS Bildirimleri",
+
+  "settings": "Ayarlar",
+  "preferences": "Tercihler",
+  "language": "Dil",
+  "theme": "Tema",
+  "privacy": "Gizlilik",
+  "terms": "Kullanım Şartları",
+  "privacy_policy": "Gizlilik Politikası",
+
+  "help": "Yardım",
+  "support": "Destek",
+  "contact_us": "Bize Ulaşın",
+  "faq": "SSS",
+  "about": "Hakkımızda",
+
+  "network_error": "İnternet bağlantısı hatası",
+  "server_error": "Sunucu hatası",
+  "timeout_error": "Zaman aşımı",
+  "unauthorized": "Yetkisiz erişim",
+  "forbidden": "Yasak",
+  "not_found": "Bulunamadı",
+
+  "retry": "Tekrar Dene",
+  "try_again": "Tekrar Dene",
+  "back": "Geri",
+  "close": "Kapat",
+  "ok": "Tamam",
+  "yes": "Evet",
+  "no": "Hayır",
+
+  "minutes_ago": "{} dakika önce",
+  "hours_ago": "{} saat önce",
+  "days_ago": "{} gün önce",
+  "just_now": "Şimdi",
+
+  "read_more": "Devamını Oku",
+  "show_less": "Daha Az Göster",
+  "view_all": "Tümünü Gör",
+  "see_more": "Daha Fazla Gör",
+
+  "no_data": "Veri bulunamadı",
+  "no_results": "Sonuç bulunamadı",
+  "no_items": "Öğe bulunamadı",
+  "empty_list": "Liste boş",
+
+  "select_image": "Resim Seç",
+  "take_photo": "Fotoğraf Çek",
+  "choose_from_gallery": "Galeriden Seç",
+  "remove_image": "Resmi Kaldır",
+
+  "location": "Konum",
+  "address": "Adres",
+  "city": "Şehir",
+  "district": "İlçe",
+  "neighborhood": "Mahalle",
+
+  "rating": "Değerlendirme",
+  "reviews": "Yorumlar",
+  "review": "Yorum",
+  "rate": "Değerlendir",
+  "comment": "Yorum Yap",
+
+  "report": "Şikayet Et",
+  "block": "Engelle",
+  "unblock": "Engeli Kaldır",
+  "follow": "Takip Et",
+  "unfollow": "Takipten Çık",
+
+  "share": "Paylaş",
+  "favorite": "Favorilere Ekle",
+  "unfavorite": "Favorilerden Çıkar",
+  "bookmark": "Yer İşareti",
+
+  "chat": "Sohbet",
+  "message": "Mesaj",
+  "send": "Gönder",
+  "reply": "Yanıtla",
+  "typing": "Yazıyor...",
+
+  "offer": "Teklif",
+  "offers": "Teklifler",
+  "make_offer": "Teklif Yap",
+  "accept_offer": "Teklifi Kabul Et",
+  "reject_offer": "Teklifi Reddet",
+  "counter_offer": "Karşı Teklif",
+
+  "transaction": "İşlem",
+  "transactions": "İşlemler",
+  "transaction_history": "İşlem Geçmişi",
+  "transaction_details": "İşlem Detayları",
+
+  "dispute": "İtiraz",
+  "disputes": "İtirazlar",
+  "open_dispute": "İtiraz Aç",
+  "resolve_dispute": "İtirazı Çöz",
+
+  "admin": "Yönetim",
+  "moderation": "Moderasyon",
+  "approve": "Onayla",
+  "reject": "Reddet",
+  "suspend": "Askıya Al",
+  "ban": "Yasakla",
+
+  "analytics": "Analitik",
+  "reports": "Raporlar",
+  "dashboard": "Kontrol Paneli",
+  "statistics": "İstatistikler",
+
+  "currency": "Para Birimi",
+  "price": "Fiyat",
+  "amount": "Tutar",
+  "total": "Toplam",
+  "subtotal": "Ara Toplam",
+  "tax": "Vergi",
+  "discount": "İndirim",
+
+  "date": "Tarih",
+  "time": "Saat",
+  "duration": "Süre",
+  "deadline": "Son Tarih",
+
+  "status": "Durum",
+  "active": "Aktif",
+  "inactive": "Pasif",
+  "pending": "Bekliyor",
+  "completed": "Tamamlandı",
+  "cancelled": "İptal Edildi",
+  "expired": "Süresi Doldu",
+
+  "required": "Zorunlu",
+  "optional": "İsteğe bağlı",
+  "recommended": "Önerilen",
+
+  "terms_and_conditions": "Kullanım Şartları ve Koşullarını kabul ediyorum",
+  "privacy_policy_agreement": "Gizlilik Politikasını kabul ediyorum",
+  "age_confirmation": "18 yaşından büyüğüm",
+
+  "copyright": "© 2024 Boğaziçi Barter. Tüm hakları saklıdır.",
+  "version": "Versiyon",
+  "build": "Yapı",
+
+  "category": "Kategori",
+  "details": "Detaylar",
+  "media": "Medya",
+  "pricing": "Fiyatlandırma",
+  "review": "İnceleme",
+  "publish": "Yayınla",
+  "save_draft": "Taslağı Kaydet",
+  "draft_saved": "Taslak kaydedildi",
+
+  "listings": "İlanlar",
+  "my_listings": "İlanlarım",
+  "featured": "Öne Çıkan",
+  "urgent": "Acil",
+  "condition": "Durum",
+  "brand": "Marka",
+  "model": "Model",
+  "year": "Yıl",
+  "description": "Açıklama",
+
+  "barter_available": "Takas Yapılabilir",
+  "negotiable": "Pazarlık Payı Var",
+  "fixed_price": "Sabit Fiyat",
+  "starting_price": "Başlangıç Fiyatı",
+
+  "delivery_options": "Teslimat Seçenekleri",
+  "free_shipping": "Ücretsiz Kargo",
+  "shipping_cost": "Kargo Ücreti",
+  "estimated_delivery": "Tahmini Teslimat",
+
+  "category_step": "Kategori Seçimi",
+  "select_category": "Kategori seçin",
+  "subcategories": "Alt Kategoriler",
+  "no_category_selected": "Kategori seçilmedi",
+
+  "details_step": "Ürün Detayları",
+  "listing_title": "İlan Başlığı",
+  "listing_description": "İlan Açıklaması",
+  "product_condition": "Ürün Durumu",
+  "product_brand": "Marka",
+  "product_model": "Model",
+  "product_year": "Yıl",
+
+  "media_step": "Fotoğraflar",
+  "add_photos": "Fotoğraf Ekle",
+  "photo_requirements": "En az 1, en fazla 10 fotoğraf",
+  "primary_photo": "Ana Fotoğraf",
+  "drag_to_reorder": "Sıralamak için sürükleyin",
+
+  "pricing_step": "Fiyat & Takas",
+  "cash_price": "Nakit Fiyat",
+  "currency_symbol": "₺",
+  "barter_options": "Takas Seçenekleri",
+  "preferred_items": "Tercih Edilen Ürünler",
+  "min_cash_difference": "Min. Nakit Farkı",
+  "max_cash_difference": "Max. Nakit Farkı",
+
+  "delivery_step": "Teslimat Bilgileri",
+  "delivery_method": "Teslimat Yöntemi",
+  "cargo_provider": "Kargo Firması",
+  "tracking_number": "Takip Numarası",
+  "pickup_location": "Alım Yeri",
+  "delivery_location": "Teslimat Yeri",
+
+  "review_step": "İnceleme",
+  "listing_summary": "İlan Özeti",
+  "publish_listing": "İlanı Yayınla",
+  "edit_step": "Adımı Düzenle",
+
+  "validation_error": "Doğrulama Hatası",
+  "field_required": "{} alanı zorunludur",
+  "invalid_email": "Geçersiz e-posta adresi",
+  "password_too_short": "Şifre en az 6 karakter olmalıdır",
+  "passwords_not_match": "Şifreler eşleşmiyor",
+  "invalid_phone": "Geçersiz telefon numarası",
+  "title_too_short": "Başlık en az 10 karakter olmalıdır",
+  "description_too_short": "Açıklama en az 20 karakter olmalıdır",
+  "select_at_least_one_image": "En az 1 fotoğraf seçin",
+  "price_too_high": "Fiyat 1,000,000 ₺'den fazla olamaz",
+
+  "login_success": "Başarıyla giriş yapıldı",
+  "register_success": "Kayıt başarılı! Lütfen e-postanızı doğrulayın",
+  "logout_success": "Başarıyla çıkış yapıldı",
+  "profile_updated": "Profil güncellendi",
+
+  "listing_created_successfully": "İlan başarıyla oluşturuldu",
+  "listing_updated_successfully": "İlan başarıyla güncellendi",
+  "listing_deleted_successfully": "İlan başarıyla silindi",
+
+  "offer_sent_successfully": "Teklif başarıyla gönderildi",
+  "offer_accepted": "Teklif kabul edildi",
+  "offer_rejected": "Teklif reddedildi",
+  "offer_countered": "Karşı teklif gönderildi",
+
+  "transaction_created": "İşlem başlatıldı",
+  "delivery_confirmed": "Teslimat onaylandı",
+  "payment_completed": "Ödeme tamamlandı",
+  "transaction_completed": "İşlem tamamlandı",
+
+  "please_complete_all_required_fields": "Lütfen tüm zorunlu alanları doldurun",
+  "please_select_category": "Lütfen bir kategori seçin",
+  "please_add_at_least_one_image": "Lütfen en az bir fotoğraf ekleyin",
+
+  "view_listing": "İlanı Görüntüle",
+  "back_to_home": "Ana Sayfaya Dön",
+  "navigate_to_listing_detail": "İlan detayına yönlendiriliyor: {}",
+
+  "search_listings": "İlan ara",
+  "no_listings_found": "İlan bulunamadı",
+  "be_first_to_create_listing": "İlk ilanı siz oluşturun",
+  "create_first_listing": "İlk İlanı Oluştur",
+
+  "pending_review": "İnceleme Bekliyor",
+  "under_review": "İnceleniyor",
+  "needs_review": "İnceleme Gerekiyor",
+
+  "featured_listing": "Öne Çıkan İlan",
+  "premium_listing": "Premium İlan",
+  "boost_listing": "İlanı Öne Çıkar",
+
+  "boost_types": {
+    "standard": "Standart",
+    "featured": "Öne Çıkan",
+    "premium": "Premium",
+    "urgent": "Acil"
+  },
+
+  "listing_status": {
+    "draft": "Taslak",
+    "pending": "Bekliyor",
+    "active": "Aktif",
+    "paused": "Durduruldu",
+    "sold": "Satıldı",
+    "expired": "Süresi Doldu",
+    "rejected": "Reddedildi",
+    "deleted": "Silindi"
+  },
+
+  "moderation_status": {
+    "pending": "Bekliyor",
+    "approved": "Onaylandı",
+    "rejected": "Reddedildi",
+    "needs_review": "İnceleme Gerekiyor"
+  },
+
+  "number_format": {
+    "decimal_separator": ",",
+    "thousand_separator": ".",
+    "currency_symbol": "₺"
+  },
+
+  "date_format": {
+    "short": "dd/MM/yyyy",
+    "long": "dd MMMM yyyy",
+    "with_time": "dd/MM/yyyy HH:mm"
+  },
+
+  "validation_messages": {
+    "email_required": "E-posta adresi zorunludur",
+    "email_invalid": "Geçerli bir e-posta adresi girin",
+    "password_required": "Şifre zorunludur",
+    "password_min_length": "Şifre en az 6 karakter olmalıdır",
+    "password_confirmation": "Şifre tekrarı eşleşmiyor",
+    "phone_required": "Telefon numarası zorunludur",
+    "phone_invalid": "Geçerli bir telefon numarası girin",
+    "name_required": "Ad soyad zorunludur",
+    "name_min_length": "Ad soyad en az 2 karakter olmalıdır",
+    "title_required": "Başlık zorunludur",
+    "title_min_length": "Başlık en az 10 karakter olmalıdır",
+    "description_required": "Açıklama zorunludur",
+    "description_min_length": "Açıklama en az 20 karakter olmalıdır",
+    "category_required": "Kategori seçimi zorunludur",
+    "images_required": "En az 1 fotoğraf yüklenmelidir",
+    "price_required": "Fiyat belirlenmelidir",
+    "delivery_required": "Teslimat yöntemi seçilmelidir"
+  },
+
+  "auth_validation": {
+    "invalid_credentials": "Geçersiz e-posta veya şifre",
+    "account_not_verified": "Hesabınız doğrulanmamış",
+    "account_suspended": "Hesabınız askıya alınmış",
+    "too_many_attempts": "Çok fazla başarısız giriş denemesi"
+  },
+
+  "barter_validation": {
+    "offer_value_too_low": "Teklif değeri çok düşük",
+    "offer_value_too_high": "Teklif değeri çok yüksek",
+    "invalid_items": "Geçersiz ürün seçimi",
+    "insufficient_balance": "Yetersiz bakiye",
+    "transaction_not_allowed": "Bu işlem yapılamaz"
+  }
+}

@@ -1,0 +1,433 @@
+{
+  "app_name": "بوغازيجي بارتر",
+  "smart_barter_platform": "منصة التبادل الذكية الأولى في تركيا",
+
+  "welcome": "مرحباً",
+  "welcome_back": "مرحباً بعودتك",
+  "discover_amazing_barters": "اكتشف فرص التبادل الرائعة",
+
+  "explore": "استكشف",
+  "categories": "الفئات",
+  "create_listing": "إنشاء إعلان",
+  "messages": "الرسائل",
+  "profile": "الملف الشخصي",
+
+  "popular_categories": "الفئات الشائعة",
+  "quick_actions": "الإجراءات السريعة",
+
+  "electronics": "إلكترونيات",
+  "fashion": "أزياء",
+  "home_garden": "المنزل والحديقة",
+  "vehicles": "المركبات",
+  "services": "خدمات",
+  "other": "أخرى",
+
+  "browse_listings": "تصفح الإعلانات",
+  "find_what_you_need": "ابحث عما تحتاجه",
+  "share_what_you_have": "شارك ما لديك",
+
+  "no_recent_activity": "لا توجد أنشطة حديثة",
+  "start_exploring_barters": "ابدأ في استكشاف فرص التبادل",
+
+  "login": "تسجيل الدخول",
+  "register": "التسجيل",
+  "logout": "تسجيل الخروج",
+  "forgot_password": "نسيت كلمة المرور",
+  "reset_password": "إعادة تعيين كلمة المرور",
+
+  "email": "البريد الإلكتروني",
+  "password": "كلمة المرور",
+  "confirm_password": "تأكيد كلمة المرور",
+  "phone": "الهاتف",
+  "full_name": "الاسم الكامل",
+
+  "next": "التالي",
+  "previous": "السابق",
+  "continue": "متابعة",
+  "cancel": "إلغاء",
+  "confirm": "تأكيد",
+  "save": "حفظ",
+  "delete": "حذف",
+  "edit": "تعديل",
+
+  "loading": "جار التحميل...",
+  "error": "خطأ",
+  "success": "نجح",
+  "warning": "تحذير",
+  "info": "معلومات",
+
+  "payment": "الدفع",
+  "payment_methods": "طرق الدفع",
+  "payment_success": "تم الدفع بنجاح",
+  "payment_failed": "فشل الدفع",
+  "payment_cancelled": "تم إلغاء الدفع",
+
+  "barter": "التبادل",
+  "escrow": "الضمان",
+  "commission": "عمولة",
+  "fees": "رسوم",
+
+  "search": "بحث",
+  "filter": "تصفية",
+  "sort": "ترتيب",
+  "sort_by": "ترتيب حسب",
+  "price_range": "نطاق السعر",
+
+  "new": "جديد",
+  "used": "مستعمل",
+  "refurbished": "مُجدد",
+  "damaged": "تالف",
+
+  "cash": "نقدي",
+  "cash_difference": "فرق نقدي",
+  "direct_swap": "تبادل مباشر",
+  "barter_pool": "مجموعة التبادل",
+
+  "delivery": "التسليم",
+  "shipping": "شحن",
+  "pickup": "استلام",
+  "in_person": "شخصياً",
+
+  "kyc": "التحقق من الهوية",
+  "verification": "التحقق",
+  "identity_verification": "التحقق من الهوية",
+  "face_recognition": "التعرف على الوجه",
+  "address_verification": "التحقق من العنوان",
+
+  "notifications": "الإشعارات",
+  "notification_settings": "إعدادات الإشعارات",
+  "push_notifications": "إشعارات فورية",
+  "email_notifications": "إشعارات البريد الإلكتروني",
+  "sms_notifications": "رسائل نصية",
+
+  "settings": "الإعدادات",
+  "preferences": "التفضيلات",
+  "language": "اللغة",
+  "theme": "المظهر",
+  "privacy": "الخصوصية",
+  "terms": "شروط الخدمة",
+  "privacy_policy": "سياسة الخصوصية",
+
+  "help": "مساعدة",
+  "support": "الدعم",
+  "contact_us": "اتصل بنا",
+  "faq": "الأسئلة الشائعة",
+  "about": "حول",
+
+  "network_error": "خطأ في اتصال الشبكة",
+  "server_error": "خطأ في الخادم",
+  "timeout_error": "انتهت مهلة الاتصال",
+  "unauthorized": "وصول غير مصرح",
+  "forbidden": "ممنوع",
+  "not_found": "غير موجود",
+
+  "retry": "إعادة المحاولة",
+  "try_again": "حاول مرة أخرى",
+  "back": "العودة",
+  "close": "إغلاق",
+  "ok": "موافق",
+  "yes": "نعم",
+  "no": "لا",
+
+  "minutes_ago": "قبل {} دقيقة",
+  "hours_ago": "قبل {} ساعة",
+  "days_ago": "قبل {} يوم",
+  "just_now": "الآن",
+
+  "read_more": "اقرأ المزيد",
+  "show_less": "عرض أقل",
+  "view_all": "عرض الكل",
+  "see_more": "شاهد المزيد",
+
+  "no_data": "لا توجد بيانات",
+  "no_results": "لا توجد نتائج",
+  "no_items": "لا توجد عناصر",
+  "empty_list": "القائمة فارغة",
+
+  "select_image": "اختر صورة",
+  "take_photo": "التقط صورة",
+  "choose_from_gallery": "اختر من المعرض",
+  "remove_image": "إزالة الصورة",
+
+  "location": "الموقع",
+  "address": "العنوان",
+  "city": "المدينة",
+  "district": "الحي",
+  "neighborhood": "الحي",
+
+  "rating": "التقييم",
+  "reviews": "المراجعات",
+  "review": "مراجعة",
+  "rate": "قيم",
+  "comment": "تعليق",
+
+  "report": "إبلاغ",
+  "block": "حظر",
+  "unblock": "إلغاء الحظر",
+  "follow": "متابعة",
+  "unfollow": "إلغاء المتابعة",
+
+  "share": "مشاركة",
+  "favorite": "إضافة للمفضلة",
+  "unfavorite": "إزالة من المفضلة",
+  "bookmark": "إشارة مرجعية",
+
+  "chat": "الدردشة",
+  "message": "رسالة",
+  "send": "إرسال",
+  "reply": "رد",
+  "typing": "يكتب...",
+
+  "offer": "عرض",
+  "offers": "العروض",
+  "make_offer": "تقديم عرض",
+  "accept_offer": "قبول العرض",
+  "reject_offer": "رفض العرض",
+  "counter_offer": "عرض مضاد",
+
+  "transaction": "معاملة",
+  "transactions": "المعاملات",
+  "transaction_history": "تاريخ المعاملات",
+  "transaction_details": "تفاصيل المعاملة",
+
+  "dispute": "نزاع",
+  "disputes": "النزاعات",
+  "open_dispute": "فتح نزاع",
+  "resolve_dispute": "حل النزاع",
+
+  "admin": "الإدارة",
+  "moderation": "الإشراف",
+  "approve": "موافقة",
+  "reject": "رفض",
+  "suspend": "إيقاف",
+  "ban": "حظر",
+
+  "analytics": "التحليلات",
+  "reports": "التقارير",
+  "dashboard": "لوحة التحكم",
+  "statistics": "الإحصائيات",
+
+  "currency": "العملة",
+  "price": "السعر",
+  "amount": "المبلغ",
+  "total": "المجموع",
+  "subtotal": "المجموع الفرعي",
+  "tax": "الضريبة",
+  "discount": "الخصم",
+
+  "date": "التاريخ",
+  "time": "الوقت",
+  "duration": "المدة",
+  "deadline": "الموعد النهائي",
+
+  "status": "الحالة",
+  "active": "نشط",
+  "inactive": "غير نشط",
+  "pending": "في الانتظار",
+  "completed": "مكتمل",
+  "cancelled": "ملغى",
+  "expired": "منتهي الصلاحية",
+
+  "required": "مطلوب",
+  "optional": "اختياري",
+  "recommended": "موصى به",
+
+  "terms_and_conditions": "أوافق على الشروط والأحكام",
+  "privacy_policy_agreement": "أوافق على سياسة الخصوصية",
+  "age_confirmation": "أنا فوق 18 عاماً",
+
+  "copyright": "© 2024 بوغازيجي بارتر. جميع الحقوق محفوظة.",
+  "version": "الإصدار",
+  "build": "الإنشاء",
+
+  "category": "الفئة",
+  "details": "التفاصيل",
+  "media": "الوسائط",
+  "pricing": "التسعير",
+  "review": "المراجعة",
+  "publish": "نشر",
+  "save_draft": "حفظ المسودة",
+  "draft_saved": "تم حفظ المسودة",
+
+  "listings": "الإعلانات",
+  "my_listings": "إعلاناتي",
+  "featured": "مميز",
+  "urgent": "عاجل",
+  "condition": "الحالة",
+  "brand": "الماركة",
+  "model": "النموذج",
+  "year": "السنة",
+  "description": "الوصف",
+
+  "barter_available": "متاح للتبادل",
+  "negotiable": "قابل للتفاوض",
+  "fixed_price": "سعر ثابت",
+  "starting_price": "سعر البداية",
+
+  "delivery_options": "خيارات التسليم",
+  "free_shipping": "شحن مجاني",
+  "shipping_cost": "تكلفة الشحن",
+  "estimated_delivery": "التسليم المتوقع",
+
+  "category_step": "اختيار الفئة",
+  "select_category": "اختر الفئة",
+  "subcategories": "الفئات الفرعية",
+  "no_category_selected": "لم يتم اختيار فئة",
+
+  "details_step": "تفاصيل المنتج",
+  "listing_title": "عنوان الإعلان",
+  "listing_description": "وصف الإعلان",
+  "product_condition": "حالة المنتج",
+  "product_brand": "الماركة",
+  "product_model": "النموذج",
+  "product_year": "السنة",
+
+  "media_step": "الصور",
+  "add_photos": "إضافة صور",
+  "photo_requirements": "صورة واحدة على الأقل، 10 صور كحد أقصى",
+  "primary_photo": "الصورة الرئيسية",
+  "drag_to_reorder": "اسحب لإعادة الترتيب",
+
+  "pricing_step": "السعر والتبادل",
+  "cash_price": "السعر النقدي",
+  "currency_symbol": "₺",
+  "barter_options": "خيارات التبادل",
+  "preferred_items": "العناصر المفضلة",
+  "min_cash_difference": "الحد الأدنى لفرق النقد",
+  "max_cash_difference": "الحد الأقصى لفرق النقد",
+
+  "delivery_step": "معلومات التسليم",
+  "delivery_method": "طريقة التسليم",
+  "cargo_provider": "مزود الشحن",
+  "tracking_number": "رقم التتبع",
+  "pickup_location": "مكان الاستلام",
+  "delivery_location": "مكان التسليم",
+
+  "review_step": "المراجعة",
+  "listing_summary": "ملخص الإعلان",
+  "publish_listing": "نشر الإعلان",
+  "edit_step": "تعديل الخطوة",
+
+  "validation_error": "خطأ في التحقق",
+  "field_required": "حقل {} مطلوب",
+  "invalid_email": "عنوان بريد إلكتروني غير صالح",
+  "password_too_short": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+  "passwords_not_match": "كلمات المرور غير متطابقة",
+  "invalid_phone": "رقم هاتف غير صالح",
+  "title_too_short": "يجب أن يكون العنوان 10 أحرف على الأقل",
+  "description_too_short": "يجب أن يكون الوصف 20 حرفاً على الأقل",
+  "select_at_least_one_image": "اختر صورة واحدة على الأقل",
+  "price_too_high": "لا يمكن أن يتجاوز السعر 1,000,000 ليرة تركية",
+
+  "login_success": "تم تسجيل الدخول بنجاح",
+  "register_success": "تم التسجيل بنجاح! يرجى التحقق من بريدك الإلكتروني",
+  "logout_success": "تم تسجيل الخروج بنجاح",
+  "profile_updated": "تم تحديث الملف الشخصي",
+
+  "listing_created_successfully": "تم إنشاء الإعلان بنجاح",
+  "listing_updated_successfully": "تم تحديث الإعلان بنجاح",
+  "listing_deleted_successfully": "تم حذف الإعلان بنجاح",
+
+  "offer_sent_successfully": "تم إرسال العرض بنجاح",
+  "offer_accepted": "تم قبول العرض",
+  "offer_rejected": "تم رفض العرض",
+  "offer_countered": "تم إرسال عرض مضاد",
+
+  "transaction_created": "تم بدء المعاملة",
+  "delivery_confirmed": "تم تأكيد التسليم",
+  "payment_completed": "تم إتمام الدفع",
+  "transaction_completed": "تم إتمام المعاملة",
+
+  "please_complete_all_required_fields": "يرجى إكمال جميع الحقول المطلوبة",
+  "please_select_category": "يرجى اختيار فئة",
+  "please_add_at_least_one_image": "يرجى إضافة صورة واحدة على الأقل",
+
+  "view_listing": "عرض الإعلان",
+  "back_to_home": "العودة للرئيسية",
+  "navigate_to_listing_detail": "الانتقال إلى تفاصيل الإعلان: {}",
+
+  "search_listings": "البحث في الإعلانات",
+  "no_listings_found": "لم يتم العثور على إعلانات",
+  "be_first_to_create_listing": "كن أول من ينشئ إعلاناً",
+  "create_first_listing": "إنشاء الإعلان الأول",
+
+  "pending_review": "في انتظار المراجعة",
+  "under_review": "قيد المراجعة",
+  "needs_review": "يحتاج مراجعة",
+
+  "featured_listing": "إعلان مميز",
+  "premium_listing": "إعلان مميز",
+  "boost_listing": "تعزيز الإعلان",
+
+  "boost_types": {
+    "standard": "قياسي",
+    "featured": "مميز",
+    "premium": "مميز",
+    "urgent": "عاجل"
+  },
+
+  "listing_status": {
+    "draft": "مسودة",
+    "pending": "في الانتظار",
+    "active": "نشط",
+    "paused": "متوقف",
+    "sold": "تم البيع",
+    "expired": "منتهي الصلاحية",
+    "rejected": "مرفوض",
+    "deleted": "محذوف"
+  },
+
+  "moderation_status": {
+    "pending": "في الانتظار",
+    "approved": "معتمد",
+    "rejected": "مرفوض",
+    "needs_review": "يحتاج مراجعة"
+  },
+
+  "number_format": {
+    "decimal_separator": ",",
+    "thousand_separator": ".",
+    "currency_symbol": "₺"
+  },
+
+  "date_format": {
+    "short": "dd/MM/yyyy",
+    "long": "dd MMMM yyyy",
+    "with_time": "dd/MM/yyyy HH:mm"
+  },
+
+  "validation_messages": {
+    "email_required": "عنوان البريد الإلكتروني مطلوب",
+    "email_invalid": "يرجى إدخال عنوان بريد إلكتروني صالح",
+    "password_required": "كلمة المرور مطلوبة",
+    "password_min_length": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+    "password_confirmation": "تأكيد كلمة المرور غير متطابق",
+    "phone_required": "رقم الهاتف مطلوب",
+    "phone_invalid": "يرجى إدخال رقم هاتف صالح",
+    "name_required": "الاسم مطلوب",
+    "name_min_length": "يجب أن يكون الاسم حرفين على الأقل",
+    "title_required": "العنوان مطلوب",
+    "title_min_length": "يجب أن يكون العنوان 10 أحرف على الأقل",
+    "description_required": "الوصف مطلوب",
+    "description_min_length": "يجب أن يكون الوصف 20 حرفاً على الأقل",
+    "category_required": "اختيار الفئة مطلوب",
+    "images_required": "يجب تحميل صورة واحدة على الأقل",
+    "price_required": "يجب تحديد السعر",
+    "delivery_required": "يجب اختيار طريقة التسليم"
+  },
+
+  "auth_validation": {
+    "invalid_credentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+    "account_not_verified": "لم يتم التحقق من حسابك",
+    "account_suspended": "تم إيقاف حسابك",
+    "too_many_attempts": "محاولات تسجيل دخول فاشلة كثيرة جداً"
+  },
+
+  "barter_validation": {
+    "offer_value_too_low": "قيمة العرض منخفضة جداً",
+    "offer_value_too_high": "قيمة العرض مرتفعة جداً",
+    "invalid_items": "اختيار عنصر غير صالح",
+    "insufficient_balance": "رصيد غير كاف",
+    "transaction_not_allowed": "هذه المعاملة غير مسموحة"
+  }
+}

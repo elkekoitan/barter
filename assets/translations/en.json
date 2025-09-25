@@ -1,0 +1,433 @@
+{
+  "app_name": "Boğaziçi Barter",
+  "smart_barter_platform": "Turkey's First Smart Barter Platform",
+
+  "welcome": "Welcome",
+  "welcome_back": "Welcome Back",
+  "discover_amazing_barters": "Discover amazing barter opportunities",
+
+  "explore": "Explore",
+  "categories": "Categories",
+  "create_listing": "Create Listing",
+  "messages": "Messages",
+  "profile": "Profile",
+
+  "popular_categories": "Popular Categories",
+  "quick_actions": "Quick Actions",
+
+  "electronics": "Electronics",
+  "fashion": "Fashion",
+  "home_garden": "Home & Garden",
+  "vehicles": "Vehicles",
+  "services": "Services",
+  "other": "Other",
+
+  "browse_listings": "Browse Listings",
+  "find_what_you_need": "Find what you need",
+  "share_what_you_have": "Share what you have",
+
+  "no_recent_activity": "No recent activity",
+  "start_exploring_barters": "Start exploring barter opportunities",
+
+  "login": "Login",
+  "register": "Register",
+  "logout": "Logout",
+  "forgot_password": "Forgot Password",
+  "reset_password": "Reset Password",
+
+  "email": "Email",
+  "password": "Password",
+  "confirm_password": "Confirm Password",
+  "phone": "Phone",
+  "full_name": "Full Name",
+
+  "next": "Next",
+  "previous": "Back",
+  "continue": "Continue",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "save": "Save",
+  "delete": "Delete",
+  "edit": "Edit",
+
+  "loading": "Loading...",
+  "error": "Error",
+  "success": "Success",
+  "warning": "Warning",
+  "info": "Info",
+
+  "payment": "Payment",
+  "payment_methods": "Payment Methods",
+  "payment_success": "Payment Successful",
+  "payment_failed": "Payment Failed",
+  "payment_cancelled": "Payment Cancelled",
+
+  "barter": "Barter",
+  "escrow": "Escrow",
+  "commission": "Commission",
+  "fees": "Fees",
+
+  "search": "Search",
+  "filter": "Filter",
+  "sort": "Sort",
+  "sort_by": "Sort by",
+  "price_range": "Price Range",
+
+  "new": "New",
+  "used": "Used",
+  "refurbished": "Refurbished",
+  "damaged": "Damaged",
+
+  "cash": "Cash",
+  "cash_difference": "Cash Difference",
+  "direct_swap": "Direct Swap",
+  "barter_pool": "Barter Pool",
+
+  "delivery": "Delivery",
+  "shipping": "Shipping",
+  "pickup": "Pickup",
+  "in_person": "In Person",
+
+  "kyc": "KYC Verification",
+  "verification": "Verification",
+  "identity_verification": "Identity Verification",
+  "face_recognition": "Face Recognition",
+  "address_verification": "Address Verification",
+
+  "notifications": "Notifications",
+  "notification_settings": "Notification Settings",
+  "push_notifications": "Push Notifications",
+  "email_notifications": "Email Notifications",
+  "sms_notifications": "SMS Notifications",
+
+  "settings": "Settings",
+  "preferences": "Preferences",
+  "language": "Language",
+  "theme": "Theme",
+  "privacy": "Privacy",
+  "terms": "Terms of Service",
+  "privacy_policy": "Privacy Policy",
+
+  "help": "Help",
+  "support": "Support",
+  "contact_us": "Contact Us",
+  "faq": "FAQ",
+  "about": "About",
+
+  "network_error": "Network connection error",
+  "server_error": "Server error",
+  "timeout_error": "Timeout error",
+  "unauthorized": "Unauthorized access",
+  "forbidden": "Forbidden",
+  "not_found": "Not found",
+
+  "retry": "Retry",
+  "try_again": "Try Again",
+  "back": "Back",
+  "close": "Close",
+  "ok": "OK",
+  "yes": "Yes",
+  "no": "No",
+
+  "minutes_ago": "{} minutes ago",
+  "hours_ago": "{} hours ago",
+  "days_ago": "{} days ago",
+  "just_now": "Just now",
+
+  "read_more": "Read More",
+  "show_less": "Show Less",
+  "view_all": "View All",
+  "see_more": "See More",
+
+  "no_data": "No data found",
+  "no_results": "No results found",
+  "no_items": "No items found",
+  "empty_list": "List is empty",
+
+  "select_image": "Select Image",
+  "take_photo": "Take Photo",
+  "choose_from_gallery": "Choose from Gallery",
+  "remove_image": "Remove Image",
+
+  "location": "Location",
+  "address": "Address",
+  "city": "City",
+  "district": "District",
+  "neighborhood": "Neighborhood",
+
+  "rating": "Rating",
+  "reviews": "Reviews",
+  "review": "Review",
+  "rate": "Rate",
+  "comment": "Comment",
+
+  "report": "Report",
+  "block": "Block",
+  "unblock": "Unblock",
+  "follow": "Follow",
+  "unfollow": "Unfollow",
+
+  "share": "Share",
+  "favorite": "Add to Favorites",
+  "unfavorite": "Remove from Favorites",
+  "bookmark": "Bookmark",
+
+  "chat": "Chat",
+  "message": "Message",
+  "send": "Send",
+  "reply": "Reply",
+  "typing": "Typing...",
+
+  "offer": "Offer",
+  "offers": "Offers",
+  "make_offer": "Make Offer",
+  "accept_offer": "Accept Offer",
+  "reject_offer": "Reject Offer",
+  "counter_offer": "Counter Offer",
+
+  "transaction": "Transaction",
+  "transactions": "Transactions",
+  "transaction_history": "Transaction History",
+  "transaction_details": "Transaction Details",
+
+  "dispute": "Dispute",
+  "disputes": "Disputes",
+  "open_dispute": "Open Dispute",
+  "resolve_dispute": "Resolve Dispute",
+
+  "admin": "Administration",
+  "moderation": "Moderation",
+  "approve": "Approve",
+  "reject": "Reject",
+  "suspend": "Suspend",
+  "ban": "Ban",
+
+  "analytics": "Analytics",
+  "reports": "Reports",
+  "dashboard": "Dashboard",
+  "statistics": "Statistics",
+
+  "currency": "Currency",
+  "price": "Price",
+  "amount": "Amount",
+  "total": "Total",
+  "subtotal": "Subtotal",
+  "tax": "Tax",
+  "discount": "Discount",
+
+  "date": "Date",
+  "time": "Time",
+  "duration": "Duration",
+  "deadline": "Deadline",
+
+  "status": "Status",
+  "active": "Active",
+  "inactive": "Inactive",
+  "pending": "Pending",
+  "completed": "Completed",
+  "cancelled": "Cancelled",
+  "expired": "Expired",
+
+  "required": "Required",
+  "optional": "Optional",
+  "recommended": "Recommended",
+
+  "terms_and_conditions": "I agree to the Terms and Conditions",
+  "privacy_policy_agreement": "I agree to the Privacy Policy",
+  "age_confirmation": "I am over 18 years old",
+
+  "copyright": "© 2024 Boğaziçi Barter. All rights reserved.",
+  "version": "Version",
+  "build": "Build",
+
+  "category": "Category",
+  "details": "Details",
+  "media": "Media",
+  "pricing": "Pricing",
+  "review": "Review",
+  "publish": "Publish",
+  "save_draft": "Save Draft",
+  "draft_saved": "Draft saved",
+
+  "listings": "Listings",
+  "my_listings": "My Listings",
+  "featured": "Featured",
+  "urgent": "Urgent",
+  "condition": "Condition",
+  "brand": "Brand",
+  "model": "Model",
+  "year": "Year",
+  "description": "Description",
+
+  "barter_available": "Barter Available",
+  "negotiable": "Negotiable",
+  "fixed_price": "Fixed Price",
+  "starting_price": "Starting Price",
+
+  "delivery_options": "Delivery Options",
+  "free_shipping": "Free Shipping",
+  "shipping_cost": "Shipping Cost",
+  "estimated_delivery": "Estimated Delivery",
+
+  "category_step": "Category Selection",
+  "select_category": "Select category",
+  "subcategories": "Subcategories",
+  "no_category_selected": "No category selected",
+
+  "details_step": "Product Details",
+  "listing_title": "Listing Title",
+  "listing_description": "Listing Description",
+  "product_condition": "Product Condition",
+  "product_brand": "Brand",
+  "product_model": "Model",
+  "product_year": "Year",
+
+  "media_step": "Photos",
+  "add_photos": "Add Photos",
+  "photo_requirements": "At least 1, maximum 10 photos",
+  "primary_photo": "Primary Photo",
+  "drag_to_reorder": "Drag to reorder",
+
+  "pricing_step": "Price & Barter",
+  "cash_price": "Cash Price",
+  "currency_symbol": "$",
+  "barter_options": "Barter Options",
+  "preferred_items": "Preferred Items",
+  "min_cash_difference": "Min. Cash Difference",
+  "max_cash_difference": "Max. Cash Difference",
+
+  "delivery_step": "Delivery Information",
+  "delivery_method": "Delivery Method",
+  "cargo_provider": "Shipping Provider",
+  "tracking_number": "Tracking Number",
+  "pickup_location": "Pickup Location",
+  "delivery_location": "Delivery Location",
+
+  "review_step": "Review",
+  "listing_summary": "Listing Summary",
+  "publish_listing": "Publish Listing",
+  "edit_step": "Edit Step",
+
+  "validation_error": "Validation Error",
+  "field_required": "{} field is required",
+  "invalid_email": "Invalid email address",
+  "password_too_short": "Password must be at least 6 characters",
+  "passwords_not_match": "Passwords do not match",
+  "invalid_phone": "Invalid phone number",
+  "title_too_short": "Title must be at least 10 characters",
+  "description_too_short": "Description must be at least 20 characters",
+  "select_at_least_one_image": "Select at least one image",
+  "price_too_high": "Price cannot exceed 1,000,000 TRY",
+
+  "login_success": "Login successful",
+  "register_success": "Registration successful! Please verify your email",
+  "logout_success": "Logout successful",
+  "profile_updated": "Profile updated",
+
+  "listing_created_successfully": "Listing created successfully",
+  "listing_updated_successfully": "Listing updated successfully",
+  "listing_deleted_successfully": "Listing deleted successfully",
+
+  "offer_sent_successfully": "Offer sent successfully",
+  "offer_accepted": "Offer accepted",
+  "offer_rejected": "Offer rejected",
+  "offer_countered": "Counter offer sent",
+
+  "transaction_created": "Transaction initiated",
+  "delivery_confirmed": "Delivery confirmed",
+  "payment_completed": "Payment completed",
+  "transaction_completed": "Transaction completed",
+
+  "please_complete_all_required_fields": "Please complete all required fields",
+  "please_select_category": "Please select a category",
+  "please_add_at_least_one_image": "Please add at least one image",
+
+  "view_listing": "View Listing",
+  "back_to_home": "Back to Home",
+  "navigate_to_listing_detail": "Navigating to listing detail: {}",
+
+  "search_listings": "Search listings",
+  "no_listings_found": "No listings found",
+  "be_first_to_create_listing": "Be the first to create a listing",
+  "create_first_listing": "Create First Listing",
+
+  "pending_review": "Pending Review",
+  "under_review": "Under Review",
+  "needs_review": "Needs Review",
+
+  "featured_listing": "Featured Listing",
+  "premium_listing": "Premium Listing",
+  "boost_listing": "Boost Listing",
+
+  "boost_types": {
+    "standard": "Standard",
+    "featured": "Featured",
+    "premium": "Premium",
+    "urgent": "Urgent"
+  },
+
+  "listing_status": {
+    "draft": "Draft",
+    "pending": "Pending",
+    "active": "Active",
+    "paused": "Paused",
+    "sold": "Sold",
+    "expired": "Expired",
+    "rejected": "Rejected",
+    "deleted": "Deleted"
+  },
+
+  "moderation_status": {
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "needs_review": "Needs Review"
+  },
+
+  "number_format": {
+    "decimal_separator": ".",
+    "thousand_separator": ",",
+    "currency_symbol": "$"
+  },
+
+  "date_format": {
+    "short": "MM/dd/yyyy",
+    "long": "MMMM dd, yyyy",
+    "with_time": "MM/dd/yyyy HH:mm"
+  },
+
+  "validation_messages": {
+    "email_required": "Email address is required",
+    "email_invalid": "Please enter a valid email address",
+    "password_required": "Password is required",
+    "password_min_length": "Password must be at least 6 characters",
+    "password_confirmation": "Password confirmation doesn't match",
+    "phone_required": "Phone number is required",
+    "phone_invalid": "Please enter a valid phone number",
+    "name_required": "Name is required",
+    "name_min_length": "Name must be at least 2 characters",
+    "title_required": "Title is required",
+    "title_min_length": "Title must be at least 10 characters",
+    "description_required": "Description is required",
+    "description_min_length": "Description must be at least 20 characters",
+    "category_required": "Category selection is required",
+    "images_required": "At least 1 image must be uploaded",
+    "price_required": "Price must be set",
+    "delivery_required": "Delivery method must be selected"
+  },
+
+  "auth_validation": {
+    "invalid_credentials": "Invalid email or password",
+    "account_not_verified": "Your account is not verified",
+    "account_suspended": "Your account has been suspended",
+    "too_many_attempts": "Too many failed login attempts"
+  },
+
+  "barter_validation": {
+    "offer_value_too_low": "Offer value is too low",
+    "offer_value_too_high": "Offer value is too high",
+    "invalid_items": "Invalid item selection",
+    "insufficient_balance": "Insufficient balance",
+    "transaction_not_allowed": "This transaction is not allowed"
+  }
+}

@@ -1,0 +1,359 @@
+Harika! Aşağıda Boğaziçi Barter uygulaması için Codex CLI uyumlu, agents-tabanlı geliştirme sistemini (örneğin: auth-agent, payment-agent, listing-agent gibi görev odaklı otomasyon birimlerini) tam olarak destekleyen, eksiksiz bir PRD + Subtask Planı sunuyorum.
+
+Bu doküman:
+
+Clean Architecture + Agent-Based Development modelini birleştirir,
+Her agent’ın kendi CLI komutlarını, kod üretme şablonlarını, test senaryolarını ve sorumluluk alanlarını tanımlar,
+Tüm Türkiye yerel ödeme sistemlerini ve barter iş akışlarını kapsar,
+Geliştirme ekibinin tam otomasyonla üretim yapabilmesini sağlar.
+🧠 Boğaziçi Barter – Agent-Based Flutter PRD (Codex CLI Optimized)
+🎯 Hedef: Her işlevsel birim (auth, payment, listing, barter, admin) için bağımsız bir Agent tanımlanacak. Her agent kendi CLI komutlarıyla modül oluşturacak, test edecek ve entegre edecek. 
+
+📦 1. Genel Agent Sistemi Mimarisi
+auth-agent
+Kayıt, giriş, KYC, OTP, biyometrik
+codex agent auth --with=kyc,otp,biometric
+Auth Bloc, KYC UseCases, SecureStorage
+listing-agent
+İlan oluşturma, düzenleme, filtreleme
+codex agent listing --steps=6 --with=media,barter-pool
+Listing Wizard, Media Upload, Pricing Engine
+barter-agent
+Teklif, takas takibi, emanet (escrow)
+codex agent barter --with=escrow,tracking,rating
+Offer Bloc, Escrow Calculator, Timeline UI
+payment-agent
+7 yerel ödeme sağlayıcısı entegrasyonu
+codex agent payment --providers=papara,iyzico,...
+Payment Manager, Webhook Handler, 3DSecure
+chat-agent
+Gerçek zamanlı mesajlaşma
+codex agent chat --provider=stream --with=typing,read-receipt
+WebSocket Client, Message Encryption
+admin-agent
+İlan moderasyonu, raporlama
+codex agent admin --moderation=levels --analytics=true
+Admin Dashboard, Flagging System
+localization-agent
+Çoklu dil desteği
+codex agent i18n --langs=tr,en,ar --auto-extract=true
+EasyLocalization, RTL Support
+monitoring-agent
+Performans, crash, KPI takibi
+codex agent monitor --with=firebase,crashlytics,perf
+Firebase Integration, Custom Metrics
+
+📋 2. Detaylı Subtask Planı (Agent Bazlı)
+🔐 2.1. auth-agent
+AUTH-01
+Temel kayıt/giriş akışı
+codex agent auth --basic
+auth_bloc.dart
+,
+login_page.dart
+AUTH-02
+OTP doğrulama (SMS/e-posta)
+codex agent auth --otp
+otp_verification_page.dart
+,
+verify_otp_usecase.dart
+AUTH-03
+KYC akışı (TCKN + yüz + adres)
+codex agent auth --kyc
+kyc_verification_page.dart
+,
+KYCStep1-4
+AUTH-04
+Biyometrik giriş (Face ID / Touch ID)
+codex agent auth --biometric
+BiometricService
+,
+SecureStorage
+AUTH-05
+JWT + Refresh token yönetimi
+codex agent auth --token
+AuthInterceptor
+,
+TokenManager
+
+📦 2.2. listing-agent
+LIST-01
+6 adımlı ilan oluşturma wizard
+codex agent listing --steps=6
+CreateListingWizard
+,
+Step1-6
+LIST-02
+Medya yükleme (10 resim + 1 video)
+codex agent listing --media
+MediaUploadStep
+,
+CloudinaryService
+LIST-03
+Barter havuzu + TL farkı alanı
+codex agent listing --barter-pool
+PricingStep
+,
+EscrowCalculator
+LIST-04
+Konum + teslimat seçimi
+codex agent listing --delivery
+DeliveryStep
+,
+GoogleMapsPicker
+LIST-05
+Favori / paylaş / raporla
+codex agent listing --social
+ListingCard
+,
+ReportDialog
+
+🤝 2.3. barter-agent
+BART-01
+Barter teklifi oluşturma
+codex agent barter --offer
+CreateOfferPage
+,
+OfferBloc
+BART-02
+Emanet (escrow) tutma mekanizması
+codex agent barter --escrow
+EscrowService
+,
+HoldFundsUsecase
+BART-03
+Adım adım takip (teslimat → onay)
+codex agent barter --tracking
+BarterTrackingPage
+,
+TimelineWidget
+BART-04
+Karşılıklı değerlendirme sistemi
+codex agent barter --rating
+RatingWidget
+,
+ReviewRepository
+BART-05
+İptal / itiraz yönetimi
+codex agent barter --dispute
+DisputeForm
+,
+AdminEscalation
+
+💳 2.4. payment-agent (En Kritik Agent)
+PAY-01
+Unified Payment Interface
+codex agent payment --interface
+IPaymentService
+,
+PaymentManager
+PAY-02
+Papara entegrasyonu
+codex agent payment --providers=papara
+PaparaService
+,
+PaparaWidget
+PAY-03
+İyzico (marketplace + 3D Secure)
+codex agent payment --providers=iyzico
+IyzicoService
+,
+ThreeDSecurePage
+PAY-04
+Tosla, PayTR, BKM Express
+codex agent payment --providers=tosla,paytr,bkm_express
+Her sağlayıcı için
+XxxService
+PAY-05
+Paycell & Param entegrasyonu
+codex agent payment --providers=paycell,param
+PaycellService
+,
+ParamService
+PAY-06
+Webhook doğrulama (her sağlayıcı)
+codex agent payment --webhooks
+WebhookValidator
+,
+SignatureChecker
+PAY-07
+Komisyon & emanet ücreti hesaplama
+codex agent payment --fees
+CommissionEngine
+,
+FeeCalculator
+
+💬 2.5. chat-agent
+CHAT-01
+WebSocket bağlantısı
+codex agent chat --ws
+WebSocketClient
+,
+MessageStream
+CHAT-02
+Mesajlaşma UI (okundu, yazıyor)
+codex agent chat --ui
+ChatDetailPage
+,
+TypingIndicator
+CHAT-03
+Ekli dosya (resim, ses)
+codex agent chat --attachments
+AttachmentPicker
+,
+MediaPreview
+CHAT-04
+Şifreli mesajlaşma (AES)
+codex agent chat --encryption
+EncryptionService
+,
+SecureMessage
+
+👮 2.6. admin-agent
+ADM-01
+Küçük/Orta/Büyük ilan otomatik kategorizasyonu
+codex agent admin --moderation=levels
+ListingModerationPage
+,
+AutoLeveler
+ADM-02
+İlan onay/reddetme akışı
+codex agent admin --review
+AdminReviewCard
+,
+RejectionReasonDialog
+ADM-03
+Kullanıcı yönetimi (askıya alma)
+codex agent admin --users
+UserManagementPage
+,
+SuspendUserUsecase
+ADM-04
+Raporlama & KPI dashboard
+codex agent admin --analytics
+AnalyticsDashboardPage
+,
+KPIWidget
+
+🌍 2.7. localization-agent
+I18N-01
+TR/EN/AR desteği
+codex agent i18n --langs=tr,en,ar
+tr.json
+,
+en.json
+,
+ar.json
+I18N-02
+RTL desteği (Arapça)
+codex agent i18n --rtl
+Directionality
+,
+TextAlignRTL
+I18N-03
+Otomatik string çıkarma
+codex agent i18n --auto-extract
+intl_extract.sh
+,
+missing_keys.json
+
+📊 2.8. monitoring-agent
+MON-01
+Firebase entegrasyonu
+codex agent monitor --firebase
+FirebaseAnalytics
+,
+Crashlytics
+MON-02
+Performans izleme (launch time, API)
+codex agent monitor --perf
+PerformanceMonitor
+,
+TraceManager
+MON-03
+KPI takibi (MAU, barter sayısı)
+codex agent monitor --kpi
+KPIRepository
+,
+AnalyticsBloc
+
+⚙️ 3. Codex CLI Komutları – Agent Mode
+bash
+
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+# Proje başlatma
+codex init project --name=bogazici-barter --agents=auth,listing,barter,payment,chat,admin,i18n,monitor
+
+# Her agent'ı ayrı ayrı çalıştır
+codex agent auth --with=kyc,otp,biometric
+codex agent listing --steps=6 --with=barter-pool,media,delivery
+codex agent payment --providers=papara,iyzico,tosla,paytr,bkm_express,paycell,param --webhooks --fees
+codex agent barter --with=escrow,tracking,rating,dispute
+codex agent chat --provider=stream --encryption --attachments
+codex agent admin --moderation=levels --analytics
+codex agent i18n --langs=tr,en,ar --rtl --auto-extract
+codex agent monitor --firebase --perf --kpi
+
+# Tüm agent'ları toplu çalıştır
+codex run agents --all
+
+# Test üretimi
+codex test --agent=payment --coverage=90
+codex test --agent=listing --type=widget,integration
+
+# Build & Deploy
+codex build --platform=android --flavor=prod --obfuscate
+codex deploy --target=play-store --track=internal
+📈 4. Başarı Kriterleri (Agent Bazlı)
+auth-agent
+KYC başarı oranı
+%90
+listing-agent
+İlan tamamlama oranı
+%85
+barter-agent
+Tamamlanan takas oranı
+%70
+payment-agent
+Ödeme başarı oranı
+%95
+chat-agent
+Mesaj teslim oranı
+%99
+admin-agent
+İlan onay süresi
+< 2 saat
+monitoring-agent
+Crash oranı
+< %0.5
+
+✅ 5. Sonuç
+Bu PRD:
+
+Agent-based development ile modüler, sürdürülebilir ve paralel geliştirme sağlar,
+Codex CLI ile her agent kendi yaşam döngüsünü yönetir (oluşturma → test → deploy),
+Türkiye yerel ödeme sistemlerinin tamamını derinlemesine entegre eder,
+Barter havuzu, emanet, KYC, çoklu dil, admin moderasyonu gibi tüm ihtiyaçları kapsar.

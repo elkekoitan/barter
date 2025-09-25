@@ -1,0 +1,143 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  FLUTTER_VERSION: "3.24.0"
+
+jobs:
+  format:
+    name: Check Code Formatting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+
+      - name: Check formatting
+        run: flutter format --set-exit-if-changed .
+
+  analyze:
+    name: Analyze Code
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze code
+        run: flutter analyze
+
+      - name: Check for issues
+        run: |
+          if [ -n "$(flutter analyze | grep -E "error|warning")" ]; then
+            echo "Code analysis found issues"
+            exit 1
+          fi
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run tests
+        run: flutter test --coverage
+
+      - name: Check test coverage
+        run: |
+          if [ ! -f "coverage/lcov.info" ]; then
+            echo "No coverage report found"
+            exit 1
+          fi
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: coverage/lcov.info
+          fail_ci_if_error: true
+
+  dependency-check:
+    name: Check Dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+
+      - name: Check for outdated dependencies
+        run: flutter pub outdated
+
+      - name: Check for security vulnerabilities
+        run: |
+          flutter pub audit
+
+  build-check:
+    name: Build Check
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [web, android, ios]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build for ${{ matrix.target }}
+        run: |
+          case ${{ matrix.target }} in
+            web)
+              flutter build web --release
+              ;;
+            android)
+              flutter build apk --release
+              ;;
+            ios)
+              flutter build ios --release --no-codesign
+              ;;
+          esac
