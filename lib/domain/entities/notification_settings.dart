@@ -18,7 +18,7 @@ class NotificationSettingsEntity extends Equatable {
     this.newMessages = true,
     this.systemUpdates = true,
     this.marketingEmails = false,
-    this.categorySettings = const {},
+    this.categorySettings = const <String, bool>{},
   });
 
   @override

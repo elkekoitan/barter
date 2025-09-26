@@ -159,7 +159,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   ) async {
     emit(SettingsLoading());
 
-    final result = await _updateNotificationSettingsUseCase.call(event.request);
+    final result = await _updateNotificationSettingsUseCase.call(event.settings);
 
     result.fold(
       (failure) => emit(NotificationError(failure.message)),

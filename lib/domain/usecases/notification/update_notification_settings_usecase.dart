@@ -7,28 +7,36 @@ class UpdateNotificationSettingsUseCase {
 
   const UpdateNotificationSettingsUseCase(this._repository);
 
-  Future<Either<Failure, NotificationSettings>> call(UpdateSettingsRequest request) async {
-    // Validate request
-    final validationFailure = _validateRequest(request);
+  Future<Either<Failure, NotificationSettings>> call(NotificationSettingsEntity settings) async {
+    // Validate settings
+    final validationFailure = _validateSettings(settings);
     if (validationFailure != null) {
       return Left(validationFailure);
     }
 
-    // Update settings
-    return await _repository.updateNotificationSettings(request);
+    // Update settings by user ID
+    return await _repository.updateNotificationSettingsByUserId(settings.userId, _mapToRequest(settings));
   }
 
-  Failure? _validateRequest(UpdateSettingsRequest request) {
+  Failure? _validateSettings(NotificationSettingsEntity settings) {
     // At least one channel should be enabled
-    final hasAnyChannel = request.pushEnabled == true ||
-                         request.emailEnabled == true ||
-                         request.smsEnabled == true ||
-                         request.inAppEnabled == true;
+    final hasAnyChannel = settings.pushNotifications ||
+                         settings.emailNotifications ||
+                         (settings.categorySettings.values.any((enabled) => enabled));
 
     if (!hasAnyChannel) {
       return const ValidationFailure('At least one notification channel must be enabled');
     }
 
     return null;
+  }
+
+  UpdateSettingsRequest _mapToRequest(NotificationSettingsEntity settings) {
+    return UpdateSettingsRequest(
+      userId: settings.userId,
+      pushEnabled: settings.pushNotifications,
+      emailEnabled: settings.emailNotifications,
+      inAppEnabled: settings.categorySettings.values.any((enabled) => enabled),
+    );
   }
 }

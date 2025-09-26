@@ -87,14 +87,14 @@ class AppRouter {
           case helpCategory:
             final args = settings.arguments as Map<String, dynamic>?;
             return MaterialPageRoute(
-              builder: (_) => HelpCategoryPage(category: args?['category']),
+              builder: (_) => HelpCategoryPage(categoryId: args?['categoryId'] ?? ''),
             );
           case helpFAQ:
             return MaterialPageRoute(builder: (_) => const HelpFAQPage());
           case helpArticle:
             final args = settings.arguments as Map<String, dynamic>?;
             return MaterialPageRoute(
-              builder: (_) => HelpArticleDetailPage(article: args?['article']),
+              builder: (_) => HelpArticleDetailPage(articleId: args?['articleId'] ?? ''),
             );
           case helpBookmarks:
             return MaterialPageRoute(builder: (_) => const HelpBookmarksPage());

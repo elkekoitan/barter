@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:bogazici_barter/domain/repositories/auth_repository.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_dimensions.dart';
+import '../../domain/entities/social_login_settings.dart';
 
 enum SocialLoginType {
   google('google.com', 'Google', Icons.g_mobiledata, AppColors.google),

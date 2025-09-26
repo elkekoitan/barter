@@ -22,6 +22,7 @@ abstract class NotificationRepository {
   // Settings Management
   Future<Either<Failure, NotificationSettings>> getNotificationSettings();
   Future<Either<Failure, NotificationSettings>> updateNotificationSettings(UpdateSettingsRequest request);
+  Future<Either<Failure, NotificationSettings>> updateNotificationSettingsByUserId(String userId, UpdateSettingsRequest request);
 
   // Analytics
   Future<Either<Failure, NotificationStats>> getNotificationStats();

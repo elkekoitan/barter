@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:dartz/dartz.dart';
 import '../../repositories/notification_repository.dart';
 import '../../../core/errors/failures.dart';
@@ -233,5 +234,3 @@ class InitializePushNotificationsUseCase {
     }
   }
 }
-
-import 'package:flutter/material.dart';

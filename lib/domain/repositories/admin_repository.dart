@@ -142,10 +142,10 @@ abstract class AdminRepository {
   // Analytics
   Future<Either<Failure, List<AnalyticsData>>> getAnalyticsData(AnalyticsRequest request);
 
-  Future<Either<Failure, List<ReportData>> generateReport(ReportRequest request);
+  Future<Either<Failure, List<ReportData>>> generateReport(ReportRequest request);
 
   // Activity Logging
-  Future<Either<Failure, List<AdminActivity>> getAdminActivities({
+  Future<Either<Failure, List<AdminActivity>>> getAdminActivities({
     String? adminId,
     DateTime? startDate,
     DateTime? endDate,

@@ -150,9 +150,6 @@ class MessagesTab extends StatelessWidget {
         type: ButtonType.outline,
       ),
     );
-        ],
-      ),
-    );
   }
 
   Widget _buildStatItem({

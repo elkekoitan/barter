@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as gmaps;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_dimensions.dart';
@@ -10,7 +10,7 @@ class MapWidget extends StatefulWidget {
   final Set<MapMarker> markers;
   final Set<MapPolyline> polylines;
   final Set<MapPolygon> polygons;
-  final MapType mapType;
+  final gmaps.MapType mapType;
   final bool showUserLocation;
   final bool showTraffic;
   final bool showBuildings;
@@ -27,7 +27,7 @@ class MapWidget extends StatefulWidget {
     this.markers = const {},
     this.polylines = const {},
     this.polygons = const {},
-    this.mapType = MapType.normal,
+    this.mapType = gmaps.MapType.normal,
     this.showUserLocation = true,
     this.showTraffic = false,
     this.showBuildings = true,
@@ -218,14 +218,14 @@ class _MapWidgetState extends State<MapWidget> {
 
   MapType _getMapType(MapType type) {
     switch (type) {
-      case MapType.satellite:
-        return MapType.satellite;
-      case MapType.terrain:
-        return MapType.terrain;
-      case MapType.hybrid:
-        return MapType.hybrid;
+      case gmaps.MapType.satellite:
+        return gmaps.MapType.satellite;
+      case gmaps.MapType.terrain:
+        return gmaps.MapType.terrain;
+      case gmaps.MapType.hybrid:
+        return gmaps.MapType.hybrid;
       default:
-        return MapType.normal;
+        return gmaps.MapType.normal;
     }
   }
 

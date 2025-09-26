@@ -1,7 +1,9 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_dimensions.dart';
+import 'package:easy_localization/easy_localization.dart';
+import '../../core/localization/string_extensions.dart';
 
 class StepProgressIndicator extends StatelessWidget {
   final int currentStep;
@@ -130,12 +132,12 @@ class StepProgressIndicator extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildStepTitle(1, 'category'.tr(), currentStep >= 1),
-              _buildStepTitle(2, 'details'.tr(), currentStep >= 2),
-              _buildStepTitle(3, 'media'.tr(), currentStep >= 3),
-              _buildStepTitle(4, 'pricing'.tr(), currentStep >= 4),
-              _buildStepTitle(5, 'delivery'.tr(), currentStep >= 5),
-              _buildStepTitle(6, 'review'.tr(), currentStep >= 6),
+              _buildStepTitle(1, 'category'.translate, currentStep >= 1),
+              _buildStepTitle(2, 'details'.translate, currentStep >= 2),
+              _buildStepTitle(3, 'media'.translate, currentStep >= 3),
+              _buildStepTitle(4, 'pricing'.translate, currentStep >= 4),
+              _buildStepTitle(5, 'delivery'.translate, currentStep >= 5),
+              _buildStepTitle(6, 'review'.translate, currentStep >= 6),
             ],
           ),
         ],

@@ -26,6 +26,12 @@
       "languageVersion": "3.3"
     },
     {
+      "name": "animate_do",
+      "rootUri": "file:///C:/Users/qw/AppData/Local/Pub/Cache/hosted/pub.dev/animate_do-3.3.9",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
       "name": "archive",
       "rootUri": "file:///C:/Users/qw/AppData/Local/Pub/Cache/hosted/pub.dev/archive-4.0.7",
       "packageUri": "lib/",
@@ -453,9 +459,27 @@
     },
     {
       "name": "flutter_lints",
-      "rootUri": "file:///C:/Users/qw/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_lints-3.0.2",
+      "rootUri": "file:///C:/Users/qw/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_lints-6.0.0",
       "packageUri": "lib/",
-      "languageVersion": "3.1"
+      "languageVersion": "3.8"
+    },
+    {
+      "name": "flutter_local_notifications",
+      "rootUri": "file:///C:/Users/qw/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_local_notifications-17.2.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "flutter_local_notifications_linux",
+      "rootUri": "file:///C:/Users/qw/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_local_notifications_linux-4.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "flutter_local_notifications_platform_interface",
+      "rootUri": "file:///C:/Users/qw/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_local_notifications_platform_interface-7.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
     },
     {
       "name": "flutter_localizations",
@@ -510,6 +534,12 @@
       "rootUri": "file:///C:/Users/qw/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_secure_storage_windows-3.1.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter_slidable",
+      "rootUri": "file:///C:/Users/qw/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_slidable-3.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
     },
     {
       "name": "flutter_svg",
@@ -813,9 +843,9 @@
     },
     {
       "name": "lints",
-      "rootUri": "file:///C:/Users/qw/AppData/Local/Pub/Cache/hosted/pub.dev/lints-3.0.0",
+      "rootUri": "file:///C:/Users/qw/AppData/Local/Pub/Cache/hosted/pub.dev/lints-6.0.0",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "3.8"
     },
     {
       "name": "logging",
@@ -1260,6 +1290,12 @@
       "rootUri": "file:///C:/Users/qw/AppData/Local/Pub/Cache/hosted/pub.dev/test_core-0.6.8",
       "packageUri": "lib/",
       "languageVersion": "3.5"
+    },
+    {
+      "name": "timezone",
+      "rootUri": "file:///C:/Users/qw/AppData/Local/Pub/Cache/hosted/pub.dev/timezone-0.9.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
     },
     {
       "name": "timing",

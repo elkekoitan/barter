@@ -1,13 +1,14 @@
+import '../datasources/local/notification_local_datasource.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import '../../domain/entities/notification.dart';
 import '../../domain/repositories/notification_repository.dart';
 import '../../core/errors/failures.dart';
-import '../datasources/local/notification_local_datasource.dart';
 import '../datasources/remote/notification_remote_datasource.dart';
 import '../datasources/remote/push_notification_remote_datasource.dart';
 
 class NotificationRepositoryImpl implements NotificationRepository {
+
   final NotificationLocalDataSource _localDataSource;
   final NotificationRemoteDataSource _remoteDataSource;
   final PushNotificationRemoteDataSource _pushDataSource;
@@ -46,15 +47,7 @@ class NotificationRepositoryImpl implements NotificationRepository {
         page: page,
         limit: limit,
       );
-
-      return remoteNotifications.fold(
-        (failure) => Left(failure),
-        (notifications) async {
-          // Cache the notifications
-          await _localDataSource.cacheNotifications(notifications);
-          return Right(notifications);
-        },
-      );
+      return remoteNotifications;
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }

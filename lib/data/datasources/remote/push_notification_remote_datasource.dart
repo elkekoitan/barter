@@ -3,6 +3,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../../../core/errors/failures.dart';
 import '../../../domain/repositories/notification_repository.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:flutter/material.dart';
 
 abstract class PushNotificationRemoteDataSource {
   Future<Either<Failure, void>> requestPermission();
@@ -304,6 +306,3 @@ extension DateTimeExtension on DateTime {
   }
 }
 
-// Import timezone package for scheduling
-import 'package:timezone/timezone.dart' as tz;
-import 'package:flutter/material.dart';

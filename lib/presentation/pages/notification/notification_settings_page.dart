@@ -6,6 +6,9 @@ import '../../../core/constants/app_dimensions.dart';
 import '../../blocs/notification/notification_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../widgets/custom_button.dart';
+import '../../domain/entities/notification_settings.dart';
+import '../../domain/entities/notification_type.dart';
+import '../../domain/entities/notification_category_settings.dart';
 
 class NotificationSettingsPage extends StatefulWidget {
   const NotificationSettingsPage({super.key});

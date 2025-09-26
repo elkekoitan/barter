@@ -1,4 +1,4 @@
-import 'package:dartz/dartz.dart';
+﻿import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../repositories/auth_repository.dart';
 import '../../../core/errors/failures.dart';
@@ -241,93 +241,4 @@ class UpdateSocialLoginSettingsUseCase {
   }
 }
 
-class SocialLoginSettings {
-  final bool enableGoogleLogin;
-  final bool enableFacebookLogin;
-  final bool enableAppleLogin;
-  final bool requireEmailVerification;
-  final bool allowAccountLinking;
-  final List<String> allowedDomains;
-  final Map<String, dynamic> customSettings;
 
-  const SocialLoginSettings({
-    this.enableGoogleLogin = true,
-    this.enableFacebookLogin = true,
-    this.enableAppleLogin = false, // iOS only by default
-    this.requireEmailVerification = true,
-    this.allowAccountLinking = true,
-    this.allowedDomains = const [],
-    this.customSettings = const {},
-  });
-
-  SocialLoginSettings copyWith({
-    bool? enableGoogleLogin,
-    bool? enableFacebookLogin,
-    bool? enableAppleLogin,
-    bool? requireEmailVerification,
-    bool? allowAccountLinking,
-    List<String>? allowedDomains,
-    Map<String, dynamic>? customSettings,
-  }) {
-    return SocialLoginSettings(
-      enableGoogleLogin: enableGoogleLogin ?? this.enableGoogleLogin,
-      enableFacebookLogin: enableFacebookLogin ?? this.enableFacebookLogin,
-      enableAppleLogin: enableAppleLogin ?? this.enableAppleLogin,
-      requireEmailVerification: requireEmailVerification ?? this.requireEmailVerification,
-      allowAccountLinking: allowAccountLinking ?? this.allowAccountLinking,
-      allowedDomains: allowedDomains ?? this.allowedDomains,
-      customSettings: customSettings ?? this.customSettings,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'enableGoogleLogin': enableGoogleLogin,
-      'enableFacebookLogin': enableFacebookLogin,
-      'enableAppleLogin': enableAppleLogin,
-      'requireEmailVerification': requireEmailVerification,
-      'allowAccountLinking': allowAccountLinking,
-      'allowedDomains': allowedDomains,
-      'customSettings': customSettings,
-    };
-  }
-
-  factory SocialLoginSettings.fromJson(Map<String, dynamic> json) {
-    return SocialLoginSettings(
-      enableGoogleLogin: json['enableGoogleLogin'] ?? true,
-      enableFacebookLogin: json['enableFacebookLogin'] ?? true,
-      enableAppleLogin: json['enableAppleLogin'] ?? false,
-      requireEmailVerification: json['requireEmailVerification'] ?? true,
-      allowAccountLinking: json['allowAccountLinking'] ?? true,
-      allowedDomains: List<String>.from(json['allowedDomains'] ?? []),
-      customSettings: Map<String, dynamic>.from(json['customSettings'] ?? {}),
-    );
-  }
-
-  bool isProviderEnabled(String providerId) {
-    switch (providerId) {
-      case 'google.com':
-        return enableGoogleLogin;
-      case 'facebook.com':
-        return enableFacebookLogin;
-      case 'apple.com':
-        return enableAppleLogin;
-      default:
-        return false;
-    }
-  }
-
-  List<String> getEnabledProviders() {
-    final providers = <String>[];
-    if (enableGoogleLogin) providers.add('google.com');
-    if (enableFacebookLogin) providers.add('facebook.com');
-    if (enableAppleLogin) providers.add('apple.com');
-    return providers;
-  }
-
-  bool isDomainAllowed(String email) {
-    if (allowedDomains.isEmpty) return true;
-    final domain = email.split('@').last.toLowerCase();
-    return allowedDomains.contains(domain);
-  }
-}

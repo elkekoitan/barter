@@ -8,8 +8,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-part 'injection_container.config.dart';
-
 import 'core/network/api_client.dart';
 import 'core/services/push_notification_service.dart';
 import 'core/network/interceptors/auth_interceptor.dart';
@@ -19,6 +17,7 @@ import 'core/network/network_info.dart';
 
 import 'data/datasources/local/auth_local_datasource.dart';
 import 'data/datasources/local/cache_manager.dart';
+import 'data/datasources/local/notification_local_datasource.dart';
 import 'data/datasources/remote/auth_remote_datasource.dart';
 import 'data/datasources/remote/user_remote_datasource.dart';
 import 'data/datasources/remote/listing_remote_datasource.dart';
@@ -89,6 +88,8 @@ import 'presentation/blocs/localization/localization_bloc.dart';
 import 'presentation/blocs/notification/notification_bloc.dart';
 import 'presentation/blocs/chat/chat_bloc.dart';
 
+part 'injection_container.config.dart';
+
 final getIt = GetIt.instance;
 
 @injectableInit
@@ -101,17 +102,22 @@ abstract class RegisterModule {
   // Core
   @lazySingleton
   Dio get dio => Dio(BaseOptions(
-        baseUrl: const String.fromEnvironment('API_BASE_URL', defaultValue: 'https://api.bogazicibarter.com/v1'),
-        connectTimeout: const Duration(milliseconds: int.fromEnvironment('API_TIMEOUT', defaultValue: 30000)),
-        receiveTimeout: const Duration(milliseconds: int.fromEnvironment('API_TIMEOUT', defaultValue: 30000)),
+        baseUrl: const String.fromEnvironment('API_BASE_URL',
+            defaultValue: 'https://api.bogazicibarter.com/v1'),
+        connectTimeout: const Duration(
+            milliseconds:
+                int.fromEnvironment('API_TIMEOUT', defaultValue: 30000)),
+        receiveTimeout: const Duration(
+            milliseconds:
+                int.fromEnvironment('API_TIMEOUT', defaultValue: 30000)),
       ))
-    ..interceptors.addAll([
-      AuthInterceptor(getIt()),
-      LoggingInterceptor(),
-      ErrorInterceptor(),
-    ]);
+        ..interceptors.addAll([
+          AuthInterceptor(getIt<FlutterSecureStorage>()),
+          LoggingInterceptor(),
+          ErrorInterceptor(),
+        ]);
 
-  @lazySingleton
+  @preResolve
   Future<SharedPreferences> get prefs async => SharedPreferences.getInstance();
 
   @lazySingleton
@@ -121,403 +127,533 @@ abstract class RegisterModule {
   Connectivity get connectivity => Connectivity();
 
   @lazySingleton
-  NetworkInfo get networkInfo => NetworkInfoImpl(getIt());
+  FirebaseMessaging get firebaseMessaging => FirebaseMessaging.instance;
+
+  @lazySingleton
+  FlutterLocalNotificationsPlugin get localNotificationsPlugin =>
+      FlutterLocalNotificationsPlugin();
+
+  @lazySingleton
+  NetworkInfo get networkInfo => NetworkInfoImpl(getIt<Connectivity>());
 
   // API Client
   @lazySingleton
-  ApiClient get apiClient => ApiClient(getIt());
+  ApiClient get apiClient => ApiClient(getIt<Dio>());
 
   // Data Sources
   @lazySingleton
-  AuthLocalDataSource get authLocalDataSource => AuthLocalDataSource(getIt(), getIt());
+  AuthLocalDataSource get authLocalDataSource => AuthLocalDataSourceImpl(
+      getIt<FlutterSecureStorage>(), getIt<SharedPreferences>());
 
   @lazySingleton
-  AuthRemoteDataSource get authRemoteDataSource => AuthRemoteDataSource(getIt());
+  AuthRemoteDataSource get authRemoteDataSource =>
+      AuthRemoteDataSourceImpl(getIt<ApiClient>());
 
   @lazySingleton
-  UserRemoteDataSource get userRemoteDataSource => UserRemoteDataSource(getIt());
+  UserRemoteDataSource get userRemoteDataSource =>
+      UserRemoteDataSourceImpl(getIt<ApiClient>());
 
   @lazySingleton
-  ListingRemoteDataSource get listingRemoteDataSource => ListingRemoteDataSource(getIt());
+  ListingRemoteDataSource get listingRemoteDataSource =>
+      ListingRemoteDataSourceImpl(getIt<ApiClient>());
 
   @lazySingleton
-  BarterRemoteDataSource get barterRemoteDataSource => BarterRemoteDataSource(getIt());
+  BarterRemoteDataSource get barterRemoteDataSource =>
+      BarterRemoteDataSourceImpl(getIt<ApiClient>());
 
   @lazySingleton
-  PaymentRemoteDataSource get paymentRemoteDataSource => PaymentRemoteDataSource(getIt());
+  PaymentRemoteDataSource get paymentRemoteDataSource =>
+      PaymentRemoteDataSourceImpl(getIt<ApiClient>());
 
-      @lazySingleton
-      CacheManager get cacheManager => CacheManager(getIt());
+  @lazySingleton
+  CacheManager get cacheManager => CacheManagerImpl(getIt<SharedPreferences>());
 
-      // Push Notification Data Sources
-      @lazySingleton
-      PushNotificationRemoteDataSource get pushNotificationRemoteDataSource =>
-          PushNotificationRemoteDataSourceImpl(
-            firebaseMessaging: getIt(),
-            localNotifications: getIt(),
-          );
+  @lazySingleton
+  NotificationLocalDataSource get notificationLocalDataSource =>
+      NotificationLocalDataSource();
 
-      // Map Data Sources
-      @lazySingleton
-      MapRemoteDataSource get mapRemoteDataSource => MapRemoteDataSourceImpl(
-        googleMapsApiKey: const String.fromEnvironment('GOOGLE_MAPS_API_KEY', defaultValue: 'YOUR_API_KEY'),
+  // Push Notification Data Sources
+  @lazySingleton
+  PushNotificationRemoteDataSource get pushNotificationRemoteDataSource =>
+      PushNotificationRemoteDataSourceImpl(
+        firebaseMessaging: getIt<FirebaseMessaging>(),
+        localNotifications: getIt<FlutterLocalNotificationsPlugin>(),
       );
 
-      // Help Data Sources
-      @lazySingleton
-      HelpRemoteDataSource get helpRemoteDataSource => HelpRemoteDataSourceImpl(
-        baseUrl: const String.fromEnvironment('API_BASE_URL', defaultValue: 'https://api.bogazicibarter.com/v1'),
+  // Map Data Sources
+  @lazySingleton
+  MapRemoteDataSource get mapRemoteDataSource => MapRemoteDataSourceImpl(
+        googleMapsApiKey: const String.fromEnvironment('GOOGLE_MAPS_API_KEY',
+            defaultValue: 'YOUR_API_KEY'),
+      );
+
+  // Help Data Sources
+  @lazySingleton
+  HelpRemoteDataSource get helpRemoteDataSource => HelpRemoteDataSourceImpl(
+        baseUrl: const String.fromEnvironment('API_BASE_URL',
+            defaultValue: 'https://api.bogazicibarter.com/v1'),
       );
 
   // Repositories
   @lazySingleton
-  AuthRepository get authRepository => AuthRepositoryImpl(getIt(), getIt(), getIt());
+  AuthRepository get authRepository => AuthRepositoryImpl(
+      getIt<ApiClient>(),
+      getIt<AuthLocalDataSource>(),
+      getIt<AuthRemoteDataSource>(),
+      getIt<FlutterSecureStorage>(),
+      getIt<SharedPreferences>());
 
   @lazySingleton
-  UserRepository get userRepository => UserRepositoryImpl(getIt(), getIt());
+  UserRepository get userRepository => UserRepositoryImpl(
+      getIt<UserRemoteDataSource>(),
+      getIt<AuthLocalDataSource>(),
+      getIt<NetworkInfo>());
 
   @lazySingleton
-  ListingRepository get listingRepository => ListingRepositoryImpl(getIt(), getIt());
+  ListingRepository get listingRepository => ListingRepositoryImpl(
+      getIt<ListingRemoteDataSource>(), getIt<NetworkInfo>());
 
   @lazySingleton
-  BarterRepository get barterRepository => BarterRepositoryImpl(getIt(), getIt());
+  BarterRepository get barterRepository => BarterRepositoryImpl(
+      getIt<BarterRemoteDataSource>(), getIt<NetworkInfo>());
 
   @lazySingleton
-  PaymentRepository get paymentRepository => PaymentRepositoryImpl(getIt(), getIt());
+  PaymentRepository get paymentRepository => PaymentRepositoryImpl(
+      getIt<ApiClient>(), getIt<PaymentRemoteDataSource>());
 
-      @lazySingleton
-      LocalizationRepository get localizationRepository => LocalizationRepositoryImpl(getIt());
+  @lazySingleton
+  LocalizationRepository get localizationRepository =>
+      LocalizationRepositoryImpl(getIt<SharedPreferences>());
 
-      @lazySingleton
-      NotificationRepository get notificationRepository => NotificationRepositoryImpl(getIt(), getIt(), getIt());
+  @lazySingleton
+  NotificationRepository get notificationRepository =>
+      NotificationRepositoryImpl(
+          getIt<NotificationLocalDataSource>(),
+          getIt<NotificationRemoteDataSource>(),
+          getIt<PushNotificationRemoteDataSource>());
 
-      @lazySingleton
-      ChatRepository get chatRepository => ChatRepositoryImpl(getIt(), getIt());
+  @lazySingleton
+  ChatRepository get chatRepository => ChatRepositoryImpl(
+      getIt<AuthRemoteDataSource>(),
+      getIt<AuthLocalDataSource>(),
+      getIt<NetworkInfo>());
 
-      @lazySingleton
-      MapRepository get mapRepository => MapRepositoryImpl(getIt());
+  @lazySingleton
+  MapRepository get mapRepository =>
+      MapRepositoryImpl(getIt<MapRemoteDataSource>());
 
-      @lazySingleton
-      HelpRepository get helpRepository => HelpRepositoryImpl(getIt());
+  @lazySingleton
+  HelpRepository get helpRepository =>
+      HelpRepositoryImpl(getIt<HelpRemoteDataSource>());
 
   // Use Cases
   @lazySingleton
-  LoginUseCase get loginUseCase => LoginUseCase(getIt(), getIt());
+  LoginUseCase get loginUseCase =>
+      LoginUseCase(getIt<AuthRepository>(), getIt<NetworkInfo>());
 
   @lazySingleton
-  RegisterUseCase get registerUseCase => RegisterUseCase(getIt(), getIt());
+  RegisterUseCase get registerUseCase =>
+      RegisterUseCase(getIt<AuthRepository>(), getIt<NetworkInfo>());
 
   @lazySingleton
-  LogoutUseCase get logoutUseCase => LogoutUseCase(getIt());
+  LogoutUseCase get logoutUseCase => LogoutUseCase(getIt<AuthRepository>());
 
   @lazySingleton
-  VerifyOtpUseCase get verifyOtpUseCase => VerifyOtpUseCase(getIt(), getIt());
+  VerifyOtpUseCase get verifyOtpUseCase =>
+      VerifyOtpUseCase(getIt<AuthRepository>(), getIt<NetworkInfo>());
 
   @lazySingleton
-  CreateListingUseCase get createListingUseCase => CreateListingUseCase(getIt());
+  CreateListingUseCase get createListingUseCase =>
+      CreateListingUseCase(getIt<ListingRepository>());
 
   @lazySingleton
-  GetListingsUseCase get getListingsUseCase => GetListingsUseCase(getIt());
+  GetListingsUseCase get getListingsUseCase =>
+      GetListingsUseCase(getIt<ListingRepository>());
 
   @lazySingleton
-  UpdateListingUseCase get updateListingUseCase => UpdateListingUseCase(getIt());
+  UpdateListingUseCase get updateListingUseCase =>
+      UpdateListingUseCase(getIt<ListingRepository>());
 
   @lazySingleton
-  DeleteListingUseCase get deleteListingUseCase => DeleteListingUseCase(getIt());
+  DeleteListingUseCase get deleteListingUseCase =>
+      DeleteListingUseCase(getIt<ListingRepository>());
 
   @lazySingleton
-  CreateOfferUseCase get createOfferUseCase => CreateOfferUseCase(getIt());
+  CreateOfferUseCase get createOfferUseCase =>
+      CreateOfferUseCase(getIt<BarterRepository>());
 
   @lazySingleton
-  AcceptOfferUseCase get acceptOfferUseCase => AcceptOfferUseCase(getIt());
+  AcceptOfferUseCase get acceptOfferUseCase =>
+      AcceptOfferUseCase(getIt<BarterRepository>());
 
   @lazySingleton
-  RejectOfferUseCase get rejectOfferUseCase => RejectOfferUseCase(getIt());
+  RejectOfferUseCase get rejectOfferUseCase =>
+      RejectOfferUseCase(getIt<BarterRepository>());
 
   @lazySingleton
-  CompleteBarterUseCase get completeBarterUseCase => CompleteBarterUseCase(getIt());
+  CompleteBarterUseCase get completeBarterUseCase =>
+      CompleteBarterUseCase(getIt<BarterRepository>());
 
   @lazySingleton
-  ProcessPaymentUseCase get processPaymentUseCase => ProcessPaymentUseCase(getIt());
+  ProcessPaymentUsecase get processPaymentUsecase =>
+      ProcessPaymentUsecase(getIt<PaymentRepository>());
 
   @lazySingleton
-  CreateEscrowUseCase get createEscrowUseCase => CreateEscrowUseCase(getIt());
+  CreateEscrowUseCase get createEscrowUseCase =>
+      CreateEscrowUseCase(getIt<PaymentRepository>());
 
   @lazySingleton
-  ReleaseEscrowUseCase get releaseEscrowUseCase => ReleaseEscrowUseCase(getIt());
+  ReleaseEscrowUseCase get releaseEscrowUseCase =>
+      ReleaseEscrowUseCase(getIt<PaymentRepository>());
 
   @lazySingleton
-  RefundPaymentUseCase get refundPaymentUseCase => RefundPaymentUseCase(getIt());
+  RefundPaymentUseCase get refundPaymentUseCase =>
+      RefundPaymentUseCase(getIt<PaymentRepository>());
+
+  @lazySingleton
+  GetLocalizedStringUseCase get getLocalizedStringUseCase =>
+      GetLocalizedStringUseCase(getIt<LocalizationRepository>());
+
+  @lazySingleton
+  GetNotificationsUseCase get getNotificationsUseCase =>
+      GetNotificationsUseCase(getIt<NotificationRepository>());
+
+  @lazySingleton
+  MarkAsReadUseCase get markAsReadUseCase =>
+      MarkAsReadUseCase(getIt<NotificationRepository>());
+
+  @lazySingleton
+  MarkAllAsReadUseCase get markAllAsReadUseCase =>
+      MarkAllAsReadUseCase(getIt<NotificationRepository>());
+
+  @lazySingleton
+  UpdateNotificationSettingsUseCase get updateNotificationSettingsUseCase =>
+      UpdateNotificationSettingsUseCase(getIt<NotificationRepository>());
+
+  // Push Notification Use Cases
+  @lazySingleton
+  RequestNotificationPermissionUseCase
+      get requestNotificationPermissionUseCase =>
+          RequestNotificationPermissionUseCase(getIt<NotificationRepository>());
+
+  @lazySingleton
+  CheckNotificationPermissionUseCase get checkNotificationPermissionUseCase =>
+      CheckNotificationPermissionUseCase(getIt<NotificationRepository>());
+
+  @lazySingleton
+  GetDeviceTokenUseCase get getDeviceTokenUseCase =>
+      GetDeviceTokenUseCase(getIt<NotificationRepository>());
+
+  @lazySingleton
+  SubscribeToTopicUseCase get subscribeToTopicUseCase =>
+      SubscribeToTopicUseCase(getIt<NotificationRepository>());
+
+  @lazySingleton
+  UnsubscribeFromTopicUseCase get unsubscribeFromTopicUseCase =>
+      UnsubscribeFromTopicUseCase(getIt<NotificationRepository>());
+
+  @lazySingleton
+  SendPushNotificationUseCase get sendPushNotificationUseCase =>
+      SendPushNotificationUseCase(getIt<NotificationRepository>());
+
+  @lazySingleton
+  SchedulePushNotificationUseCase get schedulePushNotificationUseCase =>
+      SchedulePushNotificationUseCase(getIt<NotificationRepository>());
+
+  @lazySingleton
+  CancelScheduledPushNotificationUseCase
+      get cancelScheduledPushNotificationUseCase =>
+          CancelScheduledPushNotificationUseCase(
+              getIt<NotificationRepository>());
+
+  @lazySingleton
+  GetSubscribedTopicsUseCase get getSubscribedTopicsUseCase =>
+      GetSubscribedTopicsUseCase(getIt<NotificationRepository>());
+
+  @lazySingleton
+  HandleBackgroundMessageUseCase get handleBackgroundMessageUseCase =>
+      HandleBackgroundMessageUseCase(getIt<NotificationRepository>());
+
+  @lazySingleton
+  UpdatePushTokenUseCase get updatePushTokenUseCase =>
+      UpdatePushTokenUseCase(getIt<NotificationRepository>());
+
+  @lazySingleton
+  RemovePushTokenUseCase get removePushTokenUseCase =>
+      RemovePushTokenUseCase(getIt<NotificationRepository>());
+
+  @lazySingleton
+  InitializePushNotificationsUseCase get initializePushNotificationsUseCase =>
+      InitializePushNotificationsUseCase(getIt<NotificationRepository>());
+
+  // Map Use Cases
+  @lazySingleton
+  GetCurrentLocationUseCase get getCurrentLocationUseCase =>
+      GetCurrentLocationUseCase(getIt<MapRepository>());
+
+  @lazySingleton
+  SearchPlacesUseCase get searchPlacesUseCase =>
+      SearchPlacesUseCase(getIt<MapRepository>());
+
+  @lazySingleton
+  GetNearbyPlacesUseCase get getNearbyPlacesUseCase =>
+      GetNearbyPlacesUseCase(getIt<MapRepository>());
+
+  @lazySingleton
+  GetRouteUseCase get getRouteUseCase =>
+      GetRouteUseCase(getIt<MapRepository>());
+
+  @lazySingleton
+  CalculateDistanceUseCase get calculateDistanceUseCase =>
+      CalculateDistanceUseCase(getIt<MapRepository>());
+
+  @lazySingleton
+  GeocodeAddressUseCase get geocodeAddressUseCase =>
+      GeocodeAddressUseCase(getIt<MapRepository>());
+
+  @lazySingleton
+  ReverseGeocodeUseCase get reverseGeocodeUseCase =>
+      ReverseGeocodeUseCase(getIt<MapRepository>());
+
+  @lazySingleton
+  SaveLocationUseCase get saveLocationUseCase =>
+      SaveLocationUseCase(getIt<MapRepository>());
+
+  @lazySingleton
+  GetSavedLocationsUseCase get getSavedLocationsUseCase =>
+      GetSavedLocationsUseCase(getIt<MapRepository>());
+
+  @lazySingleton
+  SearchMapUseCase get searchMapUseCase =>
+      SearchMapUseCase(getIt<MapRepository>());
+
+  @lazySingleton
+  GetMapMarkersUseCase get getMapMarkersUseCase =>
+      GetMapMarkersUseCase(getIt<MapRepository>());
+
+  @lazySingleton
+  UpdateUserLocationUseCase get updateUserLocationUseCase =>
+      UpdateUserLocationUseCase(getIt<MapRepository>());
+
+  @lazySingleton
+  EnableLocationSharingUseCase get enableLocationSharingUseCase =>
+      EnableLocationSharingUseCase(getIt<MapRepository>());
+
+  @lazySingleton
+  GetNearbyUsersUseCase get getNearbyUsersUseCase =>
+      GetNearbyUsersUseCase(getIt<MapRepository>());
+
+  @lazySingleton
+  OpenInMapsUseCase get openInMapsUseCase =>
+      OpenInMapsUseCase(getIt<MapRepository>());
+
+  @lazySingleton
+  GetMapDataUseCase get getMapDataUseCase =>
+      GetMapDataUseCase(getIt<MapRepository>());
+
+  @lazySingleton
+  CheckLocationPermissionUseCase get checkLocationPermissionUseCase =>
+      CheckLocationPermissionUseCase(getIt<MapRepository>());
+
+  @lazySingleton
+  RequestLocationPermissionUseCase get requestLocationPermissionUseCase =>
+      RequestLocationPermissionUseCase(getIt<MapRepository>());
+
+  // Help Use Cases
+  @lazySingleton
+  GetArticlesUseCase get getArticlesUseCase =>
+      GetArticlesUseCase(getIt<HelpRepository>());
 
-      @lazySingleton
-      GetLocalizedStringUseCase get getLocalizedStringUseCase => GetLocalizedStringUseCase(getIt());
+  @lazySingleton
+  GetArticleByIdUseCase get getArticleByIdUseCase =>
+      GetArticleByIdUseCase(getIt<HelpRepository>());
 
-      @lazySingleton
-      GetNotificationsUseCase get getNotificationsUseCase => GetNotificationsUseCase(getIt());
+  @lazySingleton
+  CreateArticleUseCase get createArticleUseCase =>
+      CreateArticleUseCase(getIt<HelpRepository>());
 
-      @lazySingleton
-      MarkAsReadUseCase get markAsReadUseCase => MarkAsReadUseCase(getIt());
+  @lazySingleton
+  UpdateArticleUseCase get updateArticleUseCase =>
+      UpdateArticleUseCase(getIt<HelpRepository>());
 
-      @lazySingleton
-      MarkAllAsReadUseCase get markAllAsReadUseCase => MarkAllAsReadUseCase(getIt());
+  @lazySingleton
+  DeleteArticleUseCase get deleteArticleUseCase =>
+      DeleteArticleUseCase(getIt<HelpRepository>());
 
-      @lazySingleton
-      UpdateNotificationSettingsUseCase get updateNotificationSettingsUseCase => UpdateNotificationSettingsUseCase(getIt());
+  @lazySingleton
+  SearchArticlesUseCase get searchArticlesUseCase =>
+      SearchArticlesUseCase(getIt<HelpRepository>());
 
-      // Push Notification Use Cases
-      @lazySingleton
-      RequestNotificationPermissionUseCase get requestNotificationPermissionUseCase => RequestNotificationPermissionUseCase(getIt());
+  @lazySingleton
+  GetCategoriesUseCase get getCategoriesUseCase =>
+      GetCategoriesUseCase(getIt<HelpRepository>());
 
-      @lazySingleton
-      CheckNotificationPermissionUseCase get checkNotificationPermissionUseCase => CheckNotificationPermissionUseCase(getIt());
+  @lazySingleton
+  GetCategoryByIdUseCase get getCategoryByIdUseCase =>
+      GetCategoryByIdUseCase(getIt<HelpRepository>());
 
-      @lazySingleton
-      GetDeviceTokenUseCase get getDeviceTokenUseCase => GetDeviceTokenUseCase(getIt());
+  @lazySingleton
+  GetSubcategoriesUseCase get getSubcategoriesUseCase =>
+      GetSubcategoriesUseCase(getIt<HelpRepository>());
 
-      @lazySingleton
-      SubscribeToTopicUseCase get subscribeToTopicUseCase => SubscribeToTopicUseCase(getIt());
+  @lazySingleton
+  CreateCategoryUseCase get createCategoryUseCase =>
+      CreateCategoryUseCase(getIt<HelpRepository>());
 
-      @lazySingleton
-      UnsubscribeFromTopicUseCase get unsubscribeFromTopicUseCase => UnsubscribeFromTopicUseCase(getIt());
-
-      @lazySingleton
-      SendPushNotificationUseCase get sendPushNotificationUseCase => SendPushNotificationUseCase(getIt());
-
-      @lazySingleton
-      SchedulePushNotificationUseCase get schedulePushNotificationUseCase => SchedulePushNotificationUseCase(getIt());
-
-      @lazySingleton
-      CancelScheduledPushNotificationUseCase get cancelScheduledPushNotificationUseCase => CancelScheduledPushNotificationUseCase(getIt());
-
-      @lazySingleton
-      GetSubscribedTopicsUseCase get getSubscribedTopicsUseCase => GetSubscribedTopicsUseCase(getIt());
-
-      @lazySingleton
-      HandleBackgroundMessageUseCase get handleBackgroundMessageUseCase => HandleBackgroundMessageUseCase(getIt());
-
-      @lazySingleton
-      UpdatePushTokenUseCase get updatePushTokenUseCase => UpdatePushTokenUseCase(getIt());
-
-      @lazySingleton
-      RemovePushTokenUseCase get removePushTokenUseCase => RemovePushTokenUseCase(getIt());
-
-      @lazySingleton
-      InitializePushNotificationsUseCase get initializePushNotificationsUseCase => InitializePushNotificationsUseCase(getIt());
-
-      // Map Use Cases
-      @lazySingleton
-      GetCurrentLocationUseCase get getCurrentLocationUseCase => GetCurrentLocationUseCase(getIt());
-
-      @lazySingleton
-      SearchPlacesUseCase get searchPlacesUseCase => SearchPlacesUseCase(getIt());
-
-      @lazySingleton
-      GetNearbyPlacesUseCase get getNearbyPlacesUseCase => GetNearbyPlacesUseCase(getIt());
-
-      @lazySingleton
-      GetRouteUseCase get getRouteUseCase => GetRouteUseCase(getIt());
-
-      @lazySingleton
-      CalculateDistanceUseCase get calculateDistanceUseCase => CalculateDistanceUseCase(getIt());
-
-      @lazySingleton
-      GeocodeAddressUseCase get geocodeAddressUseCase => GeocodeAddressUseCase(getIt());
-
-      @lazySingleton
-      ReverseGeocodeUseCase get reverseGeocodeUseCase => ReverseGeocodeUseCase(getIt());
-
-      @lazySingleton
-      SaveLocationUseCase get saveLocationUseCase => SaveLocationUseCase(getIt());
-
-      @lazySingleton
-      GetSavedLocationsUseCase get getSavedLocationsUseCase => GetSavedLocationsUseCase(getIt());
-
-      @lazySingleton
-      SearchMapUseCase get searchMapUseCase => SearchMapUseCase(getIt());
-
-      @lazySingleton
-      GetMapMarkersUseCase get getMapMarkersUseCase => GetMapMarkersUseCase(getIt());
-
-      @lazySingleton
-      UpdateUserLocationUseCase get updateUserLocationUseCase => UpdateUserLocationUseCase(getIt());
-
-      @lazySingleton
-      EnableLocationSharingUseCase get enableLocationSharingUseCase => EnableLocationSharingUseCase(getIt());
-
-      @lazySingleton
-      GetNearbyUsersUseCase get getNearbyUsersUseCase => GetNearbyUsersUseCase(getIt());
-
-      @lazySingleton
-      OpenInMapsUseCase get openInMapsUseCase => OpenInMapsUseCase(getIt());
-
-      @lazySingleton
-      GetMapDataUseCase get getMapDataUseCase => GetMapDataUseCase(getIt());
-
-      @lazySingleton
-      CheckLocationPermissionUseCase get checkLocationPermissionUseCase => CheckLocationPermissionUseCase(getIt());
-
-      @lazySingleton
-      RequestLocationPermissionUseCase get requestLocationPermissionUseCase => RequestLocationPermissionUseCase(getIt());
-
-      // Help Use Cases
-      @lazySingleton
-      GetArticlesUseCase get getArticlesUseCase => GetArticlesUseCase(getIt());
-
-      @lazySingleton
-      GetArticleByIdUseCase get getArticleByIdUseCase => GetArticleByIdUseCase(getIt());
-
-      @lazySingleton
-      CreateArticleUseCase get createArticleUseCase => CreateArticleUseCase(getIt());
-
-      @lazySingleton
-      UpdateArticleUseCase get updateArticleUseCase => UpdateArticleUseCase(getIt());
-
-      @lazySingleton
-      DeleteArticleUseCase get deleteArticleUseCase => DeleteArticleUseCase(getIt());
-
-      @lazySingleton
-      SearchArticlesUseCase get searchArticlesUseCase => SearchArticlesUseCase(getIt());
-
-      @lazySingleton
-      GetCategoriesUseCase get getCategoriesUseCase => GetCategoriesUseCase(getIt());
-
-      @lazySingleton
-      GetCategoryByIdUseCase get getCategoryByIdUseCase => GetCategoryByIdUseCase(getIt());
-
-      @lazySingleton
-      GetSubcategoriesUseCase get getSubcategoriesUseCase => GetSubcategoriesUseCase(getIt());
-
-      @lazySingleton
-      CreateCategoryUseCase get createCategoryUseCase => CreateCategoryUseCase(getIt());
-
-      @lazySingleton
-      GetFAQsUseCase get getFAQsUseCase => GetFAQsUseCase(getIt());
-
-      @lazySingleton
-      GetPopularFAQsUseCase get getPopularFAQsUseCase => GetPopularFAQsUseCase(getIt());
-
-      @lazySingleton
-      GetPopularArticlesUseCase get getPopularArticlesUseCase => GetPopularArticlesUseCase(getIt());
-
-      @lazySingleton
-      GetRecentArticlesUseCase get getRecentArticlesUseCase => GetRecentArticlesUseCase(getIt());
-
-      @lazySingleton
-      MarkArticleAsHelpfulUseCase get markArticleAsHelpfulUseCase => MarkArticleAsHelpfulUseCase(getIt());
-
-      @lazySingleton
-      BookmarkArticleUseCase get bookmarkArticleUseCase => BookmarkArticleUseCase(getIt());
-
-      @lazySingleton
-      GetBookmarkedArticlesUseCase get getBookmarkedArticlesUseCase => GetBookmarkedArticlesUseCase(getIt());
-
-      @lazySingleton
-      GetSearchSuggestionsUseCase get getSearchSuggestionsUseCase => GetSearchSuggestionsUseCase(getIt());
-
-      @lazySingleton
-      SaveSearchTermUseCase get saveSearchTermUseCase => SaveSearchTermUseCase(getIt());
-
-      @lazySingleton
-      GetRecentSearchesUseCase get getRecentSearchesUseCase => GetRecentSearchesUseCase(getIt());
-
-      @lazySingleton
-      ClearSearchHistoryUseCase get clearSearchHistoryUseCase => ClearSearchHistoryUseCase(getIt());
-
-      @lazySingleton
-      SubmitHelpFeedbackUseCase get submitHelpFeedbackUseCase => SubmitHelpFeedbackUseCase(getIt());
-
-      @lazySingleton
-      GetHelpStatsUseCase get getHelpStatsUseCase => GetHelpStatsUseCase(getIt());
-
-      @lazySingleton
-      GetRecommendedArticlesUseCase get getRecommendedArticlesUseCase => GetRecommendedArticlesUseCase(getIt());
-
-      @lazySingleton
-      GetRelatedArticlesUseCase get getRelatedArticlesUseCase => GetRelatedArticlesUseCase(getIt());
-
-      @lazySingleton
-      IncrementArticleViewsUseCase get incrementArticleViewsUseCase => IncrementArticleViewsUseCase(getIt());
-
-      @lazySingleton
-      PublishArticleUseCase get publishArticleUseCase => PublishArticleUseCase(getIt());
-
-      @lazySingleton
-      UnpublishArticleUseCase get unpublishArticleUseCase => UnpublishArticleUseCase(getIt());
-
-      @lazySingleton
-      ReorderCategoriesUseCase get reorderCategoriesUseCase => ReorderCategoriesUseCase(getIt());
-
-      @lazySingleton
-      GetArticlesByCategoryUseCase get getArticlesByCategoryUseCase => GetArticlesByCategoryUseCase(getIt());
-
-      @lazySingleton
-      GetArticlesByAuthorUseCase get getArticlesByAuthorUseCase => GetArticlesByAuthorUseCase(getIt());
-
-      @lazySingleton
-      GetUserHelpSettingsUseCase get getUserHelpSettingsUseCase => GetUserHelpSettingsUseCase(getIt());
-
-      @lazySingleton
-      UpdateUserHelpSettingsUseCase get updateUserHelpSettingsUseCase => UpdateUserHelpSettingsUseCase(getIt());
-
-      @lazySingleton
-      GetChatsUseCase get getChatsUseCase => GetChatsUseCase(getIt());
-
-      @lazySingleton
-      SendMessageUseCase get sendMessageUseCase => SendMessageUseCase(getIt());
-
-      @lazySingleton
-      CreateChatUseCase get createChatUseCase => CreateChatUseCase(getIt());
+  @lazySingleton
+  GetFAQsUseCase get getFAQsUseCase => GetFAQsUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  GetPopularFAQsUseCase get getPopularFAQsUseCase =>
+      GetPopularFAQsUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  GetPopularArticlesUseCase get getPopularArticlesUseCase =>
+      GetPopularArticlesUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  GetRecentArticlesUseCase get getRecentArticlesUseCase =>
+      GetRecentArticlesUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  MarkArticleAsHelpfulUseCase get markArticleAsHelpfulUseCase =>
+      MarkArticleAsHelpfulUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  BookmarkArticleUseCase get bookmarkArticleUseCase =>
+      BookmarkArticleUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  GetBookmarkedArticlesUseCase get getBookmarkedArticlesUseCase =>
+      GetBookmarkedArticlesUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  GetSearchSuggestionsUseCase get getSearchSuggestionsUseCase =>
+      GetSearchSuggestionsUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  SaveSearchTermUseCase get saveSearchTermUseCase =>
+      SaveSearchTermUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  GetRecentSearchesUseCase get getRecentSearchesUseCase =>
+      GetRecentSearchesUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  ClearSearchHistoryUseCase get clearSearchHistoryUseCase =>
+      ClearSearchHistoryUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  SubmitHelpFeedbackUseCase get submitHelpFeedbackUseCase =>
+      SubmitHelpFeedbackUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  GetHelpStatsUseCase get getHelpStatsUseCase =>
+      GetHelpStatsUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  GetRecommendedArticlesUseCase get getRecommendedArticlesUseCase =>
+      GetRecommendedArticlesUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  GetRelatedArticlesUseCase get getRelatedArticlesUseCase =>
+      GetRelatedArticlesUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  IncrementArticleViewsUseCase get incrementArticleViewsUseCase =>
+      IncrementArticleViewsUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  PublishArticleUseCase get publishArticleUseCase =>
+      PublishArticleUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  UnpublishArticleUseCase get unpublishArticleUseCase =>
+      UnpublishArticleUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  ReorderCategoriesUseCase get reorderCategoriesUseCase =>
+      ReorderCategoriesUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  GetArticlesByCategoryUseCase get getArticlesByCategoryUseCase =>
+      GetArticlesByCategoryUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  GetArticlesByAuthorUseCase get getArticlesByAuthorUseCase =>
+      GetArticlesByAuthorUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  GetUserHelpSettingsUseCase get getUserHelpSettingsUseCase =>
+      GetUserHelpSettingsUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  UpdateUserHelpSettingsUseCase get updateUserHelpSettingsUseCase =>
+      UpdateUserHelpSettingsUseCase(getIt<HelpRepository>());
+
+  @lazySingleton
+  GetChatsUseCase get getChatsUseCase =>
+      GetChatsUseCase(getIt<ChatRepository>());
+
+  @lazySingleton
+  SendMessageUseCase get sendMessageUseCase =>
+      SendMessageUseCase(getIt<ChatRepository>());
+
+  @lazySingleton
+  CreateChatUseCase get createChatUseCase =>
+      CreateChatUseCase(getIt<ChatRepository>());
 
   // BLoCs
   @lazySingleton
   AuthBloc get authBloc => AuthBloc(
-        loginUseCase: getIt(),
-        registerUseCase: getIt(),
-        logoutUseCase: getIt(),
-        verifyOtpUseCase: getIt(),
+        loginUseCase: getIt<LoginUseCase>(),
+        registerUseCase: getIt<RegisterUseCase>(),
+        logoutUseCase: getIt<LogoutUseCase>(),
+        verifyOtpUseCase: getIt<VerifyOtpUseCase>(),
       );
 
   @lazySingleton
   ListingBloc get listingBloc => ListingBloc(
-        createListingUseCase: getIt(),
-        getListingsUseCase: getIt(),
-        updateListingUseCase: getIt(),
-        deleteListingUseCase: getIt(),
+        createListingUseCase: getIt<CreateListingUseCase>(),
+        getListingsUseCase: getIt<GetListingsUseCase>(),
+        updateListingUseCase: getIt<UpdateListingUseCase>(),
+        deleteListingUseCase: getIt<DeleteListingUseCase>(),
       );
 
   @lazySingleton
   BarterBloc get barterBloc => BarterBloc(
-        createOfferUseCase: getIt(),
-        acceptOfferUseCase: getIt(),
-        rejectOfferUseCase: getIt(),
-        completeBarterUseCase: getIt(),
+        createOfferUseCase: getIt<CreateOfferUseCase>(),
+        acceptOfferUseCase: getIt<AcceptOfferUseCase>(),
+        rejectOfferUseCase: getIt<RejectOfferUseCase>(),
+        completeBarterUseCase: getIt<CompleteBarterUseCase>(),
       );
 
   @lazySingleton
   PaymentBloc get paymentBloc => PaymentBloc(
-        processPaymentUsecase: getIt(),
+        processPaymentUsecase: getIt<ProcessPaymentUsecase>(),
       );
 
-      @lazySingleton
-      LocalizationBloc get localizationBloc => LocalizationBloc(
-            repository: getIt(),
-            getLocalizedStringUseCase: getIt(),
-          );
+  @lazySingleton
+  LocalizationBloc get localizationBloc => LocalizationBloc(
+        repository: getIt<LocalizationRepository>(),
+        getLocalizedStringUseCase: getIt<GetLocalizedStringUseCase>(),
+      );
 
-      @lazySingleton
-      NotificationBloc get notificationBloc => NotificationBloc(
-            getNotificationsUseCase: getIt(),
-            markAsReadUseCase: getIt(),
-            markAllAsReadUseCase: getIt(),
-            updateNotificationSettingsUseCase: getIt(),
-            notificationRepository: getIt(),
-          );
+  @lazySingleton
+  NotificationBloc get notificationBloc => NotificationBloc(
+        getNotificationsUseCase: getIt<GetNotificationsUseCase>(),
+        markAsReadUseCase: getIt<MarkAsReadUseCase>(),
+        markAllAsReadUseCase: getIt<MarkAllAsReadUseCase>(),
+        updateNotificationSettingsUseCase:
+            getIt<UpdateNotificationSettingsUseCase>(),
+        notificationRepository: getIt<NotificationRepository>(),
+      );
 
-      @lazySingleton
-      ChatBloc get chatBloc => ChatBloc(
-            getChatsUseCase: getIt(),
-            sendMessageUseCase: getIt(),
-            createChatUseCase: getIt(),
-            chatRepository: getIt(),
-          );
+  @lazySingleton
+  ChatBloc get chatBloc => ChatBloc(
+        getChatsUseCase: getIt<GetChatsUseCase>(),
+        sendMessageUseCase: getIt<SendMessageUseCase>(),
+        createChatUseCase: getIt<CreateChatUseCase>(),
+        chatRepository: getIt<ChatRepository>(),
+      );
 }

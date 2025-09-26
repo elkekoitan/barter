@@ -1,11 +1,11 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart' as local_notifications;
 import 'package:flutter/material.dart';
 
 class PushNotificationService {
   static final PushNotificationService _instance = PushNotificationService._internal();
   late FirebaseMessaging _firebaseMessaging;
-  late FlutterLocalNotificationsPlugin _localNotifications;
+  late local_notifications.FlutterLocalNotificationsPlugin _localNotifications;
   bool _isInitialized = false;
 
   factory PushNotificationService() {
@@ -22,7 +22,7 @@ class PushNotificationService {
       _firebaseMessaging = FirebaseMessaging.instance;
 
       // Initialize Local Notifications
-      _localNotifications = FlutterLocalNotificationsPlugin();
+      _localNotifications = local_notifications.FlutterLocalNotificationsPlugin();
 
       // Configure notification channels
       await _createNotificationChannels();
@@ -43,11 +43,11 @@ class PushNotificationService {
 
   Future<void> _createNotificationChannels() async {
     // Android notification channels
-    const androidChannel = AndroidNotificationChannel(
+    const androidChannel = local_notifications.AndroidNotificationChannel(
       'barter_channel', // id
       'Barter Notifications', // title
       description: 'Notifications for barter offers and messages', // description
-      importance: Importance.max,
+      importance: local_notifications.Importance.max,
       playSound: true,
       enableVibration: true,
       enableLights: true,
@@ -56,31 +56,31 @@ class PushNotificationService {
 
     // iOS notification categories
     const iosCategories = [
-      DarwinNotificationCategory(
+      local_notifications.DarwinNotificationCategory(
         'barter_offer',
         actions: [
-          DarwinNotificationAction.plain('accept', 'Kabul Et'),
-          DarwinNotificationAction.plain('reject', 'Reddet'),
+          local_notifications.DarwinNotificationAction.plain('accept', 'Kabul Et'),
+          local_notifications.DarwinNotificationAction.plain('reject', 'Reddet'),
         ],
       ),
-      DarwinNotificationCategory(
+      local_notifications.DarwinNotificationCategory(
         'barter_message',
         actions: [
-          DarwinNotificationAction.plain('reply', 'Cevapla'),
+          local_notifications.DarwinNotificationAction.plain('reply', 'Cevapla'),
         ],
       ),
     ];
 
     // Initialize local notifications
-    const initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
-    const initializationSettingsIOS = DarwinInitializationSettings(
+    const initializationSettingsAndroid = local_notifications.AndroidInitializationSettings('@mipmap/ic_launcher');
+    const initializationSettingsIOS = local_notifications.DarwinInitializationSettings(
       requestSoundPermission: true,
       requestBadgePermission: true,
       requestAlertPermission: true,
       onDidReceiveLocalNotification: _onDidReceiveLocalNotification,
       notificationCategories: iosCategories,
     );
-    const initializationSettings = InitializationSettings(
+    const initializationSettings = local_notifications.InitializationSettings(
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,
     );
@@ -92,7 +92,7 @@ class PushNotificationService {
 
     // Create Android notification channel
     await _localNotifications
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        .resolvePlatformSpecificImplementation<local_notifications.AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(androidChannel);
   }
 
@@ -139,12 +139,12 @@ class PushNotificationService {
 
     if (notification == null) return;
 
-    final androidDetails = AndroidNotificationDetails(
+    final androidDetails = local_notifications.AndroidNotificationDetails(
       'barter_channel',
       'Barter Notifications',
       channelDescription: 'Notifications for barter offers and messages',
-      importance: Importance.max,
-      priority: Priority.high,
+      importance: local_notifications.Importance.max,
+      priority: local_notifications.Priority.high,
       ticker: 'ticker',
       icon: android?.smallIcon,
       color: const Color(0xFF2563EB), // App primary color

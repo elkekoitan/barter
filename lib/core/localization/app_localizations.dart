@@ -211,8 +211,8 @@ class AppLocalizations {
 
   // Formatted values
   String get currencySymbol => translate('currency_symbol');
-  String getNumberFormat => translate('number_format.decimal_separator');
-  String getThousandSeparator => translate('number_format.thousand_separator');
+  String get numberFormat => translate('number_format.decimal_separator');
+  String get thousandSeparator => translate('number_format.thousand_separator');
 
   // Enums
   String getBoostTypeDisplayName(BoostType type) {
@@ -270,8 +270,8 @@ class AppLocalizations {
   }
 
   String _formatNumberWithSeparators(double number) {
-    final String decimalSep = getNumberFormat;
-    final String thousandSep = getThousandSeparator;
+    final String decimalSep = '.';
+    final String thousandSep = ',';
 
     final List<String> parts = number.toStringAsFixed(2).split('.');
     String integerPart = parts[0];
