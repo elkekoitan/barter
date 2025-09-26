@@ -124,6 +124,21 @@ class NotificationData extends Equatable {
         currency,
         action,
       ];
+
+  factory NotificationData.fromJson(Map<String, dynamic> json) {
+    return NotificationData(
+      listingId: json['listingId'],
+      offerId: json['offerId'],
+      transactionId: json['transactionId'],
+      messageId: json['messageId'],
+      userId: json['userId'],
+      userName: json['userName'],
+      userAvatar: json['userAvatar'],
+      amount: json['amount']?.toDouble(),
+      currency: json['currency'],
+      action: json['action'] != null ? NotificationAction.fromString(json['action']) : null,
+    );
+  }
 }
 
 enum NotificationType {

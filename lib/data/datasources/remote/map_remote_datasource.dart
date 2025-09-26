@@ -446,8 +446,8 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
       final destination = '${request.destination.latitude},${request.destination.longitude}';
 
       String waypoints = '';
-      if (request.waypoints != null && request.waypoints!.isNotEmpty) {
-        waypoints = request.waypoints != null ? '&waypoints=${request.waypoints.map((w) => '${w.latitude},${w.longitude}').join('|')}' : '';
+      if (request.waypoints != null && request.waypoints.isNotEmpty) {
+        waypoints = '&waypoints=${request.waypoints!.map((w) => '${w.latitude},${w.longitude}').join('|')}';
       }
 
       final url = Uri.parse('https://maps.googleapis.com/maps/api/directions/json?origin=$origin&destination=$destination$waypoints&mode=${request.mode.value}&avoid=${request.avoidance.value}&key=$_googleMapsApiKey');

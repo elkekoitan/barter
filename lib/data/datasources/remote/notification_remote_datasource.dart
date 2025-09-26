@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import '../../../core/network/api_client.dart';
 import '../../../domain/entities/notification.dart';
+import '../../../domain/entities/notification_settings.dart';
 
 abstract class NotificationRemoteDataSource {
   Future<List<NotificationEntity>> getNotifications(String userId);
@@ -76,7 +77,7 @@ class NotificationRemoteDataSourceImpl implements NotificationRemoteDataSource {
       type: data['type'],
       title: data['title'],
       message: data['message'],
-      data: Map<String, dynamic>.from(data['data'] ?? {}),
+      data: NotificationData.fromJson(data['data'] ?? {}),
       isRead: data['isRead'] ?? false,
       createdAt: DateTime.parse(data['createdAt']),
     );

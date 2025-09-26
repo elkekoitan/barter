@@ -222,7 +222,7 @@ class PushNotificationRemoteDataSourceImpl implements PushNotificationRemoteData
 
   @override
   Stream<Either<Failure, PushNotificationMessage>> onMessageReceived() {
-    return _firebaseMessaging.onMessage.map((remoteMessage) {
+    return FirebaseMessaging.onMessage.map((remoteMessage) {
       try {
         return Right(_convertRemoteMessageToPushMessage(remoteMessage));
       } catch (e) {
@@ -233,7 +233,7 @@ class PushNotificationRemoteDataSourceImpl implements PushNotificationRemoteData
 
   @override
   Stream<Either<Failure, PushNotificationMessage>> onMessageOpenedApp() {
-    return _firebaseMessaging.onMessageOpenedApp.map((remoteMessage) {
+    return FirebaseMessaging.onMessageOpenedApp.map((remoteMessage) {
       try {
         return Right(_convertRemoteMessageToPushMessage(remoteMessage));
       } catch (e) {
@@ -272,7 +272,7 @@ class PushNotificationRemoteDataSourceImpl implements PushNotificationRemoteData
 
   PushNotificationMessage _convertRemoteMessageToPushMessage(RemoteMessage message) {
     return PushNotificationMessage(
-      token: message.token ?? '',
+      token: message.data['token'] ?? '',
       title: message.notification?.title ?? 'Barter',
       body: message.notification?.body ?? '',
       data: message.data,
