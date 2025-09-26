@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import '../../../domain/entities/notification.dart';
+import '../../../domain/entities/notification_settings.dart';
 
 abstract class NotificationState extends Equatable {
   const NotificationState();
@@ -191,4 +192,23 @@ enum NotificationErrorType {
   const NotificationErrorType(this.value, this.displayName);
   final String value;
   final String displayName;
+}
+
+// Settings States
+class SettingsLoaded extends NotificationState {
+  final NotificationSettingsEntity settings;
+
+  const SettingsLoaded(this.settings);
+
+  @override
+  List<Object?> get props => [settings];
+}
+
+class SettingsUpdated extends NotificationState {
+  final NotificationSettingsEntity settings;
+
+  const SettingsUpdated(this.settings);
+
+  @override
+  List<Object?> get props => [settings];
 }
