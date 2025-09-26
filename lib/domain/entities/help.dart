@@ -97,6 +97,78 @@ class HelpArticle extends Equatable {
         lastEditorId,
         metadata,
       ];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'content': content,
+      'categoryId': categoryId,
+      'subcategoryId': subcategoryId,
+      'type': type.value,
+      'priority': priority.value,
+      'tags': tags,
+      'relatedArticles': relatedArticles,
+      'videoUrl': videoUrl,
+      'images': images,
+      'steps': steps.map((step) => {
+        'id': step.id,
+        'title': step.title,
+        'description': step.description,
+        'imageUrl': step.imageUrl,
+        'videoUrl': step.videoUrl,
+        'order': step.order,
+        'tips': step.tips,
+        'metadata': step.metadata,
+      }).toList(),
+      'isPublished': isPublished,
+      'requiresAuth': requiresAuth,
+      'viewCount': viewCount,
+      'helpfulCount': helpfulCount,
+      'notHelpfulCount': notHelpfulCount,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+      'authorId': authorId,
+      'lastEditorId': lastEditorId,
+      'metadata': metadata,
+    };
+  }
+
+  factory HelpArticle.fromJson(Map<String, dynamic> json) {
+    return HelpArticle(
+      id: json['id'],
+      title: json['title'],
+      content: json['content'],
+      categoryId: json['categoryId'],
+      subcategoryId: json['subcategoryId'],
+      type: ArticleType.fromString(json['type'] ?? 'article'),
+      priority: ArticlePriority.fromString(json['priority'] ?? 'medium'),
+      tags: List<String>.from(json['tags'] ?? []),
+      relatedArticles: List<String>.from(json['relatedArticles'] ?? []),
+      videoUrl: json['videoUrl'],
+      images: List<String>.from(json['images'] ?? []),
+      steps: (json['steps'] as List?)?.map((step) => HelpStep(
+        id: step['id'],
+        title: step['title'],
+        description: step['description'],
+        imageUrl: step['imageUrl'],
+        videoUrl: step['videoUrl'],
+        order: step['order'] ?? 0,
+        tips: List<String>.from(step['tips'] ?? []),
+        metadata: step['metadata'],
+      )).toList() ?? [],
+      isPublished: json['isPublished'] ?? true,
+      requiresAuth: json['requiresAuth'] ?? false,
+      viewCount: json['viewCount'] ?? 0,
+      helpfulCount: json['helpfulCount'] ?? 0,
+      notHelpfulCount: json['notHelpfulCount'] ?? 0,
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+      authorId: json['authorId'],
+      lastEditorId: json['lastEditorId'],
+      metadata: json['metadata'],
+    );
+  }
 }
 
 enum ArticleType {
@@ -112,6 +184,13 @@ enum ArticleType {
   const ArticleType(this.value, this.displayName);
   final String value;
   final String displayName;
+
+  static ArticleType fromString(String value) {
+    return ArticleType.values.firstWhere(
+      (type) => type.value == value,
+      orElse: () => ArticleType.article,
+    );
+  }
 }
 
 enum ArticlePriority {
@@ -123,6 +202,13 @@ enum ArticlePriority {
   const ArticlePriority(this.value, this.displayName);
   final String value;
   final String displayName;
+
+  static ArticlePriority fromString(String value) {
+    return ArticlePriority.values.firstWhere(
+      (priority) => priority.value == value,
+      orElse: () => ArticlePriority.medium,
+    );
+  }
 }
 
 class HelpCategory extends Equatable {
@@ -170,6 +256,38 @@ class HelpCategory extends Equatable {
         createdAt,
         metadata,
       ];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'parentId': parentId,
+      'order': order,
+      'isActive': isActive,
+      'iconName': iconName,
+      'color': color,
+      'articleCount': articleCount,
+      'createdAt': createdAt.toIso8601String(),
+      'metadata': metadata,
+    };
+  }
+
+  factory HelpCategory.fromJson(Map<String, dynamic> json) {
+    return HelpCategory(
+      id: json['id'],
+      name: json['name'],
+      description: json['description'],
+      parentId: json['parentId'],
+      order: json['order'] ?? 0,
+      isActive: json['isActive'] ?? true,
+      iconName: json['iconName'] ?? 'help',
+      color: json['color'] ?? '#2563EB',
+      articleCount: json['articleCount'] ?? 0,
+      createdAt: DateTime.parse(json['createdAt']),
+      metadata: json['metadata'],
+    );
+  }
 }
 
 class FAQ extends Equatable {
