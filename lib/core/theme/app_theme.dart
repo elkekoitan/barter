@@ -12,20 +12,20 @@ class AppTheme {
 
       appBarTheme: AppBarTheme(
         backgroundColor: AppColors.primary,
-        foregroundColor: AppColors.white,
+        foregroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
         titleTextStyle: TextStyle(
           fontSize: 18.sp,
           fontWeight: FontWeight.w600,
-          color: AppColors.white,
+          color: Colors.white,
         ),
       ),
 
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
-          foregroundColor: AppColors.white,
+          foregroundColor: Colors.white,
           padding: EdgeInsets.symmetric(
             horizontal: AppDimensions.paddingL,
             vertical: AppDimensions.paddingM,
@@ -62,7 +62,7 @@ class AppTheme {
         contentPadding: EdgeInsets.all(AppDimensions.paddingM),
       ),
 
-      cardTheme: CardTheme(
+      cardTheme: const CardTheme(
         elevation: 4,
         shadowColor: AppColors.shadow,
         shape: RoundedRectangleBorder(
@@ -98,10 +98,10 @@ class AppTheme {
   static ThemeData get darkTheme {
     return ThemeData.dark().copyWith(
       primaryColor: AppColors.primary,
-      scaffoldBackgroundColor: AppColors.backgroundDark,
+      scaffoldBackgroundColor: AppColors.background,
       appBarTheme: AppBarTheme(
         backgroundColor: AppColors.primary,
-        foregroundColor: AppColors.white,
+        foregroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
       ),

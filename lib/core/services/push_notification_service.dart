@@ -8,6 +8,8 @@ class PushNotificationService {
   late local_notifications.FlutterLocalNotificationsPlugin _localNotifications;
   bool _isInitialized = false;
 
+  late final List<local_notifications.DarwinNotificationCategory> _iosCategories;
+
   factory PushNotificationService() {
     return _instance;
   }
@@ -55,7 +57,7 @@ class PushNotificationService {
     );
 
     // iOS notification categories
-    const iosCategories = [
+    _iosCategories = [
       local_notifications.DarwinNotificationCategory(
         'barter_offer',
         actions: [
@@ -78,7 +80,7 @@ class PushNotificationService {
       requestBadgePermission: true,
       requestAlertPermission: true,
       onDidReceiveLocalNotification: _onDidReceiveLocalNotification,
-      notificationCategories: iosCategories,
+      notificationCategories: _iosCategories,
     );
     const initializationSettings = local_notifications.InitializationSettings(
       android: initializationSettingsAndroid,

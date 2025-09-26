@@ -2,6 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../../domain/usecases/payment/process_payment_usecase.dart';
 import '../../../domain/repositories/payment_repository.dart';
+import 'payment_event.dart';
+import 'payment_state.dart';
 
 class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
   final ProcessPaymentUsecase _processPaymentUsecase;
