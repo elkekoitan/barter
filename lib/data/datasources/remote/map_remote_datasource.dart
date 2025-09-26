@@ -271,7 +271,7 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
         isActive: location.isActive,
-        type: location.type,
+        type: location_entity.LocationType.current,
       ));
     } catch (e) {
       return Left(ServerFailure(e.toString()));
@@ -303,7 +303,21 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
   Future<Either<Failure, LocationEntity>> updateLocation(String locationId, LocationEntity location) async {
     try {
       debugPrint('Updating location: $locationId');
-      return Right(location.copyWith(id: locationId));
+      return Right(location_entity.LocationEntity(
+        id: locationId,
+        userId: location.userId,
+        latitude: location.latitude,
+        longitude: location.longitude,
+        address: location.address,
+        city: location.city,
+        district: location.district,
+        neighborhood: location.neighborhood,
+        country: location.country,
+        createdAt: location.createdAt,
+        updatedAt: DateTime.now(),
+        isActive: location.isActive,
+        type: location.type,
+      ));
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }
