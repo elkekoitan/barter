@@ -1,0 +1,1 @@
+ C:\\Users\\qw\\Desktop\\barter\\.dart_tool\\flutter_build\\2001e41d27d5a73c6d16bfaa88ccf12f\\dart_build_result.json: 

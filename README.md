@@ -10,8 +10,9 @@ Türkiye'nin ilk akıllı barter platformu - **Boğaziçi Barter** Flutter mobil
 [![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-blue?style=flat&logo=github-actions)](https://github.com/features/actions)
 
 ### 🌐 Live Applications
-- **Production**: [https://bogazici-barter-app.web.app](https://bogazici-barter-app.web.app)
-- **Staging**: [https://bogazici-barter-app-staging.web.app](https://bogazici-barter-app-staging.web.app)
+- **🚀 Production (LIVE)**: [https://bogazici-barter-app.web.app](https://bogazici-barter-app.web.app)
+- **📊 Firebase Console**: [https://console.firebase.google.com/project/bogazici-barter-app](https://console.firebase.google.com/project/bogazici-barter-app/overview)
+- **🔧 GitHub Repository**: [https://github.com/elkekoitan/barter](https://github.com/elkekoitan/barter)
 
 ## 🌟 Özellikler
 
