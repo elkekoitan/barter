@@ -83,6 +83,14 @@ class ListingEntity extends Equatable {
         updatedAt,
         expiresAt,
       ];
+
+  List<String> get images => media.map((m) => m.url).toList();
+
+  String? get primaryImage => media.where((m) => m.isPrimary).isNotEmpty
+      ? media.where((m) => m.isPrimary).first.url
+      : media.isNotEmpty
+          ? media.first.url
+          : null;
 }
 
 class CategoryEntity extends Equatable {
@@ -355,6 +363,13 @@ enum MediaType {
 
   const MediaType(this.value);
   final String value;
+
+  static MediaType fromString(String value) {
+    return MediaType.values.firstWhere(
+      (type) => type.value == value,
+      orElse: () => MediaType.image,
+    );
+  }
 }
 
 enum DeliveryMethod {
@@ -426,4 +441,11 @@ enum ModerationLevel {
   const ModerationLevel(this.value, this.displayName);
   final String value;
   final String displayName;
+
+  static ModerationLevel fromString(String value) {
+    return ModerationLevel.values.firstWhere(
+      (level) => level.value == value,
+      orElse: () => ModerationLevel.medium,
+    );
+  }
 }

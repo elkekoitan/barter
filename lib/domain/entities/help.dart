@@ -805,6 +805,22 @@ class UserHelpHistory extends Equatable {
       preferences: json['preferences'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'userId': userId,
+      'viewedArticles': viewedArticles,
+      'searchedTerms': searchedTerms,
+      'helpfulArticles': helpfulArticles,
+      'bookmarkedArticles': bookmarkedArticles,
+      'lastViewed': lastViewed.map(
+        (key, value) => MapEntry(key, value.toIso8601String()),
+      ),
+      'articleRatings': articleRatings,
+      'lastActivity': lastActivity.toIso8601String(),
+      'preferences': preferences,
+    };
+  }
 }
 
 class HelpSettings extends Equatable {

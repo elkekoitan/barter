@@ -93,16 +93,47 @@ class ListingRemoteDataSourceImpl implements ListingRemoteDataSource {
   ListingEntity _mapToEntity(Map<String, dynamic> data) {
     return ListingEntity(
       id: data['id'],
-      title: data['title'],
-      description: data['description'],
-      price: data['price'].toDouble(),
-      currency: data['currency'],
-      category: data['category'],
-      condition: data['condition'],
-      location: data['location'],
-      images: List<String>.from(data['images'] ?? []),
-      userId: data['userId'],
+      userId: data['userId'] ?? '',
+      title: data['title'] ?? '',
+      description: data['description'] ?? '',
+      category: CategoryEntity(
+        id: data['category']['id'] ?? '',
+        name: data['category']['name'] ?? '',
+      ),
+      condition: ListingCondition.fromString(data['condition'] ?? 'good'),
+      media: (data['media'] as List?)?.map((m) => ListingMedia(
+        id: m['id'] ?? '',
+        type: MediaType.fromString(m['type'] ?? 'image'),
+        url: m['url'] ?? '',
+        order: m['order'] ?? 0,
+        isPrimary: m['isPrimary'] ?? false,
+      )).toList() ?? [],
+      pricing: ListingPricing(
+        cashPrice: data['price']?.toDouble(),
+        currency: data['currency'] ?? 'TRY',
+        barterOptions: BarterOptions(),
+      ),
+      delivery: ListingDelivery(
+        methods: [DeliveryMethod.inPerson],
+      ),
+      location: ListingLocation(
+        city: data['location']?['city'] ?? '',
+        district: data['location']?['district'] ?? '',
+      ),
+      status: ListingStatus.active,
+      moderation: ListingModeration(
+        status: ModerationStatus.approved,
+        level: ModerationLevel.automatic,
+      ),
+      stats: ListingStats(
+        viewCount: 0,
+        favoriteCount: 0,
+        shareCount: 0,
+        offerCount: 0,
+      ),
       isActive: data['isActive'] ?? true,
+      isFeatured: data['isFeatured'] ?? false,
+      isUrgent: data['isUrgent'] ?? false,
       createdAt: DateTime.parse(data['createdAt']),
       updatedAt: DateTime.parse(data['updatedAt']),
     );
