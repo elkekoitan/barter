@@ -6,6 +6,8 @@ class UserLocation extends Equatable {
   final double longitude;
   final String? address;
   final String? city;
+  final String? district;
+  final String? neighborhood;
   final String? country;
   final DateTime lastUpdated;
   final bool isActive;
@@ -17,6 +19,8 @@ class UserLocation extends Equatable {
     required this.longitude,
     this.address,
     this.city,
+    this.district,
+    this.neighborhood,
     this.country,
     required this.lastUpdated,
     this.isActive = true,
@@ -30,6 +34,8 @@ class UserLocation extends Equatable {
         longitude,
         address,
         city,
+        district,
+        neighborhood,
         country,
         lastUpdated,
         isActive,
@@ -42,6 +48,8 @@ class UserLocation extends Equatable {
     double? longitude,
     String? address,
     String? city,
+    String? district,
+    String? neighborhood,
     String? country,
     DateTime? lastUpdated,
     bool? isActive,
@@ -53,6 +61,8 @@ class UserLocation extends Equatable {
       longitude: longitude ?? this.longitude,
       address: address ?? this.address,
       city: city ?? this.city,
+      district: district ?? this.district,
+      neighborhood: neighborhood ?? this.neighborhood,
       country: country ?? this.country,
       lastUpdated: lastUpdated ?? this.lastUpdated,
       isActive: isActive ?? this.isActive,
@@ -67,6 +77,8 @@ class UserLocation extends Equatable {
       'longitude': longitude,
       'address': address,
       'city': city,
+      'district': district,
+      'neighborhood': neighborhood,
       'country': country,
       'lastUpdated': lastUpdated.toIso8601String(),
       'isActive': isActive,
@@ -81,6 +93,8 @@ class UserLocation extends Equatable {
       longitude: json['longitude'],
       address: json['address'],
       city: json['city'],
+      district: json['district'],
+      neighborhood: json['neighborhood'],
       country: json['country'],
       lastUpdated: DateTime.parse(json['lastUpdated']),
       isActive: json['isActive'] ?? true,

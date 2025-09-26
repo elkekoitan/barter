@@ -150,7 +150,7 @@ class PushNotificationService {
       ticker: 'ticker',
       icon: android?.smallIcon,
       color: const Color(0xFF2563EB), // App primary color
-      styleInformation: android?.styleInformation,
+      // styleInformation: android?.styleInformation, // TODO: Fix style information
     );
 
     final iosDetails = local_notifications.DarwinNotificationDetails(
