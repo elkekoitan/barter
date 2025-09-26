@@ -4,7 +4,6 @@ import '../../core/errors/failures.dart';
 import '../../core/errors/error_handler.dart';
 import '../../core/network/api_client.dart';
 import '../../domain/entities/payment.dart';
-import '../../domain/entities/escrow.dart';
 import '../../domain/repositories/payment_repository.dart';
 import '../../core/constants/payment_constants.dart';
 import '../datasources/remote/payment_remote_datasource.dart';

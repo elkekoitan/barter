@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import '../entities/payment.dart';
-import '../entities/escrow.dart';
 import '../../core/errors/failures.dart';
 
 abstract class PaymentRepository {

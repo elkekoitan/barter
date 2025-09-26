@@ -4,6 +4,7 @@ import '../../../core/constants/payment_constants.dart';
 import '../../../core/errors/failures.dart';
 import '../../../core/network/api_client.dart';
 import '../../../domain/entities/payment.dart';
+import '../../../domain/repositories/payment_repository.dart';
 
 abstract class PaymentRemoteDataSource {
   Future<PaymentResult> processPayment(RemotePaymentRequest request);
@@ -265,6 +266,17 @@ class PaymentRemoteDataSourceImpl implements PaymentRemoteDataSource {
       callbackUrl: domainRequest.callbackUrl,
       metadata: domainRequest.metadata,
     );
+  }
+
+  // Helper method to convert domain EscrowRequest to internal format
+  Map<String, dynamic> _mapEscrowRequestToData(EscrowRequest request) {
+    return {
+      'barterId': request.barterId,
+      'userId': request.userId,
+      'amount': request.amount,
+      'currency': request.currency,
+      'releaseDate': request.releaseDate?.toIso8601String(),
+    };
   }
 }
 
