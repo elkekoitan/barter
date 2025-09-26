@@ -319,6 +319,68 @@ enum MarkerType {
   final String displayName;
 }
 
+class NearbyUsersRequest {
+  final LatLng center;
+  final double radius;
+  final int limit;
+  final bool includeOnlineOnly;
+
+  const NearbyUsersRequest({
+    required this.center,
+    required this.radius,
+    this.limit = 50,
+    this.includeOnlineOnly = false,
+  });
+}
+
+class SearchSuggestionsRequest {
+  final String query;
+  final SearchType type;
+  final LatLng? location;
+  final int limit;
+
+  const SearchSuggestionsRequest({
+    required this.query,
+    required this.type,
+    this.location,
+    this.limit = 10,
+  });
+}
+
+class OpenInMapsRequest {
+  final LatLng location;
+  final String label;
+  final MapApp app;
+
+  const OpenInMapsRequest({
+    required this.location,
+    required this.label,
+    required this.app,
+  });
+}
+
+enum SearchType {
+  places('places', 'Yerler'),
+  addresses('addresses', 'Adresler'),
+  users('users', 'Kullanıcılar'),
+  all('all', 'Tümü');
+
+  const SearchType(this.value, this.displayName);
+  final String value;
+  final String displayName;
+}
+
+enum MapApp {
+  google('google', 'Google Maps'),
+  apple('apple', 'Apple Maps'),
+  waze('waze', 'Waze'),
+  other('other', 'Diğer');
+
+  const MapApp(this.value, this.displayName);
+  final String value;
+  final String displayName;
+}
+
 class MapDataRequest {
   final MapBounds bounds;
   final MapType type;

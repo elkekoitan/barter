@@ -134,6 +134,38 @@ class LocationEntity extends Equatable {
   static double _degreesToRadians(double degrees) {
     return degrees * pi / 180;
   }
+
+  LocationEntity copyWith({
+    String? id,
+    String? userId,
+    double? latitude,
+    double? longitude,
+    String? address,
+    String? city,
+    String? district,
+    String? neighborhood,
+    String? country,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    bool? isActive,
+    LocationType? type,
+  }) {
+    return LocationEntity(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+      address: address ?? this.address,
+      city: city ?? this.city,
+      district: district ?? this.district,
+      neighborhood: neighborhood ?? this.neighborhood,
+      country: country ?? this.country,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      isActive: isActive ?? this.isActive,
+      type: type ?? this.type,
+    );
+  }
 }
 
 enum LocationType {

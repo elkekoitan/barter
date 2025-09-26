@@ -1,9 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:geolocator/geolocator.dart' as geolocator;
 import 'package:geocoding/geocoding.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import '../../../core/errors/failures.dart';
 import '../../../domain/repositories/map_repository.dart';
@@ -11,14 +12,14 @@ import '../../../domain/entities/location_entity.dart' as location_entity;
 import '../../../domain/entities/location.dart';
 
 abstract class MapRemoteDataSource {
-  Future<Either<Failure, location_entity.LocationEntity>> getCurrentLocation();
-  Future<Either<Failure, location_entity.LocationEntity>> getLocationFromAddress(String address);
+  Future<Either<Failure, LocationEntity>> getCurrentLocation();
+  Future<Either<Failure, LocationEntity>> getLocationFromAddress(String address);
   Future<Either<Failure, List<GeocodingResult>>> geocodeAddress(String address);
   Future<Either<Failure, String>> reverseGeocode(double latitude, double longitude);
-  Future<Either<Failure, location_entity.LocationEntity>> saveLocation(location_entity.LocationEntity location);
+  Future<Either<Failure, LocationEntity>> saveLocation(LocationEntity location);
   Future<Either<Failure, void>> deleteLocation(String locationId);
-  Future<Either<Failure, List<location_entity.LocationEntity>>> getSavedLocations(String userId);
-  Future<Either<Failure, location_entity.LocationEntity>> updateLocation(String locationId, location_entity.LocationEntity location);
+  Future<Either<Failure, List<LocationEntity>>> getSavedLocations(String userId);
+  Future<Either<Failure, LocationEntity>> updateLocation(String locationId, LocationEntity location);
   Future<Either<Failure, List<PlaceEntity>>> searchPlaces(PlaceSearchRequest request);
   Future<Either<Failure, PlaceEntity>> getPlaceDetails(String placeId);
   Future<Either<Failure, List<PlaceEntity>>> getNearbyPlaces(NearbyPlacesRequest request);
@@ -66,21 +67,21 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
   Future<Either<Failure, LocationEntity>> getCurrentLocation() async {
     try {
       // Check permission
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
+      geolocator.LocationPermission permission = await geolocator.Geolocator.checkPermission();
+      if (permission == geolocator.LocationPermission.denied) {
+        permission = await geolocator.Geolocator.requestPermission();
+        if (permission == geolocator.LocationPermission.denied) {
           return const Left(PermissionFailure('Location permission denied'));
         }
       }
 
-      if (permission == LocationPermission.deniedForever) {
+      if (permission == geolocator.LocationPermission.deniedForever) {
         return const Left(PermissionFailure('Location permission permanently denied'));
       }
 
       // Get current position
-      final position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
+      final position = await geolocator.Geolocator.getCurrentPosition(
+        desiredAccuracy: geolocator.LocationAccuracy.high,
       );
 
       // Get address from coordinates
