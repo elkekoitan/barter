@@ -564,7 +564,7 @@ class RouteStep extends Equatable {
   final LatLng startLocation;
   final LatLng endLocation;
   final String polyline;
-  final TravelMode travelMode;
+  final RouteMode travelMode;
   final String? maneuver;
 
   const RouteStep({
@@ -591,13 +591,13 @@ class RouteStep extends Equatable {
       ];
 }
 
-enum TravelMode {
+enum RouteMode {
   driving('driving', 'Araba'),
   walking('walking', 'Yürüme'),
   bicycling('bicycling', 'Bisiklet'),
   transit('transit', 'Toplu Taşıma');
 
-  const TravelMode(this.value, this.displayName);
+  const RouteMode(this.value, this.displayName);
   final String value;
   final String displayName;
 }

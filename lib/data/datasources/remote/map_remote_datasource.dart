@@ -472,9 +472,9 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
             startLocation: LatLng(startLocation['lat'], startLocation['lng']),
             endLocation: LatLng(endLocation['lat'], endLocation['lng']),
             polyline: step['polyline']['points'],
-            travelMode: TravelMode.values.firstWhere(
+            travelMode: RouteMode.values.firstWhere(
               (mode) => mode.value == step['travel_mode'].toLowerCase(),
-              orElse: () => TravelMode.driving,
+              orElse: () => RouteMode.driving,
             ),
             maneuver: step['maneuver'],
           );
@@ -593,7 +593,7 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
   }
 
   @override
-  Future<Either<Failure, UserLocationEntity>> updateUserLocation(String userId, LocationEntity location) async {
+  Future<Either<Failure, UserLocationEntity>> updateUserLocation(String userId, location_entity.LocationEntity location) async {
     try {
       debugPrint('Updating user location: $userId');
       // In a real implementation, this would update in backend
@@ -614,7 +614,7 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> setHomeLocation(String userId, LocationEntity location) async {
+  Future<Either<Failure, void>> setHomeLocation(String userId, location_entity.LocationEntity location) async {
     try {
       debugPrint('Setting home location for user: $userId');
       return const Right(null);
@@ -624,7 +624,7 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> setWorkLocation(String userId, LocationEntity location) async {
+  Future<Either<Failure, void>> setWorkLocation(String userId, location_entity.LocationEntity location) async {
     try {
       debugPrint('Setting work location for user: $userId');
       return const Right(null);
@@ -646,7 +646,7 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
   @override
   Future<Either<Failure, double>> calculateDistance(LatLng from, LatLng to) async {
     try {
-      return Right(Geolocator.distanceBetween(from.latitude, from.longitude, to.latitude, to.longitude) / 1000.0); // Convert to km
+      return Right(geolocator.Geolocator.distanceBetween(from.latitude, from.longitude, to.latitude, to.longitude) / 1000.0); // Convert to km
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }
@@ -793,8 +793,8 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
   @override
   Future<Either<Failure, bool>> checkLocationPermission() async {
     try {
-      final permission = await Geolocator.checkPermission();
-      return Right(permission == LocationPermission.always || permission == LocationPermission.whileInUse);
+      final permission = await geolocator.Geolocator.checkPermission();
+      return Right(permission == geolocator.LocationPermission.always || permission == geolocator.LocationPermission.whileInUse);
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }

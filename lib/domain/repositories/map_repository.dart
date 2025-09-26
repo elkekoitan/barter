@@ -264,6 +264,9 @@ class NearbyPlacesRequest {
     this.type,
     this.limit = 20,
   });
+
+  double get latitude => center.latitude;
+  double get longitude => center.longitude;
 }
 
 class GetPlacesRequest {
@@ -275,7 +278,7 @@ class GetPlacesRequest {
 class RouteAlternativesRequest {
   final LatLng origin;
   final LatLng destination;
-  final TravelMode mode;
+  final RouteMode mode;
   final List<LatLng>? waypoints;
   final bool avoidTolls;
   final bool avoidHighways;
