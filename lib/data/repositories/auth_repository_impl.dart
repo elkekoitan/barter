@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -559,5 +560,161 @@ class AuthRepositoryImpl implements AuthRepository {
       status: UserStatus.fromString(data['status'] ?? 'active'),
       fcmToken: data['fcmToken'],
     );
+  }
+
+  // Social Login Operations Implementation
+  @override
+  Future<Either<Failure, UserCredential>> signInWithGoogle() async {
+    try {
+      // TODO: Implement Google Sign-In
+      // For now, return a placeholder error
+      return const Left(ServerFailure('Google Sign-In not yet implemented'));
+    } catch (e) {
+      return Left(ErrorHandler.handleError(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserCredential>> signInWithFacebook() async {
+    try {
+      // TODO: Implement Facebook Sign-In
+      return const Left(ServerFailure('Facebook Sign-In not yet implemented'));
+    } catch (e) {
+      return Left(ErrorHandler.handleError(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserCredential>> signInWithApple() async {
+    try {
+      // TODO: Implement Apple Sign-In
+      return const Left(ServerFailure('Apple Sign-In not yet implemented'));
+    } catch (e) {
+      return Left(ErrorHandler.handleError(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserCredential>> linkGoogleAccount() async {
+    try {
+      // TODO: Implement Google account linking
+      return const Left(ServerFailure('Google account linking not yet implemented'));
+    } catch (e) {
+      return Left(ErrorHandler.handleError(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserCredential>> linkFacebookAccount() async {
+    try {
+      // TODO: Implement Facebook account linking
+      return const Left(ServerFailure('Facebook account linking not yet implemented'));
+    } catch (e) {
+      return Left(ErrorHandler.handleError(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserCredential>> linkAppleAccount() async {
+    try {
+      // TODO: Implement Apple account linking
+      return const Left(ServerFailure('Apple account linking not yet implemented'));
+    } catch (e) {
+      return Left(ErrorHandler.handleError(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> unlinkSocialAccount(String providerId) async {
+    try {
+      // TODO: Implement social account unlinking
+      return const Left(ServerFailure('Social account unlinking not yet implemented'));
+    } catch (e) {
+      return Left(ErrorHandler.handleError(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<String>>> getLinkedSocialProviders() async {
+    try {
+      // TODO: Implement getting linked social providers
+      return const Right([]);
+    } catch (e) {
+      return Left(ErrorHandler.handleError(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map<String, bool>>> checkSocialLoginAvailability() async {
+    try {
+      // TODO: Implement social login availability check
+      return const Right({
+        'google': false,
+        'facebook': false,
+        'apple': false,
+      });
+    } catch (e) {
+      return Left(ErrorHandler.handleError(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserCredential>> handleSocialLoginCallback(String providerId, Map<String, dynamic> credentials) async {
+    try {
+      // TODO: Implement social login callback handling
+      return const Left(ServerFailure('Social login callback handling not yet implemented'));
+    } catch (e) {
+      return Left(ErrorHandler.handleError(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> getSocialLoginCredentials(String providerId) async {
+    try {
+      // TODO: Implement getting social login credentials
+      return const Right({});
+    } catch (e) {
+      return Left(ErrorHandler.handleError(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updateSocialLoginScopes(String providerId, List<String> scopes) async {
+    try {
+      // TODO: Implement updating social login scopes
+      return const Left(ServerFailure('Social login scope updating not yet implemented'));
+    } catch (e) {
+      return Left(ErrorHandler.handleError(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> revokeSocialLoginAccess(String providerId) async {
+    try {
+      // TODO: Implement revoking social login access
+      return const Left(ServerFailure('Social login access revocation not yet implemented'));
+    } catch (e) {
+      return Left(ErrorHandler.handleError(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SocialLoginSettings>> getSocialLoginSettings() async {
+    try {
+      // TODO: Implement getting social login settings
+      return const Right(SocialLoginSettings());
+    } catch (e) {
+      return Left(ErrorHandler.handleError(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SocialLoginSettings>> updateSocialLoginSettings(SocialLoginSettings settings) async {
+    try {
+      // TODO: Implement updating social login settings
+      return Right(settings);
+    } catch (e) {
+      return Left(ErrorHandler.handleError(e));
+    }
   }
 }
