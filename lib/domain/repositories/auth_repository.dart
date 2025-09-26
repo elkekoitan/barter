@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../core/errors/failures.dart';
 import '../entities/user.dart';
 
@@ -36,6 +37,23 @@ abstract class AuthRepository {
   Future<Either<Failure, AuthTokens>> loginWithGoogle();
   Future<Either<Failure, AuthTokens>> loginWithApple();
   Future<Either<Failure, AuthTokens>> loginWithFacebook();
+
+  // Advanced Social Login Operations
+  Future<Either<Failure, UserCredential>> signInWithGoogle();
+  Future<Either<Failure, UserCredential>> signInWithFacebook();
+  Future<Either<Failure, UserCredential>> signInWithApple();
+  Future<Either<Failure, UserCredential>> linkGoogleAccount();
+  Future<Either<Failure, UserCredential>> linkFacebookAccount();
+  Future<Either<Failure, UserCredential>> linkAppleAccount();
+  Future<Either<Failure, void>> unlinkSocialAccount(String providerId);
+  Future<Either<Failure, List<String>>> getLinkedSocialProviders();
+  Future<Either<Failure, Map<String, bool>>> checkSocialLoginAvailability();
+  Future<Either<Failure, UserCredential>> handleSocialLoginCallback(String providerId, Map<String, dynamic> credentials);
+  Future<Either<Failure, Map<String, dynamic>>> getSocialLoginCredentials(String providerId);
+  Future<Either<Failure, void>> updateSocialLoginScopes(String providerId, List<String> scopes);
+  Future<Either<Failure, void>> revokeSocialLoginAccess(String providerId);
+  Future<Either<Failure, SocialLoginSettings>> getSocialLoginSettings();
+  Future<Either<Failure, SocialLoginSettings>> updateSocialLoginSettings(SocialLoginSettings settings);
 }
 
 // Request/Response Models
@@ -59,6 +77,7 @@ class RegisterRequest {
   final String email;
   final String phone;
   final String password;
+  final String confirmPassword;
   final String firstName;
   final String lastName;
   final String? referralCode;
@@ -69,6 +88,7 @@ class RegisterRequest {
     required this.email,
     required this.phone,
     required this.password,
+    required this.confirmPassword,
     required this.firstName,
     required this.lastName,
     this.referralCode,
@@ -164,41 +184,6 @@ enum OTPType {
   final String value;
 }
 
-// Social Login Operations
-abstract class AuthRepository {
-  // ... existing methods ...
-
-  // Social Login Operations
-  Future<Either<Failure, UserCredential>> signInWithGoogle();
-
-  Future<Either<Failure, UserCredential>> signInWithFacebook();
-
-  Future<Either<Failure, UserCredential>> signInWithApple();
-
-  Future<Either<Failure, UserCredential>> linkGoogleAccount();
-
-  Future<Either<Failure, UserCredential>> linkFacebookAccount();
-
-  Future<Either<Failure, UserCredential>> linkAppleAccount();
-
-  Future<Either<Failure, void>> unlinkSocialAccount(String providerId);
-
-  Future<Either<Failure, List<String>>> getLinkedSocialProviders();
-
-  Future<Either<Failure, Map<String, bool>>> checkSocialLoginAvailability();
-
-  Future<Either<Failure, UserCredential>> handleSocialLoginCallback(String providerId, Map<String, dynamic> credentials);
-
-  Future<Either<Failure, Map<String, dynamic>>> getSocialLoginCredentials(String providerId);
-
-  Future<Either<Failure, void>> updateSocialLoginScopes(String providerId, List<String> scopes);
-
-  Future<Either<Failure, void>> revokeSocialLoginAccess(String providerId);
-
-  Future<Either<Failure, SocialLoginSettings>> getSocialLoginSettings();
-
-  Future<Either<Failure, SocialLoginSettings>> updateSocialLoginSettings(SocialLoginSettings settings);
-}
 
 class SocialLoginSettings {
   final bool enableGoogleLogin;
