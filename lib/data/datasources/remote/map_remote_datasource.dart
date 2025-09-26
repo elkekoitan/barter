@@ -316,7 +316,7 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
         createdAt: location.createdAt,
         updatedAt: DateTime.now(),
         isActive: location.isActive,
-        type: location.type,
+        type: location_entity.LocationType.current,
       ));
     } catch (e) {
       return Left(ServerFailure(e.toString()));

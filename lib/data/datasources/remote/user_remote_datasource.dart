@@ -50,10 +50,9 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       lastName: data['lastName'],
       kycStatus: KYCStatus.pending,
       settings: UserSettings(
-        notificationsEnabled: true,
-        locationSharingEnabled: true,
+        pushNotifications: true,
+        emailNotifications: true,
         language: 'tr',
-        theme: 'light',
       ),
       stats: UserStats(
         totalListings: 0,

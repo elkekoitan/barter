@@ -292,7 +292,7 @@ class PushNotificationRemoteDataSourceImpl implements PushNotificationRemoteData
           ? {
               'subtitle': message.notification!.apple!.subtitle ?? '',
               'badge': message.notification!.apple!.badge?.toString() ?? '1',
-              'sound': message.notification!.apple!.sound ?? 'default',
+              'sound': (message.notification!.apple!.sound ?? 'default').toString(),
               'category': 'default',
             }
           : null,
