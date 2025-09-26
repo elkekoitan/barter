@@ -202,16 +202,16 @@ abstract class RegisterModule {
 
   // Use Cases
   @lazySingleton
-  LoginUseCase get loginUseCase => LoginUseCase(getIt());
+  LoginUseCase get loginUseCase => LoginUseCase(getIt(), getIt());
 
   @lazySingleton
-  RegisterUseCase get registerUseCase => RegisterUseCase(getIt());
+  RegisterUseCase get registerUseCase => RegisterUseCase(getIt(), getIt());
 
   @lazySingleton
   LogoutUseCase get logoutUseCase => LogoutUseCase(getIt());
 
   @lazySingleton
-  VerifyOtpUseCase get verifyOtpUseCase => VerifyOtpUseCase(getIt());
+  VerifyOtpUseCase get verifyOtpUseCase => VerifyOtpUseCase(getIt(), getIt());
 
   @lazySingleton
   CreateListingUseCase get createListingUseCase => CreateListingUseCase(getIt());

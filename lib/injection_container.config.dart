@@ -94,13 +94,13 @@ class GetItInjectableX {
 
     gh.lazySingleton<HelpRepository>(() => HelpRepositoryImpl(gh<HelpRemoteDataSource>()));
 
-    gh.lazySingleton<LoginUseCase>(() => LoginUseCase(gh<AuthRepository>()));
+    gh.lazySingleton<LoginUseCase>(() => LoginUseCase(gh<AuthRepository>(), gh<NetworkInfo>()));
 
-    gh.lazySingleton<RegisterUseCase>(() => RegisterUseCase(gh<AuthRepository>()));
+    gh.lazySingleton<RegisterUseCase>(() => RegisterUseCase(gh<AuthRepository>(), gh<NetworkInfo>()));
 
     gh.lazySingleton<LogoutUseCase>(() => LogoutUseCase(gh<AuthRepository>()));
 
-    gh.lazySingleton<VerifyOtpUseCase>(() => VerifyOtpUseCase(gh<AuthRepository>()));
+    gh.lazySingleton<VerifyOtpUseCase>(() => VerifyOtpUseCase(gh<AuthRepository>(), gh<NetworkInfo>()));
 
     gh.lazySingleton<CreateListingUseCase>(() => CreateListingUseCase(gh<ListingRepository>()));
 

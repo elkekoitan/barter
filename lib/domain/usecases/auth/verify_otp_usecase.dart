@@ -1,11 +1,13 @@
 import 'package:dartz/dartz.dart';
 import '../../repositories/auth_repository.dart';
 import '../../../core/errors/failures.dart';
+import '../../../core/network/network_info.dart';
 
 class VerifyOtpUseCase {
   final AuthRepository _repository;
+  final NetworkInfo _networkInfo;
 
-  const VerifyOtpUseCase(this._repository);
+  const VerifyOtpUseCase(this._repository, this._networkInfo);
 
   Future<Either<Failure, void>> call(OTPVerificationRequest request) async {
     // Validate OTP request
@@ -15,7 +17,7 @@ class VerifyOtpUseCase {
     }
 
     // Check network connectivity
-    final isConnected = await _repository.isLoggedIn(); // This should be replaced with network check
+    final isConnected = await _networkInfo.isConnected;
     if (!isConnected) {
       return const Left(NetworkFailure('No internet connection'));
     }
