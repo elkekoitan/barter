@@ -89,7 +89,7 @@ abstract class AdminRepository {
 
   Future<Either<Failure, void>> warnUser(String userId, String warning);
 
-  Future<Either<Failure, List<UserAction>> getUserActions(String userId);
+  Future<Either<Failure, List<UserAction>>> getUserActions(String userId);
 
   // Content Management
   Future<Either<Failure, List<ListingEntity>>> getPendingListings({
@@ -140,7 +140,7 @@ abstract class AdminRepository {
   Future<Either<Failure, void>> sendSystemAnnouncement(SendAnnouncementRequest request);
 
   // Analytics
-  Future<Either<Failure, List<AnalyticsData>> getAnalyticsData(AnalyticsRequest request);
+  Future<Either<Failure, List<AnalyticsData>>> getAnalyticsData(AnalyticsRequest request);
 
   Future<Either<Failure, List<ReportData>> generateReport(ReportRequest request);
 
