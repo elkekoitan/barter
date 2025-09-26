@@ -3,9 +3,10 @@ import 'package:flutter/foundation.dart';
 import '../../../core/constants/payment_constants.dart';
 import '../../../core/errors/failures.dart';
 import '../../../core/network/api_client.dart';
+import '../../../domain/entities/payment.dart';
 
 abstract class PaymentRemoteDataSource {
-  Future<PaymentResult> processPayment(PaymentRequest request);
+  Future<PaymentResult> processPayment(RemotePaymentRequest request);
   Future<bool> verifyPayment(String paymentId);
   Future<void> refundPayment(String paymentId, double amount);
   Future<void> holdInEscrow(String barterId, double amount);
@@ -19,8 +20,9 @@ class PaymentRemoteDataSourceImpl implements PaymentRemoteDataSource {
   PaymentRemoteDataSourceImpl(this._apiClient);
 
   @override
-  Future<PaymentResult> processPayment(PaymentRequest request) async {
+  Future<PaymentResult> processPayment(RemotePaymentRequest request) async {
     try {
+      // Convert to domain PaymentRequest if needed for validation
       // Route to the appropriate payment provider
       switch (request.provider) {
         case 'papara':
@@ -103,7 +105,7 @@ class PaymentRemoteDataSourceImpl implements PaymentRemoteDataSource {
 
   // Payment Provider Implementations
 
-  Future<PaymentResult> _processPapara(PaymentRequest request) async {
+  Future<PaymentResult> _processPapara(RemotePaymentRequest request) async {
     try {
       final response = await Dio().post(
         '${PaymentConstants.PAPARA_BASE_URL}/payments',
@@ -141,7 +143,7 @@ class PaymentRemoteDataSourceImpl implements PaymentRemoteDataSource {
     }
   }
 
-  Future<PaymentResult> _processIyzico(PaymentRequest request) async {
+  Future<PaymentResult> _processIyzico(RemotePaymentRequest request) async {
     try {
       final timestamp = DateTime.now().millisecondsSinceEpoch.toString();
       final signature = _generateIyzicoSignature(timestamp, request);
@@ -215,32 +217,32 @@ class PaymentRemoteDataSourceImpl implements PaymentRemoteDataSource {
   }
 
   // Placeholder implementations for other payment providers
-  Future<PaymentResult> _processTosla(PaymentRequest request) async {
+  Future<PaymentResult> _processTosla(RemotePaymentRequest request) async {
     // TODO: Implement Tosla payment processing
     throw UnimplementedError('Tosla payment processing not yet implemented');
   }
 
-  Future<PaymentResult> _processPayTR(PaymentRequest request) async {
+  Future<PaymentResult> _processPayTR(RemotePaymentRequest request) async {
     // TODO: Implement PayTR payment processing
     throw UnimplementedError('PayTR payment processing not yet implemented');
   }
 
-  Future<PaymentResult> _processBKM(PaymentRequest request) async {
+  Future<PaymentResult> _processBKM(RemotePaymentRequest request) async {
     // TODO: Implement BKM Express payment processing
     throw UnimplementedError('BKM Express payment processing not yet implemented');
   }
 
-  Future<PaymentResult> _processPaycell(PaymentRequest request) async {
+  Future<PaymentResult> _processPaycell(RemotePaymentRequest request) async {
     // TODO: Implement Paycell payment processing
     throw UnimplementedError('Paycell payment processing not yet implemented');
   }
 
-  Future<PaymentResult> _processParam(PaymentRequest request) async {
+  Future<PaymentResult> _processParam(RemotePaymentRequest request) async {
     // TODO: Implement Param payment processing
     throw UnimplementedError('Param payment processing not yet implemented');
   }
 
-  String _generateIyzicoSignature(String timestamp, PaymentRequest request) {
+  String _generateIyzicoSignature(String timestamp, RemotePaymentRequest request) {
     final input = '${PaymentConstants.IYZICO_API_KEY}|$timestamp|${request.referenceId}|${request.amount.toStringAsFixed(2)}|TRY';
     return _hmacSha256(input, PaymentConstants.IYZICO_SECRET_KEY);
   }
@@ -250,10 +252,24 @@ class PaymentRemoteDataSourceImpl implements PaymentRemoteDataSource {
     // This is a placeholder - implement proper HMAC hashing
     return message.hashCode.toString();
   }
+
+  // Helper method to convert domain PaymentRequest to RemotePaymentRequest
+  RemotePaymentRequest _mapDomainToRemoteRequest(PaymentRequest domainRequest) {
+    return RemotePaymentRequest(
+      referenceId: domainRequest.referenceId,
+      userId: domainRequest.userId,
+      amount: domainRequest.amount,
+      currency: domainRequest.currency,
+      provider: domainRequest.provider,
+      description: domainRequest.description,
+      callbackUrl: domainRequest.callbackUrl,
+      metadata: domainRequest.metadata,
+    );
+  }
 }
 
 // Data models
-class PaymentRequest {
+class RemotePaymentRequest {
   final String referenceId;
   final String userId;
   final double amount;
@@ -263,7 +279,7 @@ class PaymentRequest {
   final String callbackUrl;
   final Map<String, dynamic>? metadata;
 
-  const PaymentRequest({
+  const RemotePaymentRequest({
     required this.referenceId,
     required this.userId,
     required this.amount,
