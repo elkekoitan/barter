@@ -45,13 +45,28 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     return UserEntity(
       id: data['id'],
       email: data['email'],
+      phone: data['phone'] ?? '',
       firstName: data['firstName'],
       lastName: data['lastName'],
-      phone: data['phone'],
-      profileImageUrl: data['profileImageUrl'],
-      isVerified: data['isVerified'],
+      kycStatus: KYCStatus.pending,
+      settings: UserSettings(
+        notificationsEnabled: true,
+        locationSharingEnabled: true,
+        language: 'tr',
+        theme: 'light',
+      ),
+      stats: UserStats(
+        totalListings: 0,
+        totalBarters: 0,
+        totalReviews: 0,
+        averageRating: 0.0,
+      ),
+      subscription: UserSubscription.free,
       createdAt: DateTime.parse(data['createdAt']),
       updatedAt: DateTime.parse(data['updatedAt']),
+      status: UserStatus.active,
+      profileImageUrl: data['profileImageUrl'],
+      isVerified: data['isVerified'],
     );
   }
 }

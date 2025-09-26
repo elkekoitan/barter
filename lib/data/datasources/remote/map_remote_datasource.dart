@@ -258,7 +258,21 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
     try {
       // In a real implementation, this would save to a backend API
       debugPrint('Saving location: ${location.address}');
-      return Right(location.copyWith(id: 'saved_${DateTime.now().millisecondsSinceEpoch}'));
+      return Right(location_entity.LocationEntity(
+        id: 'saved_${DateTime.now().millisecondsSinceEpoch}',
+        userId: location.userId,
+        latitude: location.latitude,
+        longitude: location.longitude,
+        address: location.address,
+        city: location.city,
+        district: location.district,
+        neighborhood: location.neighborhood,
+        country: location.country,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        isActive: location.isActive,
+        type: location.type,
+      ));
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }

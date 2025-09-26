@@ -277,7 +277,7 @@ class PushNotificationRemoteDataSourceImpl implements PushNotificationRemoteData
       body: message.notification?.body ?? '',
       data: message.data,
       imageUrl: message.notification?.android?.imageUrl ?? message.notification?.apple?.imageUrl,
-      sound: message.notification?.android?.sound ?? message.notification?.apple?.sound ?? 'default',
+      sound: (message.notification?.android?.sound ?? message.notification?.apple?.sound ?? 'default').toString(),
       clickAction: message.notification?.android?.clickAction,
       category: message.category?.toString(),
       androidConfig: message.notification?.android != null
