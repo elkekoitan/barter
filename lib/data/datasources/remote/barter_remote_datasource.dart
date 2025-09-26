@@ -107,27 +107,61 @@ class BarterRemoteDataSourceImpl implements BarterRemoteDataSource {
   Map<String, dynamic> _mapOfferFromEntity(BarterOfferEntity offer) {
     return {
       'listingId': offer.listingId,
-      'offeredByUserId': offer.offeredByUserId,
-      'offeredItems': offer.offeredItems.map((item) => {
-        'listingId': item.listingId,
-        'description': item.description,
-      }).toList(),
+      'buyerId': offer.buyerId,
+      'sellerId': offer.sellerId,
+      'offer': {
+        'items': offer.offer.items.map((item) => {
+          'id': item.id,
+          'listingId': item.listingId,
+          'title': item.title,
+          'description': item.description,
+          'price': item.price,
+          'condition': item.condition.value,
+          'category': item.category,
+          'images': item.images,
+          'delivery': item.delivery,
+          'metadata': item.metadata,
+        }).toList(),
+        'totalValue': offer.offer.totalValue,
+      },
+      'type': offer.type.value,
+      'status': offer.status.value,
       'message': offer.message,
-      'status': offer.status,
-    };
+      status: OfferStatus.fromString(data['status']),
+      createdAt: DateTime.parse(data['createdAt']),
+      updatedAt: DateTime.parse(data['updatedAt']),
+    );
   }
 
   BarterOfferEntity _mapOfferToEntity(Map<String, dynamic> data) {
+    final offerData = data['offer'] as Map<String, dynamic>;
+    final items = (offerData['items'] as List).map((item) => OfferItem(
+      id: item['id'],
+      listingId: item['listingId'],
+      title: item['title'],
+      description: item['description'],
+      price: item['price'],
+      condition: ListingCondition.fromString(item['condition']),
+      category: item['category'],
+      images: List<String>.from(item['images']),
+      delivery: item['delivery'],
+      metadata: Map<String, dynamic>.from(item['metadata']),
+    )).toList();
+
+    final offerDetails = OfferDetails(
+      items: items,
+      totalValue: offerData['totalValue'],
+    );
+
     return BarterOfferEntity(
       id: data['id'],
       listingId: data['listingId'],
-      offeredByUserId: data['offeredByUserId'],
-      offeredItems: (data['offeredItems'] as List).map((item) => OfferedItem(
-        listingId: item['listingId'],
-        description: item['description'],
-      )).toList(),
+      buyerId: data['buyerId'],
+      sellerId: data['sellerId'],
+      type: OfferType.fromString(data['type']),
+      offer: offerDetails,
+      status: OfferStatus.fromString(data['status']),
       message: data['message'],
-      status: data['status'],
       createdAt: DateTime.parse(data['createdAt']),
       updatedAt: DateTime.parse(data['updatedAt']),
     );

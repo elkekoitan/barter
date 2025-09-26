@@ -75,14 +75,14 @@ class PushNotificationService {
 
     // Initialize local notifications
     const initializationSettingsAndroid = local_notifications.AndroidInitializationSettings('@mipmap/ic_launcher');
-    const initializationSettingsIOS = local_notifications.DarwinInitializationSettings(
+    final initializationSettingsIOS = local_notifications.DarwinInitializationSettings(
       requestSoundPermission: true,
       requestBadgePermission: true,
       requestAlertPermission: true,
       onDidReceiveLocalNotification: _onDidReceiveLocalNotification,
       notificationCategories: _iosCategories,
     );
-    const initializationSettings = local_notifications.InitializationSettings(
+    final initializationSettings = local_notifications.InitializationSettings(
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,
     );
@@ -153,14 +153,14 @@ class PushNotificationService {
       styleInformation: android?.styleInformation,
     );
 
-    final iosDetails = DarwinNotificationDetails(
+    final iosDetails = local_notifications.DarwinNotificationDetails(
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
       categoryIdentifier: _getNotificationCategory(message),
     );
 
-    final notificationDetails = NotificationDetails(
+    final notificationDetails = local_notifications.NotificationDetails(
       android: androidDetails,
       iOS: iosDetails,
     );
@@ -278,7 +278,7 @@ void _onDidReceiveLocalNotification(int id, String? title, String? body, String?
   debugPrint('Local notification received: $id, $title, $body, $payload');
 }
 
-void _onDidReceiveNotificationResponse(NotificationResponse response) {
+void _onDidReceiveNotificationResponse(local_notifications.NotificationResponse response) {
   debugPrint('Notification response received: ${response.actionId}, ${response.payload}');
 
   // Handle notification tap

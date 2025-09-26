@@ -62,7 +62,7 @@ class AppTheme {
         contentPadding: EdgeInsets.all(AppDimensions.paddingM),
       ),
 
-      cardTheme: const CardTheme(
+      cardTheme: CardTheme(
         elevation: 4,
         shadowColor: AppColors.shadow,
         shape: RoundedRectangleBorder(

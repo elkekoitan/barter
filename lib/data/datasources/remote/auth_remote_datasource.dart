@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import '../../../core/errors/failures.dart';
 import '../../../core/network/api_client.dart';
+import '../../../domain/entities/user_location.dart';
 
 // 🔥 AUTHENTICATION BACKEND - HTTP API Calls to Firebase Services 🔥
 abstract class AuthRemoteDataSource {
