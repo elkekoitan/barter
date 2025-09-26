@@ -335,6 +335,38 @@ class FAQ extends Equatable {
         updatedAt,
         metadata,
       ];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'question': question,
+      'answer': answer,
+      'categoryId': categoryId,
+      'tags': tags,
+      'isPopular': isPopular,
+      'viewCount': viewCount,
+      'helpfulCount': helpfulCount,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+      'metadata': metadata,
+    };
+  }
+
+  factory FAQ.fromJson(Map<String, dynamic> json) {
+    return FAQ(
+      id: json['id'],
+      question: json['question'],
+      answer: json['answer'],
+      categoryId: json['categoryId'],
+      tags: List<String>.from(json['tags'] ?? []),
+      isPopular: json['isPopular'] ?? false,
+      viewCount: json['viewCount'] ?? 0,
+      helpfulCount: json['helpfulCount'] ?? 0,
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+      metadata: json['metadata'],
+    );
+  }
 }
 
 class HelpStep extends Equatable {
@@ -406,6 +438,19 @@ class HelpSearchResult extends Equatable {
         tags,
         createdAt,
       ];
+
+  factory HelpSearchResult.fromJson(Map<String, dynamic> json) {
+    return HelpSearchResult(
+      id: json['id'],
+      title: json['title'],
+      excerpt: json['excerpt'],
+      type: json['type'],
+      categoryName: json['categoryName'],
+      relevanceScore: json['relevanceScore']?.toDouble() ?? 0.0,
+      tags: List<String>.from(json['tags'] ?? []),
+      createdAt: DateTime.parse(json['createdAt']),
+    );
+  }
 }
 
 class HelpStats extends Equatable {
@@ -446,6 +491,29 @@ class HelpStats extends Equatable {
         categorySatisfaction,
         lastUpdated,
       ];
+
+  factory HelpStats.fromJson(Map<String, dynamic> json) {
+    return HelpStats(
+      totalArticles: json['totalArticles'] ?? 0,
+      totalCategories: json['totalCategories'] ?? 0,
+      totalFAQs: json['totalFAQs'] ?? 0,
+      totalViews: json['totalViews'] ?? 0,
+      totalHelpfulVotes: json['totalHelpfulVotes'] ?? 0,
+      articlesByCategory: (json['articlesByCategory'] as Map<String, dynamic>?)?.map(
+        (key, value) => MapEntry(key, value as int),
+      ) ?? {},
+      popularArticles: (json['popularArticles'] as Map<String, dynamic>?)?.map(
+        (key, value) => MapEntry(key, value as int),
+      ) ?? {},
+      searchTerms: (json['searchTerms'] as Map<String, dynamic>?)?.map(
+        (key, value) => MapEntry(key, value as int),
+      ) ?? {},
+      categorySatisfaction: (json['categorySatisfaction'] as Map<String, dynamic>?)?.map(
+        (key, value) => MapEntry(key, value as double),
+      ) ?? {},
+      lastUpdated: DateTime.parse(json['lastUpdated']),
+    );
+  }
 }
 
 class HelpFeedback extends Equatable {
@@ -489,6 +557,38 @@ class HelpFeedback extends Equatable {
         resolvedBy,
         metadata,
       ];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'articleId': articleId,
+      'userId': userId,
+      'type': type.value,
+      'comment': comment,
+      'rating': rating,
+      'isResolved': isResolved,
+      'createdAt': createdAt.toIso8601String(),
+      'resolvedAt': resolvedAt?.toIso8601String(),
+      'resolvedBy': resolvedBy,
+      'metadata': metadata,
+    };
+  }
+
+  factory HelpFeedback.fromJson(Map<String, dynamic> json) {
+    return HelpFeedback(
+      id: json['id'],
+      articleId: json['articleId'],
+      userId: json['userId'],
+      type: FeedbackType.fromString(json['type'] ?? 'general'),
+      comment: json['comment'],
+      rating: json['rating'] ?? 0,
+      isResolved: json['isResolved'] ?? false,
+      createdAt: DateTime.parse(json['createdAt']),
+      resolvedAt: json['resolvedAt'] != null ? DateTime.parse(json['resolvedAt']) : null,
+      resolvedBy: json['resolvedBy'],
+      metadata: json['metadata'],
+    );
+  }
 }
 
 enum FeedbackType {
@@ -502,6 +602,13 @@ enum FeedbackType {
   const FeedbackType(this.value, this.displayName);
   final String value;
   final String displayName;
+
+  static FeedbackType fromString(String value) {
+    return FeedbackType.values.firstWhere(
+      (type) => type.value == value,
+      orElse: () => FeedbackType.other,
+    );
+  }
 }
 
 class HelpSearchRequest extends Equatable {
@@ -542,6 +649,36 @@ class HelpSearchRequest extends Equatable {
         sortBy,
         includeUnpublished,
       ];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'query': query,
+      'categoryId': categoryId,
+      'subcategoryId': subcategoryId,
+      'type': type?.value,
+      'priority': priority?.value,
+      'tags': tags,
+      'page': page,
+      'limit': limit,
+      'sortBy': sortBy.value,
+      'includeUnpublished': includeUnpublished,
+    };
+  }
+
+  factory HelpSearchRequest.fromJson(Map<String, dynamic> json) {
+    return HelpSearchRequest(
+      query: json['query'],
+      categoryId: json['categoryId'],
+      subcategoryId: json['subcategoryId'],
+      type: json['type'] != null ? ArticleType.fromString(json['type']) : null,
+      priority: json['priority'] != null ? ArticlePriority.fromString(json['priority']) : null,
+      tags: List<String>.from(json['tags'] ?? []),
+      page: json['page'] ?? 1,
+      limit: json['limit'] ?? 20,
+      sortBy: json['sortBy'] != null ? SearchSort.fromString(json['sortBy']) : SearchSort.relevance,
+      includeUnpublished: json['includeUnpublished'] ?? false,
+    );
+  }
 }
 
 enum SearchSort {
@@ -555,6 +692,13 @@ enum SearchSort {
   const SearchSort(this.value, this.displayName);
   final String value;
   final String displayName;
+
+  static SearchSort fromString(String value) {
+    return SearchSort.values.firstWhere(
+      (sort) => sort.value == value,
+      orElse: () => SearchSort.relevance,
+    );
+  }
 }
 
 class HelpFilter extends Equatable {
@@ -643,6 +787,24 @@ class UserHelpHistory extends Equatable {
         lastActivity,
         preferences,
       ];
+
+  factory UserHelpHistory.fromJson(Map<String, dynamic> json) {
+    return UserHelpHistory(
+      userId: json['userId'],
+      viewedArticles: List<String>.from(json['viewedArticles'] ?? []),
+      searchedTerms: List<String>.from(json['searchedTerms'] ?? []),
+      helpfulArticles: List<String>.from(json['helpfulArticles'] ?? []),
+      bookmarkedArticles: List<String>.from(json['bookmarkedArticles'] ?? []),
+      lastViewed: (json['lastViewed'] as Map<String, dynamic>?)?.map(
+        (key, value) => MapEntry(key, DateTime.parse(value)),
+      ) ?? {},
+      articleRatings: (json['articleRatings'] as Map<String, dynamic>?)?.map(
+        (key, value) => MapEntry(key, value as int),
+      ) ?? {},
+      lastActivity: DateTime.parse(json['lastActivity']),
+      preferences: json['preferences'],
+    );
+  }
 }
 
 class HelpSettings extends Equatable {
@@ -683,4 +845,34 @@ class HelpSettings extends Equatable {
         maxSearchHistory,
         customSettings,
       ];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'userId': userId,
+      'enableNotifications': enableNotifications,
+      'emailUpdates': emailUpdates,
+      'subscribedCategories': subscribedCategories,
+      'showHelpfulTips': showHelpfulTips,
+      'showVideoContent': showVideoContent,
+      'preferredLanguage': preferredLanguage,
+      'autoBookmark': autoBookmark,
+      'maxSearchHistory': maxSearchHistory,
+      'customSettings': customSettings,
+    };
+  }
+
+  factory HelpSettings.fromJson(Map<String, dynamic> json) {
+    return HelpSettings(
+      userId: json['userId'],
+      enableNotifications: json['enableNotifications'] ?? true,
+      emailUpdates: json['emailUpdates'] ?? false,
+      subscribedCategories: List<String>.from(json['subscribedCategories'] ?? []),
+      showHelpfulTips: json['showHelpfulTips'] ?? true,
+      showVideoContent: json['showVideoContent'] ?? true,
+      preferredLanguage: json['preferredLanguage'] ?? 'tr',
+      autoBookmark: json['autoBookmark'] ?? false,
+      maxSearchHistory: json['maxSearchHistory'] ?? 50,
+      customSettings: json['customSettings'],
+    );
+  }
 }
