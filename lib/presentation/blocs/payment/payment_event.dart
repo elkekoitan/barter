@@ -1,3 +1,5 @@
+part of 'payment_bloc.dart';
+
 import 'package:equatable/equatable.dart';
 import '../../../domain/repositories/payment_repository.dart';
 
@@ -27,10 +29,10 @@ class PaymentCompleted extends PaymentEvent {
   List<Object?> get props => [paymentId, redirectUrl];
 }
 
-class PaymentFailed extends PaymentEvent {
+class PaymentError extends PaymentEvent {
   final String errorMessage;
 
-  const PaymentFailed(this.errorMessage);
+  const PaymentError(this.errorMessage);
 
   @override
   List<Object?> get props => [errorMessage];
