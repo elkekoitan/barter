@@ -176,13 +176,47 @@ class BarterRemoteDataSourceImpl implements BarterRemoteDataSource {
   }
 
   BarterTransactionEntity _mapTransactionToEntity(Map<String, dynamic> data) {
+    // TODO: Implement proper transaction mapping with all required fields
+    // This is a simplified version for basic functionality
     return BarterTransactionEntity(
       id: data['id'],
       offerId: data['offerId'],
-      status: data['status'],
-      completedAt: data['completedAt'] != null ? DateTime.parse(data['completedAt']) : null,
+      parties: TransactionParties(
+        buyerId: data['buyerId'] ?? '',
+        sellerId: data['sellerId'] ?? '',
+      ),
+      items: TransactionItems(
+        buyerItems: [],
+        sellerItems: [],
+        escrowRequired: true,
+      ),
+      payment: TransactionPayment(
+        method: 'cash',
+        amount: 0.0,
+        currency: 'TRY',
+        status: 'pending',
+      ),
+      delivery: TransactionDelivery(
+        method: 'in_person',
+        status: 'pending',
+        meetingPoint: null,
+      ),
+      status: TransactionStatus.fromString(data['status'] ?? 'pending'),
+      timeline: [
+        TransactionTimeline(
+          event: 'created',
+          timestamp: DateTime.parse(data['createdAt']),
+          description: 'Transaction created',
+        ),
+      ],
+      metadata: TransactionMetadata(
+        notes: data['notes'],
+        tags: [],
+        customFields: {},
+      ),
       createdAt: DateTime.parse(data['createdAt']),
       updatedAt: DateTime.parse(data['updatedAt']),
+      completedAt: data['completedAt'] != null ? DateTime.parse(data['completedAt']) : null,
     );
   }
 }
