@@ -225,6 +225,7 @@ class PushNotificationMessage extends Equatable {
   final String? imageUrl;
   final String? sound;
   final String? clickAction;
+  final String? category;
   final Map<String, String>? androidConfig;
   final Map<String, String>? iosConfig;
 
@@ -236,6 +237,7 @@ class PushNotificationMessage extends Equatable {
     this.imageUrl,
     this.sound = 'default',
     this.clickAction,
+    this.category,
     this.androidConfig,
     this.iosConfig,
   });
@@ -249,6 +251,7 @@ class PushNotificationMessage extends Equatable {
         imageUrl,
         sound,
         clickAction,
+        category,
         androidConfig,
         iosConfig,
       ];

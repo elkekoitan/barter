@@ -278,7 +278,8 @@ class PushNotificationRemoteDataSourceImpl implements PushNotificationRemoteData
       data: message.data,
       imageUrl: message.notification?.android?.imageUrl ?? message.notification?.apple?.imageUrl,
       sound: message.notification?.android?.sound ?? message.notification?.apple?.sound ?? 'default',
-      clickAction: message.notification?.android?.clickAction ?? message.notification?.apple?.clickAction,
+      clickAction: message.notification?.android?.clickAction,
+      category: message.category?.toString(),
       androidConfig: message.notification?.android != null
           ? {
               'channelId': message.notification!.android!.channelId ?? 'default',
@@ -290,9 +291,9 @@ class PushNotificationRemoteDataSourceImpl implements PushNotificationRemoteData
       iosConfig: message.notification?.apple != null
           ? {
               'subtitle': message.notification!.apple!.subtitle ?? '',
-              'badge': message.notification!.apple!.badge ?? '1',
+              'badge': message.notification!.apple!.badge?.toString() ?? '1',
               'sound': message.notification!.apple!.sound ?? 'default',
-              'category': message.notification!.apple!.category ?? 'default',
+              'category': 'default',
             }
           : null,
     );
