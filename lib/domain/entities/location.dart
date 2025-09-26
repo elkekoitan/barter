@@ -535,17 +535,6 @@ class RouteEntity extends Equatable {
       ];
 }
 
-enum RouteMode {
-  driving('driving', 'Araba'),
-  walking('walking', 'Yürüme'),
-  bicycling('bicycling', 'Bisiklet'),
-  transit('transit', 'Toplu Taşıma');
-
-  const RouteMode(this.value, this.displayName);
-  final String value;
-  final String displayName;
-}
-
 enum RouteAvoidance {
   none('none', 'Hiçbiri'),
   tolls('tolls', 'Ücretli Yollar'),

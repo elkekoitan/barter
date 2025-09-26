@@ -447,7 +447,7 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
 
       String waypoints = '';
       if (request.waypoints != null && request.waypoints!.isNotEmpty) {
-        waypoints = '&waypoints=${request.waypoints!.map((w) => '${w.latitude},${w.longitude}').join('|')}';
+        waypoints = request.waypoints != null ? '&waypoints=${request.waypoints.map((w) => '${w.latitude},${w.longitude}').join('|')}' : '';
       }
 
       final url = Uri.parse('https://maps.googleapis.com/maps/api/directions/json?origin=$origin&destination=$destination$waypoints&mode=${request.mode.value}&avoid=${request.avoidance.value}&key=$_googleMapsApiKey');
@@ -818,11 +818,11 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
         if (request.location != null) {
           url = 'https://www.google.com/maps/search/?api=1&query=${request.location!.latitude},${request.location!.longitude}';
         } else {
-          url = 'https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(request.address!)}';
+          url = 'https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(request.addressOrCoordinates)}';
         }
       } else {
         // Default to Google Maps
-        url = 'https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(request.address ?? '${request.location!.latitude},${request.location!.longitude}')}';
+        url = 'https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(request.addressOrCoordinates)}';
       }
 
       if (await canLaunch(url)) {

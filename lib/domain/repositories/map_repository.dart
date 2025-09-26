@@ -354,12 +354,16 @@ class OpenInMapsRequest {
   final LatLng location;
   final String label;
   final MapApp app;
+  final String? address;
 
   const OpenInMapsRequest({
     required this.location,
     required this.label,
     required this.app,
+    this.address,
   });
+
+  String get addressOrCoordinates => address ?? '${location.latitude},${location.longitude}';
 }
 
 enum SearchType {
@@ -375,6 +379,7 @@ enum SearchType {
 
 enum MapApp {
   google('google', 'Google Maps'),
+  googleMaps('googleMaps', 'Google Maps'),
   apple('apple', 'Apple Maps'),
   waze('waze', 'Waze'),
   other('other', 'Diğer');
