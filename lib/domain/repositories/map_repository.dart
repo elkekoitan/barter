@@ -252,6 +252,73 @@ class PlaceSearchRequest {
   });
 }
 
+class NearbyPlacesRequest {
+  final LatLng center;
+  final double radius;
+  final PlaceType? type;
+  final int limit;
+
+  const NearbyPlacesRequest({
+    required this.center,
+    required this.radius,
+    this.type,
+    this.limit = 20,
+  });
+}
+
+class GetPlacesRequest {
+  final List<String> placeIds;
+
+  const GetPlacesRequest(this.placeIds);
+}
+
+class RouteAlternativesRequest {
+  final LatLng origin;
+  final LatLng destination;
+  final TravelMode mode;
+  final List<LatLng>? waypoints;
+  final bool avoidTolls;
+  final bool avoidHighways;
+
+  const RouteAlternativesRequest({
+    required this.origin,
+    required this.destination,
+    required this.mode,
+    this.waypoints,
+    this.avoidTolls = false,
+    this.avoidHighways = false,
+  });
+}
+
+class MarkerRequest {
+  final MarkerType type;
+  final MapBounds? bounds;
+  final List<String>? categories;
+  final int limit;
+  final bool includeUserMarkers;
+
+  const MarkerRequest({
+    required this.type,
+    this.bounds,
+    this.categories,
+    this.limit = 100,
+    this.includeUserMarkers = false,
+  });
+}
+
+enum MarkerType {
+  all('all', 'Tümü'),
+  user('user', 'Kullanıcı'),
+  business('business', 'İş Yeri'),
+  event('event', 'Etkinlik'),
+  favorite('favorite', 'Favori'),
+  recent('recent', 'Son');
+
+  const MarkerType(this.value, this.displayName);
+  final String value;
+  final String displayName;
+}
+
 class MapDataRequest {
   final MapBounds bounds;
   final MapType type;

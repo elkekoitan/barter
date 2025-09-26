@@ -91,6 +91,10 @@ class ListingEntity extends Equatable {
       : media.isNotEmpty
           ? media.first.url
           : null;
+
+  double? get price => pricing.cashPrice;
+
+  String get currency => pricing.currency;
 }
 
 class CategoryEntity extends Equatable {
@@ -436,7 +440,8 @@ enum ModerationStatus {
 enum ModerationLevel {
   low('low', 'Düşük'),
   medium('medium', 'Orta'),
-  high('high', 'Yüksek');
+  high('high', 'Yüksek'),
+  automatic('automatic', 'Otomatik');
 
   const ModerationLevel(this.value, this.displayName);
   final String value;

@@ -7,16 +7,18 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../../core/errors/failures.dart';
 import '../../../domain/repositories/map_repository.dart';
+import '../../../domain/entities/location_entity.dart' as location_entity;
+import '../../../domain/entities/location.dart';
 
 abstract class MapRemoteDataSource {
-  Future<Either<Failure, LocationEntity>> getCurrentLocation();
-  Future<Either<Failure, LocationEntity>> getLocationFromAddress(String address);
+  Future<Either<Failure, location_entity.LocationEntity>> getCurrentLocation();
+  Future<Either<Failure, location_entity.LocationEntity>> getLocationFromAddress(String address);
   Future<Either<Failure, List<GeocodingResult>>> geocodeAddress(String address);
   Future<Either<Failure, String>> reverseGeocode(double latitude, double longitude);
-  Future<Either<Failure, LocationEntity>> saveLocation(LocationEntity location);
+  Future<Either<Failure, location_entity.LocationEntity>> saveLocation(location_entity.LocationEntity location);
   Future<Either<Failure, void>> deleteLocation(String locationId);
-  Future<Either<Failure, List<LocationEntity>>> getSavedLocations(String userId);
-  Future<Either<Failure, LocationEntity>> updateLocation(String locationId, LocationEntity location);
+  Future<Either<Failure, List<location_entity.LocationEntity>>> getSavedLocations(String userId);
+  Future<Either<Failure, location_entity.LocationEntity>> updateLocation(String locationId, location_entity.LocationEntity location);
   Future<Either<Failure, List<PlaceEntity>>> searchPlaces(PlaceSearchRequest request);
   Future<Either<Failure, PlaceEntity>> getPlaceDetails(String placeId);
   Future<Either<Failure, List<PlaceEntity>>> getNearbyPlaces(NearbyPlacesRequest request);
@@ -27,10 +29,10 @@ abstract class MapRemoteDataSource {
   Future<Either<Failure, List<MapMarker>>> getMapMarkers(MapBounds bounds, MarkerRequest request);
   Future<Either<Failure, MapEntity>> updateMap(MapEntity map);
   Future<Either<Failure, UserLocationEntity>> getUserLocation(String userId);
-  Future<Either<Failure, UserLocationEntity>> updateUserLocation(String userId, LocationEntity location);
+  Future<Either<Failure, UserLocationEntity>> updateUserLocation(String userId, location_entity.LocationEntity location);
   Future<Either<Failure, void>> enableLocationSharing(String userId, bool enabled);
-  Future<Either<Failure, void>> setHomeLocation(String userId, LocationEntity location);
-  Future<Either<Failure, void>> setWorkLocation(String userId, LocationEntity location);
+  Future<Either<Failure, void>> setHomeLocation(String userId, location_entity.LocationEntity location);
+  Future<Either<Failure, void>> setWorkLocation(String userId, location_entity.LocationEntity location);
   Future<Either<Failure, List<UserLocationEntity>>> getNearbyUsers(String userId, NearbyUsersRequest request);
   Future<Either<Failure, double>> calculateDistance(LatLng from, LatLng to);
   Future<Either<Failure, double>> calculateArea(List<LatLng> points);
