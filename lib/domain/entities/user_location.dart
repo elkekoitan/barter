@@ -108,16 +108,16 @@ class UserLocation extends Equatable {
     final double dLat = _degreesToRadians(other.latitude - latitude);
     final double dLon = _degreesToRadians(other.longitude - longitude);
 
-    final double a = (dLat / 2).sin() * (dLat / 2).sin() +
-        latitude.cos() * other.latitude.cos() *
-        (dLon / 2).sin() * (dLon / 2).sin();
+    final double a = sin(dLat / 2) * sin(dLat / 2) +
+        cos(latitude) * cos(other.latitude) *
+        sin(dLon / 2) * sin(dLon / 2);
 
-    final double c = 2 * a.sqrt().atan2((1 - a).sqrt());
+    final double c = 2 * atan2(sqrt(a), sqrt(1 - a));
     return earthRadius * c;
   }
 
   double _degreesToRadians(double degrees) {
-    return degrees * (3.141592653589793 / 180);
+    return degrees * (pi / 180);
   }
 }
 
