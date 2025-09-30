@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import '../../../domain/entities/notification.dart';
-import '../../../domain/entities/notification_settings.dart';
+import '../../../domain/entities/notification.dart' as domain;
 
 abstract class NotificationState extends Equatable {
   const NotificationState();
@@ -26,7 +26,7 @@ class SettingsLoading extends NotificationState {}
 
 // Success States
 class NotificationsLoaded extends NotificationState {
-  final List<NotificationEntity> notifications;
+  final List<domain.NotificationEntity> notifications;
   final bool hasMore;
   final int currentPage;
   final int totalCount;
@@ -43,7 +43,7 @@ class NotificationsLoaded extends NotificationState {
 }
 
 class NotificationLoaded extends NotificationState {
-  final NotificationEntity notification;
+  final domain.NotificationEntity notification;
 
   const NotificationLoaded(this.notification);
 
@@ -52,7 +52,7 @@ class NotificationLoaded extends NotificationState {
 }
 
 class NotificationMarkedAsRead extends NotificationState {
-  final NotificationEntity notification;
+  final domain.NotificationEntity notification;
 
   const NotificationMarkedAsRead(this.notification);
 
@@ -74,7 +74,7 @@ class NotificationDeleted extends NotificationState {
 class AllNotificationsDeleted extends NotificationState {}
 
 class SettingsLoaded extends NotificationState {
-  final NotificationSettings settings;
+  final domain.NotificationSettings settings;
 
   const SettingsLoaded(this.settings);
 
@@ -83,7 +83,7 @@ class SettingsLoaded extends NotificationState {
 }
 
 class SettingsUpdated extends NotificationState {
-  final NotificationSettings settings;
+  final domain.NotificationSettings settings;
 
   const SettingsUpdated(this.settings);
 
@@ -92,7 +92,7 @@ class SettingsUpdated extends NotificationState {
 }
 
 class NotificationStatsLoaded extends NotificationState {
-  final NotificationStats stats;
+  final domain.NotificationStats stats;
 
   const NotificationStatsLoaded(this.stats);
 
@@ -150,7 +150,7 @@ class MultipleNotificationsDeleted extends NotificationState {
 }
 
 class NotificationsSearched extends NotificationState {
-  final List<NotificationEntity> notifications;
+  final List<domain.NotificationEntity> notifications;
   final String query;
 
   const NotificationsSearched(this.notifications, this.query);
@@ -162,7 +162,7 @@ class NotificationsSearched extends NotificationState {
 class NotificationCacheCleared extends NotificationState {}
 
 class NotificationReceivedInForeground extends NotificationState {
-  final NotificationEntity notification;
+  final domain.NotificationEntity notification;
 
   const NotificationReceivedInForeground(this.notification);
 
@@ -194,21 +194,4 @@ enum NotificationErrorType {
   final String displayName;
 }
 
-// Settings States
-class SettingsLoaded extends NotificationState {
-  final NotificationSettingsEntity settings;
-
-  const SettingsLoaded(this.settings);
-
-  @override
-  List<Object?> get props => [settings];
-}
-
-class SettingsUpdated extends NotificationState {
-  final NotificationSettingsEntity settings;
-
-  const SettingsUpdated(this.settings);
-
-  @override
-  List<Object?> get props => [settings];
-}
+// Note: consolidated SettingsLoaded/SettingsUpdated above to use domain.NotificationSettings

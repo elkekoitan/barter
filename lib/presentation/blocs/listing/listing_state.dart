@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import '../../../domain/entities/listing.dart';
+import '../../../domain/repositories/listing_repository.dart';
 
 abstract class ListingState extends Equatable {
   const ListingState();

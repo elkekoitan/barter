@@ -49,9 +49,9 @@ class BarterOfferEntity extends Equatable {
 
   double get totalValue => offer.totalValue;
 
-  String get offeredByUserId => type == OfferType.direct ? buyerId : sellerId;
+  String get offeredByUserId => type == OfferType.directSwap ? buyerId : sellerId;
 
-  List<String> get offeredItems => offer.items.map((item) => item.id).toList();
+  List<String> get offeredItems => offer.items.map((item) => item.listingId).toList();
 
   @override
   List<Object?> get props => [

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import '../../../domain/repositories/notification_repository.dart';
-import '../../../domain/entities/notification_settings.dart';
+import '../../../domain/entities/notification.dart' as domain;
 
 abstract class NotificationEvent extends Equatable {
   const NotificationEvent();
@@ -57,23 +57,15 @@ class DeleteNotificationRequested extends NotificationEvent {
 class DeleteAllNotificationsRequested extends NotificationEvent {}
 
 // Settings Events
-class GetNotificationSettingsRequested extends NotificationEvent {
-  final String userId;
-
-  const GetNotificationSettingsRequested(this.userId);
-
-  @override
-  List<Object?> get props => [userId];
-}
+class GetNotificationSettingsRequested extends NotificationEvent {}
 
 class UpdateNotificationSettingsRequested extends NotificationEvent {
-  final String userId;
-  final NotificationSettingsEntity settings;
+  final domain.NotificationSettings settings;
 
-  const UpdateNotificationSettingsRequested(this.userId, this.settings);
+  const UpdateNotificationSettingsRequested(this.settings);
 
   @override
-  List<Object?> get props => [userId, settings];
+  List<Object?> get props => [settings];
 }
 
 class ToggleNotificationChannelRequested extends NotificationEvent {
@@ -175,7 +167,7 @@ class LoadMoreNotificationsRequested extends NotificationEvent {
 class ClearNotificationCacheRequested extends NotificationEvent {}
 
 class NotificationReceived extends NotificationEvent {
-  final NotificationEntity notification;
+  final domain.NotificationEntity notification;
   final bool fromBackground;
 
   const NotificationReceived(this.notification, {this.fromBackground = false});

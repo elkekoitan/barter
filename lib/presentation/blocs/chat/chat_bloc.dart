@@ -4,10 +4,11 @@ import '../../../domain/usecases/chat/get_chats_usecase.dart';
 import '../../../domain/usecases/chat/send_message_usecase.dart';
 import '../../../domain/usecases/chat/create_chat_usecase.dart';
 import '../../../domain/repositories/chat_repository.dart';
-import 'chat_event.dart';
-import 'chat_state.dart';
+import '../../../domain/entities/chat.dart' as domain;
+import 'chat_event.dart' as chat_event;
+import 'chat_state.dart' as chat_state;
 
-class ChatBloc extends Bloc<ChatEvent, ChatState> {
+class ChatBloc extends Bloc<chat_event.ChatEvent, chat_state.ChatState> {
   final GetChatsUseCase _getChatsUseCase;
   final SendMessageUseCase _sendMessageUseCase;
   final CreateChatUseCase _createChatUseCase;
@@ -22,65 +23,65 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         _sendMessageUseCase = sendMessageUseCase,
         _createChatUseCase = createChatUseCase,
         _chatRepository = chatRepository,
-        super(ChatInitial()) {
-    on<GetChatsRequested>(_onGetChatsRequested);
-    on<GetChatByIdRequested>(_onGetChatByIdRequested);
-    on<CreateChatRequested>(_onCreateChatRequested);
-    on<UpdateChatRequested>(_onUpdateChatRequested);
-    on<DeleteChatRequested>(_onDeleteChatRequested);
-    on<ArchiveChatRequested>(_onArchiveChatRequested);
-    on<UnarchiveChatRequested>(_onUnarchiveChatRequested);
-    on<BlockChatRequested>(_onBlockChatRequested);
-    on<UnblockChatRequested>(_onUnblockChatRequested);
-    on<MuteChatRequested>(_onMuteChatRequested);
-    on<UnmuteChatRequested>(_onUnmuteChatRequested);
-    on<GetMessagesRequested>(_onGetMessagesRequested);
-    on<SendMessageRequested>(_onSendMessageRequested);
-    on<EditMessageRequested>(_onEditMessageRequested);
-    on<DeleteMessageRequested>(_onDeleteMessageRequested);
-    on<MarkMessageAsReadRequested>(_onMarkMessageAsReadRequested);
-    on<MarkMessagesAsReadRequested>(_onMarkMessagesAsReadRequested);
-    on<ReactToMessageRequested>(_onReactToMessageRequested);
-    on<RemoveReactionRequested>(_onRemoveReactionRequested);
-    on<ReplyToMessageRequested>(_onReplyToMessageRequested);
-    on<ForwardMessageRequested>(_onForwardMessageRequested);
-    on<SearchMessagesRequested>(_onSearchMessagesRequested);
-    on<SearchChatsRequested>(_onSearchChatsRequested);
-    on<UploadFileRequested>(_onUploadFileRequested);
-    on<DeleteFileRequested>(_onDeleteFileRequested);
-    on<SendTypingIndicatorRequested>(_onSendTypingIndicatorRequested);
-    on<CreateChatRoomRequested>(_onCreateChatRoomRequested);
-    on<GetChatRoomRequested>(_onGetChatRoomRequested);
-    on<GetUserChatRoomsRequested>(_onGetUserChatRoomsRequested);
-    on<JoinChatRoomRequested>(_onJoinChatRoomRequested);
-    on<LeaveChatRoomRequested>(_onLeaveChatRoomRequested);
-    on<AddParticipantToRoomRequested>(_onAddParticipantToRoomRequested);
-    on<RemoveParticipantFromRoomRequested>(_onRemoveParticipantFromRoomRequested);
-    on<UpdateRoomSettingsRequested>(_onUpdateRoomSettingsRequested);
-    on<GetChatStatsRequested>(_onGetChatStatsRequested);
-    on<MarkAllMessagesAsReadRequested>(_onMarkAllMessagesAsReadRequested);
-    on<DeleteMultipleMessagesRequested>(_onDeleteMultipleMessagesRequested);
-    on<ClearChatHistoryRequested>(_onClearChatHistoryRequested);
-    on<CacheMessagesRequested>(_onCacheMessagesRequested);
-    on<GetCachedMessagesRequested>(_onGetCachedMessagesRequested);
-    on<ClearMessageCacheRequested>(_onClearMessageCacheRequested);
-    on<RefreshChatsRequested>(_onRefreshChatsRequested);
-    on<LoadMoreChatsRequested>(_onLoadMoreChatsRequested);
-    on<LoadMoreMessagesRequested>(_onLoadMoreMessagesRequested);
-    on<ClearChatCacheRequested>(_onClearChatCacheRequested);
-    on<ChatUpdated>(_onChatUpdated);
-    on<MessageReceived>(_onMessageReceived);
-    on<MessageUpdated>(_onMessageUpdated);
-    on<TypingIndicatorReceived>(_onTypingIndicatorReceived);
-    on<ChatParticipantJoined>(_onChatParticipantJoined);
-    on<ChatParticipantLeft>(_onChatParticipantLeft);
+        super(chat_state.ChatInitial()) {
+    on<chat_event.GetChatsRequested>(_onGetChatsRequested);
+    on<chat_event.GetChatByIdRequested>(_onGetChatByIdRequested);
+    on<chat_event.CreateChatRequested>(_onCreateChatRequested);
+    on<chat_event.UpdateChatRequested>(_onUpdateChatRequested);
+    on<chat_event.DeleteChatRequested>(_onDeleteChatRequested);
+    on<chat_event.ArchiveChatRequested>(_onArchiveChatRequested);
+    on<chat_event.UnarchiveChatRequested>(_onUnarchiveChatRequested);
+    on<chat_event.BlockChatRequested>(_onBlockChatRequested);
+    on<chat_event.UnblockChatRequested>(_onUnblockChatRequested);
+    on<chat_event.MuteChatRequested>(_onMuteChatRequested);
+    on<chat_event.UnmuteChatRequested>(_onUnmuteChatRequested);
+    on<chat_event.GetMessagesRequested>(_onGetMessagesRequested);
+    on<chat_event.SendMessageRequested>(_onSendMessageRequested);
+    on<chat_event.EditMessageRequested>(_onEditMessageRequested);
+    on<chat_event.DeleteMessageRequested>(_onDeleteMessageRequested);
+    on<chat_event.MarkMessageAsReadRequested>(_onMarkMessageAsReadRequested);
+    on<chat_event.MarkMessagesAsReadRequested>(_onMarkMessagesAsReadRequested);
+    on<chat_event.ReactToMessageRequested>(_onReactToMessageRequested);
+    on<chat_event.RemoveReactionRequested>(_onRemoveReactionRequested);
+    on<chat_event.ReplyToMessageRequested>(_onReplyToMessageRequested);
+    on<chat_event.ForwardMessageRequested>(_onForwardMessageRequested);
+    on<chat_event.SearchMessagesRequested>(_onSearchMessagesRequested);
+    on<chat_event.SearchChatsRequested>(_onSearchChatsRequested);
+    on<chat_event.UploadFileRequested>(_onUploadFileRequested);
+    on<chat_event.DeleteFileRequested>(_onDeleteFileRequested);
+    on<chat_event.SendTypingIndicatorRequested>(_onSendTypingIndicatorRequested);
+    on<chat_event.CreateChatRoomRequested>(_onCreateChatRoomRequested);
+    on<chat_event.GetChatRoomRequested>(_onGetChatRoomRequested);
+    on<chat_event.GetUserChatRoomsRequested>(_onGetUserChatRoomsRequested);
+    on<chat_event.JoinChatRoomRequested>(_onJoinChatRoomRequested);
+    on<chat_event.LeaveChatRoomRequested>(_onLeaveChatRoomRequested);
+    on<chat_event.AddParticipantToRoomRequested>(_onAddParticipantToRoomRequested);
+    on<chat_event.RemoveParticipantFromRoomRequested>(_onRemoveParticipantFromRoomRequested);
+    on<chat_event.UpdateRoomSettingsRequested>(_onUpdateRoomSettingsRequested);
+    on<chat_event.GetChatStatsRequested>(_onGetChatStatsRequested);
+    on<chat_event.MarkAllMessagesAsReadRequested>(_onMarkAllMessagesAsReadRequested);
+    on<chat_event.DeleteMultipleMessagesRequested>(_onDeleteMultipleMessagesRequested);
+    on<chat_event.ClearChatHistoryRequested>(_onClearChatHistoryRequested);
+    on<chat_event.CacheMessagesRequested>(_onCacheMessagesRequested);
+    on<chat_event.GetCachedMessagesRequested>(_onGetCachedMessagesRequested);
+    on<chat_event.ClearMessageCacheRequested>(_onClearMessageCacheRequested);
+    on<chat_event.RefreshChatsRequested>(_onRefreshChatsRequested);
+    on<chat_event.LoadMoreChatsRequested>(_onLoadMoreChatsRequested);
+    on<chat_event.LoadMoreMessagesRequested>(_onLoadMoreMessagesRequested);
+    on<chat_event.ClearChatCacheRequested>(_onClearChatCacheRequested);
+    on<chat_event.ChatUpdated>(_onChatUpdated);
+    on<chat_event.MessageReceived>(_onMessageReceived);
+    on<chat_event.MessageUpdated>(_onMessageUpdated);
+    on<chat_event.TypingIndicatorReceived>(_onTypingIndicatorReceived);
+    on<chat_event.ChatParticipantJoined>(_onChatParticipantJoined);
+    on<chat_event.ChatParticipantLeft>(_onChatParticipantLeft);
   }
 
   Future<void> _onGetChatsRequested(
-    GetChatsRequested event,
-    Emitter<ChatState> emit,
+    chat_event.GetChatsRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
-    emit(ChatsLoading());
+    emit(chat_state.ChatsLoading());
 
     final result = await _getChatsUseCase.call(
       filter: event.filter,
@@ -89,8 +90,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     );
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (chats) => emit(ChatsLoaded(
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (chats) => emit(chat_state.ChatsLoaded(
         chats: chats,
         currentPage: event.page,
         hasMore: chats.length == event.limit,
@@ -100,134 +101,134 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   Future<void> _onGetChatByIdRequested(
-    GetChatByIdRequested event,
-    Emitter<ChatState> emit,
+    chat_event.GetChatByIdRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
-    emit(ChatLoading());
+    emit(chat_state.ChatLoading());
 
     final result = await _chatRepository.getChatById(event.chatId);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (chat) => emit(ChatLoaded(chat)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (chat) => emit(chat_state.ChatLoaded(chat)),
     );
   }
 
   Future<void> _onCreateChatRequested(
-    CreateChatRequested event,
-    Emitter<ChatState> emit,
+    chat_event.CreateChatRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
-    emit(ChatLoading());
+    emit(chat_state.ChatLoading());
 
     final result = await _createChatUseCase.call(event.request);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (chat) => emit(ChatCreated(chat)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (chat) => emit(chat_state.ChatCreated(chat)),
     );
   }
 
   Future<void> _onUpdateChatRequested(
-    UpdateChatRequested event,
-    Emitter<ChatState> emit,
+    chat_event.UpdateChatRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.updateChat(event.chatId, event.request);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (chat) => emit(ChatUpdated(chat)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (chat) => emit(chat_state.ChatUpdated(chat)),
     );
   }
 
   Future<void> _onDeleteChatRequested(
-    DeleteChatRequested event,
-    Emitter<ChatState> emit,
+    chat_event.DeleteChatRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.deleteChat(event.chatId);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (_) => emit(ChatDeleted(event.chatId)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.ChatDeleted(event.chatId)),
     );
   }
 
   Future<void> _onArchiveChatRequested(
-    ArchiveChatRequested event,
-    Emitter<ChatState> emit,
+    chat_event.ArchiveChatRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.archiveChat(event.chatId);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (_) => emit(ChatArchived(event.chatId)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.ChatArchived(event.chatId)),
     );
   }
 
   Future<void> _onUnarchiveChatRequested(
-    UnarchiveChatRequested event,
-    Emitter<ChatState> emit,
+    chat_event.UnarchiveChatRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.unarchiveChat(event.chatId);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (_) => emit(ChatUnarchived(event.chatId)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.ChatUnarchived(event.chatId)),
     );
   }
 
   Future<void> _onBlockChatRequested(
-    BlockChatRequested event,
-    Emitter<ChatState> emit,
+    chat_event.BlockChatRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.blockChat(event.chatId);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (_) => emit(ChatBlocked(event.chatId)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.ChatBlocked(event.chatId)),
     );
   }
 
   Future<void> _onUnblockChatRequested(
-    UnblockChatRequested event,
-    Emitter<ChatState> emit,
+    chat_event.UnblockChatRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.unblockChat(event.chatId);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (_) => emit(ChatUnblocked(event.chatId)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.ChatUnblocked(event.chatId)),
     );
   }
 
   Future<void> _onMuteChatRequested(
-    MuteChatRequested event,
-    Emitter<ChatState> emit,
+    chat_event.MuteChatRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.muteChat(event.chatId);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (_) => emit(ChatMuted(event.chatId)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.ChatMuted(event.chatId)),
     );
   }
 
   Future<void> _onUnmuteChatRequested(
-    UnmuteChatRequested event,
-    Emitter<ChatState> emit,
+    chat_event.UnmuteChatRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.unmuteChat(event.chatId);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (_) => emit(ChatUnmuted(event.chatId)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.ChatUnmuted(event.chatId)),
     );
   }
 
   Future<void> _onGetMessagesRequested(
-    GetMessagesRequested event,
-    Emitter<ChatState> emit,
+    chat_event.GetMessagesRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
-    emit(MessagesLoading());
+    emit(chat_state.MessagesLoading());
 
     final result = await _chatRepository.getMessages(
       event.chatId,
@@ -237,8 +238,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     );
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (messages) => emit(MessagesLoaded(
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (messages) => emit(chat_state.MessagesLoaded(
         chatId: event.chatId,
         messages: messages,
         currentPage: event.page,
@@ -248,373 +249,387 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   Future<void> _onSendMessageRequested(
-    SendMessageRequested event,
-    Emitter<ChatState> emit,
+    chat_event.SendMessageRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _sendMessageUseCase.call(event.request);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (message) => emit(MessageSent(message)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (message) => emit(chat_state.MessageSent(message)),
     );
   }
 
   Future<void> _onEditMessageRequested(
-    EditMessageRequested event,
-    Emitter<ChatState> emit,
+    chat_event.EditMessageRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.editMessage(event.messageId, event.newContent);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (message) => emit(MessageEdited(message)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (message) => emit(chat_state.MessageEdited(message)),
     );
   }
 
   Future<void> _onDeleteMessageRequested(
-    DeleteMessageRequested event,
-    Emitter<ChatState> emit,
+    chat_event.DeleteMessageRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.deleteMessage(event.messageId);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (_) => emit(MessageDeleted(event.messageId)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.MessageDeleted(event.messageId)),
     );
   }
 
   Future<void> _onMarkMessageAsReadRequested(
-    MarkMessageAsReadRequested event,
-    Emitter<ChatState> emit,
+    chat_event.MarkMessageAsReadRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.markMessageAsRead(event.messageId);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (_) => emit(MessageMarkedAsRead(event.messageId)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.MessageMarkedAsRead(event.messageId)),
     );
   }
 
   Future<void> _onMarkMessagesAsReadRequested(
-    MarkMessagesAsReadRequested event,
-    Emitter<ChatState> emit,
+    chat_event.MarkMessagesAsReadRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.markMessagesAsRead(event.messageIds);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (messageIds) => emit(MessagesMarkedAsRead(messageIds)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (messageIds) => emit(chat_state.MessagesMarkedAsRead(messageIds)),
     );
   }
 
   Future<void> _onReactToMessageRequested(
-    ReactToMessageRequested event,
-    Emitter<ChatState> emit,
+    chat_event.ReactToMessageRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.reactToMessage(event.messageId, event.emoji);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (reaction) => emit(MessageReacted(event.messageId, reaction)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.MessageReacted(
+        event.messageId,
+        domain.MessageReaction(
+          emoji: event.emoji,
+          userId: 'current_user_id',
+          userName: 'You',
+          createdAt: DateTime.now(),
+        ),
+      )),
     );
   }
 
   Future<void> _onRemoveReactionRequested(
-    RemoveReactionRequested event,
-    Emitter<ChatState> emit,
+    chat_event.RemoveReactionRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.removeReaction(event.messageId, event.emoji);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (_) => emit(ReactionRemoved(event.messageId, event.emoji)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.ReactionRemoved(event.messageId, event.emoji)),
     );
   }
 
   Future<void> _onReplyToMessageRequested(
-    ReplyToMessageRequested event,
-    Emitter<ChatState> emit,
+    chat_event.ReplyToMessageRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.replyToMessage(event.request);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (reply) => emit(MessageReplied(reply)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (reply) => emit(chat_state.MessageReplied(reply)),
     );
   }
 
   Future<void> _onForwardMessageRequested(
-    ForwardMessageRequested event,
-    Emitter<ChatState> emit,
+    chat_event.ForwardMessageRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.forwardMessage(event.request);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (message) => emit(MessageForwarded(message, event.request.targetChatId)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (message) => emit(chat_state.MessageForwarded(message, event.request.targetChatId)),
     );
   }
 
   Future<void> _onSearchMessagesRequested(
-    SearchMessagesRequested event,
-    Emitter<ChatState> emit,
+    chat_event.SearchMessagesRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.searchMessages(event.request);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (messages) => emit(MessagesSearched(messages, event.request.query)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (messages) => emit(chat_state.MessagesSearched(messages, event.request.query)),
     );
   }
 
   Future<void> _onSearchChatsRequested(
-    SearchChatsRequested event,
-    Emitter<ChatState> emit,
+    chat_event.SearchChatsRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.searchChats(event.request);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (chats) => emit(ChatsSearched(chats, event.request.query)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (chats) => emit(chat_state.ChatsSearched(chats, event.request.query)),
     );
   }
 
   Future<void> _onUploadFileRequested(
-    UploadFileRequested event,
-    Emitter<ChatState> emit,
+    chat_event.UploadFileRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
-    emit(FileUploading(event.request.fileName, 0.0));
+    emit(chat_state.FileUploading(event.request.fileName, 0.0));
 
     final result = await _chatRepository.uploadFile(event.request);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (attachment) => emit(FileUploaded(attachment)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (attachment) => emit(chat_state.FileUploaded(attachment)),
     );
   }
 
   Future<void> _onDeleteFileRequested(
-    DeleteFileRequested event,
-    Emitter<ChatState> emit,
+    chat_event.DeleteFileRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.deleteFile(event.fileId);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (_) => emit(FileDeleted(event.fileId)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.FileDeleted(event.fileId)),
     );
   }
 
   Future<void> _onSendTypingIndicatorRequested(
-    SendTypingIndicatorRequested event,
-    Emitter<ChatState> emit,
+    chat_event.SendTypingIndicatorRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.sendTypingIndicator(event.chatId, event.isTyping);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
       (_) => {}, // Typing indicator sent successfully
     );
   }
 
   Future<void> _onCreateChatRoomRequested(
-    CreateChatRoomRequested event,
-    Emitter<ChatState> emit,
+    chat_event.CreateChatRoomRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
-    emit(ChatLoading());
+    emit(chat_state.ChatLoading());
 
     final result = await _chatRepository.createChatRoom(event.request);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (room) => emit(ChatRoomCreated(room)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (room) => emit(chat_state.ChatRoomCreated(room)),
     );
   }
 
   Future<void> _onGetChatRoomRequested(
-    GetChatRoomRequested event,
-    Emitter<ChatState> emit,
+    chat_event.GetChatRoomRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
-    emit(ChatLoading());
+    emit(chat_state.ChatLoading());
 
     final result = await _chatRepository.getChatRoom(event.roomId);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (room) => emit(ChatRoomLoaded(room)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (room) => emit(chat_state.ChatRoomLoaded(room)),
     );
   }
 
   Future<void> _onGetUserChatRoomsRequested(
-    GetUserChatRoomsRequested event,
-    Emitter<ChatState> emit,
+    chat_event.GetUserChatRoomsRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.getUserChatRooms();
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (rooms) => emit(UserChatRoomsLoaded(rooms)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (rooms) => emit(chat_state.UserChatRoomsLoaded(rooms)),
     );
   }
 
   Future<void> _onJoinChatRoomRequested(
-    JoinChatRoomRequested event,
-    Emitter<ChatState> emit,
+    chat_event.JoinChatRoomRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.joinChatRoom(event.roomId);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (_) => emit(ChatRoomJoined(event.roomId)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.ChatRoomJoined(event.roomId)),
     );
   }
 
   Future<void> _onLeaveChatRoomRequested(
-    LeaveChatRoomRequested event,
-    Emitter<ChatState> emit,
+    chat_event.LeaveChatRoomRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.leaveChatRoom(event.roomId);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (_) => emit(ChatRoomLeft(event.roomId)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.ChatRoomLeft(event.roomId)),
     );
   }
 
   Future<void> _onAddParticipantToRoomRequested(
-    AddParticipantToRoomRequested event,
-    Emitter<ChatState> emit,
+    chat_event.AddParticipantToRoomRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.addParticipantToRoom(event.roomId, event.userId);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (participant) => emit(ParticipantAddedToRoom(event.roomId, participant)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.ParticipantAddedToRoom(
+        event.roomId,
+        domain.ChatParticipant(
+          id: event.userId,
+          displayName: 'Participant',
+        ),
+      )),
     );
   }
 
   Future<void> _onRemoveParticipantFromRoomRequested(
-    RemoveParticipantFromRoomRequested event,
-    Emitter<ChatState> emit,
+    chat_event.RemoveParticipantFromRoomRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.removeParticipantFromRoom(event.roomId, event.userId);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (_) => emit(ParticipantRemovedFromRoom(event.roomId, event.userId)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.ParticipantRemovedFromRoom(event.roomId, event.userId)),
     );
   }
 
   Future<void> _onUpdateRoomSettingsRequested(
-    UpdateRoomSettingsRequested event,
-    Emitter<ChatState> emit,
+    chat_event.UpdateRoomSettingsRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.updateRoomSettings(event.roomId, event.settings);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (_) => emit(RoomSettingsUpdated(event.roomId, event.settings)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.RoomSettingsUpdated(event.roomId, event.settings)),
     );
   }
 
   Future<void> _onGetChatStatsRequested(
-    GetChatStatsRequested event,
-    Emitter<ChatState> emit,
+    chat_event.GetChatStatsRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.getChatStats();
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (stats) => emit(ChatStatsLoaded(stats)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (stats) => emit(chat_state.ChatStatsLoaded(stats)),
     );
   }
 
   Future<void> _onMarkAllMessagesAsReadRequested(
-    MarkAllMessagesAsReadRequested event,
-    Emitter<ChatState> emit,
+    chat_event.MarkAllMessagesAsReadRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.markAllMessagesAsRead(event.chatId);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (_) => emit(AllMessagesMarkedAsRead(event.chatId)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.AllMessagesMarkedAsRead(event.chatId)),
     );
   }
 
   Future<void> _onDeleteMultipleMessagesRequested(
-    DeleteMultipleMessagesRequested event,
-    Emitter<ChatState> emit,
+    chat_event.DeleteMultipleMessagesRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.deleteMultipleMessages(event.messageIds);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (_) => emit(MultipleMessagesDeleted(event.messageIds)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.MultipleMessagesDeleted(event.messageIds)),
     );
   }
 
   Future<void> _onClearChatHistoryRequested(
-    ClearChatHistoryRequested event,
-    Emitter<ChatState> emit,
+    chat_event.ClearChatHistoryRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.clearChatHistory(event.chatId);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (_) => emit(ChatHistoryCleared(event.chatId)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.ChatHistoryCleared(event.chatId)),
     );
   }
 
   Future<void> _onCacheMessagesRequested(
-    CacheMessagesRequested event,
-    Emitter<ChatState> emit,
+    chat_event.CacheMessagesRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.cacheMessages(event.chatId, event.messages);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (_) => emit(MessagesCached(event.chatId, event.messages)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.MessagesCached(event.chatId, event.messages)),
     );
   }
 
   Future<void> _onGetCachedMessagesRequested(
-    GetCachedMessagesRequested event,
-    Emitter<ChatState> emit,
+    chat_event.GetCachedMessagesRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.getCachedMessages(event.chatId);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (messages) => emit(CachedMessagesLoaded(event.chatId, messages)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (messages) => emit(chat_state.CachedMessagesLoaded(event.chatId, messages)),
     );
   }
 
   Future<void> _onClearMessageCacheRequested(
-    ClearMessageCacheRequested event,
-    Emitter<ChatState> emit,
+    chat_event.ClearMessageCacheRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final result = await _chatRepository.clearMessageCache(event.chatId);
 
     result.fold(
-      (failure) => emit(ChatError(failure.message)),
-      (_) => emit(MessageCacheCleared(event.chatId)),
+      (failure) => emit(chat_state.ChatError(failure.message)),
+      (_) => emit(chat_state.MessageCacheCleared(event.chatId)),
     );
   }
 
   Future<void> _onRefreshChatsRequested(
-    RefreshChatsRequested event,
-    Emitter<ChatState> emit,
+    chat_event.RefreshChatsRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
-    emit(ChatInitial());
+    emit(chat_state.ChatInitial());
   }
 
   Future<void> _onLoadMoreChatsRequested(
-    LoadMoreChatsRequested event,
-    Emitter<ChatState> emit,
+    chat_event.LoadMoreChatsRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final currentState = state;
-    if (currentState is ChatsLoaded && currentState.hasMore) {
-      emit(ChatsLoading(isLoadMore: true));
+    if (currentState is chat_state.ChatsLoaded && currentState.hasMore) {
+      emit(chat_state.ChatsLoading(isLoadMore: true));
 
       final result = await _getChatsUseCase.call(
         filter: event.filter,
@@ -623,8 +638,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       );
 
       result.fold(
-        (failure) => emit(ChatError(failure.message)),
-        (chats) => emit(ChatsLoaded(
+        (failure) => emit(chat_state.ChatError(failure.message)),
+        (chats) => emit(chat_state.ChatsLoaded(
           chats: [...currentState.chats, ...chats],
           currentPage: currentState.currentPage + 1,
           hasMore: chats.length == 20,
@@ -635,12 +650,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   Future<void> _onLoadMoreMessagesRequested(
-    LoadMoreMessagesRequested event,
-    Emitter<ChatState> emit,
+    chat_event.LoadMoreMessagesRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
     final currentState = state;
-    if (currentState is MessagesLoaded && currentState.hasMore) {
-      emit(MessagesLoading(isLoadMore: true));
+    if (currentState is chat_state.MessagesLoaded && currentState.hasMore) {
+      emit(chat_state.MessagesLoading(isLoadMore: true));
 
       final result = await _chatRepository.getMessages(
         event.chatId,
@@ -650,8 +665,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       );
 
       result.fold(
-        (failure) => emit(ChatError(failure.message)),
-        (messages) => emit(MessagesLoaded(
+        (failure) => emit(chat_state.ChatError(failure.message)),
+        (messages) => emit(chat_state.MessagesLoaded(
           chatId: event.chatId,
           messages: [...currentState.messages, ...messages],
           currentPage: currentState.currentPage + 1,
@@ -662,68 +677,68 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   Future<void> _onClearChatCacheRequested(
-    ClearChatCacheRequested event,
-    Emitter<ChatState> emit,
+    chat_event.ClearChatCacheRequested event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
-    emit(ChatCacheCleared());
+    emit(chat_state.ChatCacheCleared());
   }
 
   Future<void> _onChatUpdated(
-    ChatUpdated event,
-    Emitter<ChatState> emit,
+    chat_event.ChatUpdated event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
-    emit(ChatUpdatedInRealTime(event.chat));
+    emit(chat_state.ChatUpdatedInRealTime(event.chat));
   }
 
   Future<void> _onMessageReceived(
-    MessageReceived event,
-    Emitter<ChatState> emit,
+    chat_event.MessageReceived event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
-    emit(MessageReceivedInRealTime(event.message));
+    emit(chat_state.MessageReceivedInRealTime(event.message));
   }
 
   Future<void> _onMessageUpdated(
-    MessageUpdated event,
-    Emitter<ChatState> emit,
+    chat_event.MessageUpdated event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
-    emit(MessageUpdatedInRealTime(event.message));
+    emit(chat_state.MessageUpdatedInRealTime(event.message));
   }
 
   Future<void> _onTypingIndicatorReceived(
-    TypingIndicatorReceived event,
-    Emitter<ChatState> emit,
+    chat_event.TypingIndicatorReceived event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
-    emit(TypingIndicatorReceivedInRealTime(event.indicator));
+    emit(chat_state.TypingIndicatorReceivedInRealTime(event.indicator));
   }
 
   Future<void> _onChatParticipantJoined(
-    ChatParticipantJoined event,
-    Emitter<ChatState> emit,
+    chat_event.ChatParticipantJoined event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
-    emit(ParticipantJoinedRoomInRealTime(event.chatId, event.participant));
+    emit(chat_state.ParticipantJoinedRoomInRealTime(event.chatId, event.participant));
   }
 
   Future<void> _onChatParticipantLeft(
-    ChatParticipantLeft event,
-    Emitter<ChatState> emit,
+    chat_event.ChatParticipantLeft event,
+    Emitter<chat_state.ChatState> emit,
   ) async {
-    emit(ParticipantLeftRoomInRealTime(event.chatId, event.participantId));
+    emit(chat_state.ParticipantLeftRoomInRealTime(event.chatId, event.participantId));
   }
 
   // Helper methods
-  void handleMessageTap(BuildContext context, MessageEntity message) {
+  void handleMessageTap(BuildContext context, domain.MessageEntity message) {
     // Handle different message types
     switch (message.type) {
-      case MessageType.image:
-      case MessageType.video:
-      case MessageType.audio:
-      case MessageType.file:
+      case domain.MessageType.image:
+      case domain.MessageType.video:
+      case domain.MessageType.audio:
+      case domain.MessageType.file:
         _openAttachment(context, message);
         break;
-      case MessageType.location:
+      case domain.MessageType.location:
         _openLocation(context, message);
         break;
-      case MessageType.contact:
+      case domain.MessageType.contact:
         _openContact(context, message);
         break;
       default:
@@ -731,23 +746,23 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
   }
 
-  void _openAttachment(BuildContext context, MessageEntity message) {
+  void _openAttachment(BuildContext context, domain.MessageEntity message) {
     // TODO: Implement attachment viewer
     debugPrint('Opening attachment: ${message.content}');
   }
 
-  void _openLocation(BuildContext context, MessageEntity message) {
+  void _openLocation(BuildContext context, domain.MessageEntity message) {
     // TODO: Implement location viewer
     debugPrint('Opening location: ${message.content}');
   }
 
-  void _openContact(BuildContext context, MessageEntity message) {
+  void _openContact(BuildContext context, domain.MessageEntity message) {
     // TODO: Implement contact viewer
     debugPrint('Opening contact: ${message.content}');
   }
 
   void updateTypingStatus(String chatId, bool isTyping) {
-    add(SendTypingIndicatorRequested(chatId, isTyping));
+    add(chat_event.SendTypingIndicatorRequested(chatId, isTyping));
   }
 
   void handleFileUpload(String chatId, String filePath, String fileType) {
@@ -755,7 +770,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     final fileName = filePath.split('/').last;
     final fileSize = 1024; // TODO: Get actual file size
 
-    add(UploadFileRequested(UploadFileRequest(
+    add(chat_event.UploadFileRequested(UploadFileRequest(
       chatId: chatId,
       fileName: fileName,
       filePath: filePath,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_dimensions.dart';
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_dimensions.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({super.key});
@@ -293,6 +293,7 @@ class ProfileTab extends StatelessWidget {
         ),
 
         _buildMenuItem(
+          context,
           icon: Icons.security,
           title: 'Güvenlik',
           subtitle: 'Şifre ve güvenlik ayarları',
@@ -300,6 +301,7 @@ class ProfileTab extends StatelessWidget {
         ),
 
         _buildMenuItem(
+          context,
           icon: Icons.payment,
           title: 'Ödeme Yöntemleri',
           subtitle: 'Kredi kartı ve hesap bilgileri',
@@ -307,6 +309,7 @@ class ProfileTab extends StatelessWidget {
         ),
 
         _buildMenuItem(
+          context,
           icon: Icons.help,
           title: 'Yardım & Destek',
           subtitle: 'SSS ve müşteri hizmetleri',
@@ -314,6 +317,7 @@ class ProfileTab extends StatelessWidget {
         ),
 
         _buildMenuItem(
+          context,
           icon: Icons.info,
           title: 'Hakkımızda',
           subtitle: 'Uygulama bilgileri',

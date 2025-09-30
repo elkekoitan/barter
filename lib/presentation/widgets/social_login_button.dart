@@ -159,7 +159,7 @@ class _SocialLoginButtonState extends State<SocialLoginButton>
                     Icon(
                       Icons.link,
                       size: _getIconSize() * 0.8,
-                      color: AppColors.white.withOpacity(0.8),
+                      color: AppColors.white.withValues(alpha: 0.8),
                     ),
                   ],
                 ],
@@ -177,14 +177,14 @@ class _SocialLoginButtonState extends State<SocialLoginButton>
       borderRadius: BorderRadius.circular(_getBorderRadius()),
       boxShadow: [
         BoxShadow(
-          color: widget.type.color.withOpacity(0.3),
+          color: widget.type.color.withValues(alpha: 0.3),
           blurRadius: 8,
           offset: const Offset(0, 4),
         ),
       ],
       border: widget.isLinked
           ? Border.all(
-              color: AppColors.white.withOpacity(0.5),
+              color: AppColors.white.withValues(alpha: 0.5),
               width: 1.w,
             )
           : null,
@@ -444,9 +444,9 @@ class SocialLoginError extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppDimensions.paddingM),
       decoration: BoxDecoration(
-        color: AppColors.error.withOpacity(0.1),
+        color: AppColors.error.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(AppDimensions.borderRadiusM),
-        border: Border.all(color: AppColors.error.withOpacity(0.3), width: 1.w),
+        border: Border.all(color: AppColors.error.withValues(alpha: 0.3), width: 1.w),
       ),
       child: Column(
         children: [
@@ -504,9 +504,9 @@ class SocialLoginSuccess extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppDimensions.paddingL),
       decoration: BoxDecoration(
-        color: AppColors.success.withOpacity(0.1),
+        color: AppColors.success.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(AppDimensions.borderRadiusL),
-        border: Border.all(color: AppColors.success.withOpacity(0.3), width: 1.w),
+        border: Border.all(color: AppColors.success.withValues(alpha: 0.3), width: 1.w),
       ),
       child: Column(
         children: [
@@ -535,7 +535,7 @@ class SocialLoginSuccess extends StatelessWidget {
                       Text(
                         '$providerName ile giriş yapıldı',
                         style: TextStyle(
-                          color: AppColors.success.withOpacity(0.8),
+                          color: AppColors.success.withValues(alpha: 0.8),
                           fontSize: 14.sp,
                         ),
                       ),
@@ -544,7 +544,7 @@ class SocialLoginSuccess extends StatelessWidget {
                     Text(
                       message,
                       style: TextStyle(
-                        color: AppColors.success.withOpacity(0.8),
+                        color: AppColors.success.withValues(alpha: 0.8),
                         fontSize: 12.sp,
                       ),
                     ),
@@ -597,7 +597,7 @@ class SocialLoginSettingsCard extends StatelessWidget {
         border: Border.all(color: AppColors.border, width: 1.w),
         boxShadow: [
           BoxShadow(
-            color: AppColors.shadow.withOpacity(0.05),
+            color: AppColors.shadow.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),

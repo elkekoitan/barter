@@ -179,7 +179,7 @@ class _HelpPageState extends State<HelpPage> {
           end: Alignment.bottomRight,
           colors: [
             AppColors.primary,
-            AppColors.primary.withOpacity(0.8),
+            AppColors.primary.withValues(alpha: 0.8),
           ],
         ),
       ),
@@ -209,7 +209,7 @@ class _HelpPageState extends State<HelpPage> {
             'Sorularınızın cevaplarını bulun veya yeni bir soru sorun',
             style: TextStyle(
               fontSize: 16.sp,
-              color: AppColors.white.withOpacity(0.9),
+              color: AppColors.white.withValues(alpha: 0.9),
             ),
           ),
           SizedBox(height: AppDimensions.marginL),
@@ -293,7 +293,7 @@ class _HelpPageState extends State<HelpPage> {
         border: Border.all(color: AppColors.border, width: 1.w),
         boxShadow: [
           BoxShadow(
-            color: AppColors.shadow.withOpacity(0.05),
+            color: AppColors.shadow.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -390,7 +390,7 @@ class _HelpPageState extends State<HelpPage> {
         border: Border.all(color: AppColors.border, width: 1.w),
         boxShadow: [
           BoxShadow(
-            color: AppColors.shadow.withOpacity(0.1),
+            color: AppColors.shadow.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -412,7 +412,7 @@ class _HelpPageState extends State<HelpPage> {
                       width: 40.w,
                       height: 40.w,
                       decoration: BoxDecoration(
-                        color: _parseColor(category.color).withOpacity(0.1),
+                        color: _parseColor(category.color).withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(AppDimensions.borderRadiusM),
                       ),
                       child: Icon(
@@ -528,7 +528,7 @@ class _HelpPageState extends State<HelpPage> {
         border: Border.all(color: AppColors.border, width: 1.w),
         boxShadow: [
           BoxShadow(
-            color: AppColors.shadow.withOpacity(0.05),
+            color: AppColors.shadow.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -547,7 +547,7 @@ class _HelpPageState extends State<HelpPage> {
                   width: 48.w,
                   height: 48.w,
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.1),
+                    color: AppColors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppDimensions.borderRadiusM),
                   ),
                   child: Icon(
@@ -654,7 +654,7 @@ class _HelpPageState extends State<HelpPage> {
     return Container(
       padding: EdgeInsets.all(AppDimensions.paddingL),
       decoration: BoxDecoration(
-        color: AppColors.info.withOpacity(0.05),
+        color: AppColors.info.withValues(alpha: 0.05),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

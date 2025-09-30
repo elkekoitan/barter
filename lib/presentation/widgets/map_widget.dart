@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as gmaps;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:latlong2/latlong.dart' show LatLng;
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_dimensions.dart';
 import '../../domain/entities/location.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../domain/repositories/map_repository.dart';
 
 class MapWidget extends StatefulWidget {
   final LatLng? initialPosition;
@@ -44,11 +47,11 @@ class MapWidget extends StatefulWidget {
 }
 
 class _MapWidgetState extends State<MapWidget> {
-  late GoogleMapController _mapController;
+  late gmaps.GoogleMapController _mapController;
   late LatLng _currentPosition;
-  final Set<Marker> _googleMarkers = {};
-  final Set<Polyline> _googlePolylines = {};
-  final Set<Polygon> _googlePolygons = {};
+  final Set<gmaps.Marker> _googleMarkers = {};
+  final Set<gmaps.Polyline> _googlePolylines = {};
+  final Set<gmaps.Polygon> _googlePolygons = {};
 
   @override
   void initState() {
@@ -77,10 +80,10 @@ class _MapWidgetState extends State<MapWidget> {
     _googleMarkers.clear();
     for (final marker in widget.markers) {
       _googleMarkers.add(
-        Marker(
-          markerId: MarkerId(marker.id),
-          position: marker.position,
-          infoWindow: InfoWindow(
+        gmaps.Marker(
+          markerId: gmaps.MarkerId(marker.id),
+          position: gmaps.LatLng(marker.position.latitude, marker.position.longitude),
+          infoWindow: gmaps.InfoWindow(
             title: marker.title,
             snippet: marker.snippet,
           ),
@@ -98,18 +101,13 @@ class _MapWidgetState extends State<MapWidget> {
     _googlePolylines.clear();
     for (final polyline in widget.polylines) {
       _googlePolylines.add(
-        Polyline(
-          polylineId: PolylineId(polyline.id),
-          points: polyline.points,
+        gmaps.Polyline(
+          polylineId: gmaps.PolylineId(polyline.id),
+          points: polyline.points.map((p) => gmaps.LatLng(p.latitude, p.longitude)).toList(),
           color: _parseColor(polyline.color),
           width: polyline.width.toInt(),
           geodesic: polyline.isGeodesic,
-          patterns: polyline.patterns?.map((pattern) {
-            return PatternItem.fromJson({
-              'type': pattern.type.value,
-              'length': pattern.length,
-            });
-          }).toList(),
+          patterns: const <gmaps.PatternItem>[],
           onTap: () => widget.onPolylineTap?.call(polyline),
         ),
       );
@@ -120,10 +118,12 @@ class _MapWidgetState extends State<MapWidget> {
     _googlePolygons.clear();
     for (final polygon in widget.polygons) {
       _googlePolygons.add(
-        Polygon(
-          polygonId: PolygonId(polygon.id),
-          points: polygon.points,
-          holes: polygon.holes,
+        gmaps.Polygon(
+          polygonId: gmaps.PolygonId(polygon.id),
+          points: polygon.points.map((p) => gmaps.LatLng(p.latitude, p.longitude)).toList(),
+          holes: polygon.holes
+              .map((ring) => ring.map((p) => gmaps.LatLng(p.latitude, p.longitude)).toList())
+              .toList(),
           strokeColor: _parseColor(polygon.strokeColor),
           fillColor: _parseColor(polygon.fillColor),
           strokeWidth: polygon.strokeWidth.toInt(),
@@ -134,26 +134,26 @@ class _MapWidgetState extends State<MapWidget> {
     }
   }
 
-  BitmapDescriptor _getMarkerIcon(MarkerIcon icon) {
+  gmaps.BitmapDescriptor _getMarkerIcon(MarkerIcon icon) {
     switch (icon) {
       case MarkerIcon.red:
-        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
+        return gmaps.BitmapDescriptor.defaultMarkerWithHue(gmaps.BitmapDescriptor.hueRed);
       case MarkerIcon.blue:
-        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
+        return gmaps.BitmapDescriptor.defaultMarkerWithHue(gmaps.BitmapDescriptor.hueBlue);
       case MarkerIcon.green:
-        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen);
+        return gmaps.BitmapDescriptor.defaultMarkerWithHue(gmaps.BitmapDescriptor.hueGreen);
       case MarkerIcon.yellow:
-        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow);
+        return gmaps.BitmapDescriptor.defaultMarkerWithHue(gmaps.BitmapDescriptor.hueYellow);
       case MarkerIcon.purple:
-        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet);
+        return gmaps.BitmapDescriptor.defaultMarkerWithHue(gmaps.BitmapDescriptor.hueViolet);
       case MarkerIcon.orange:
-        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange);
+        return gmaps.BitmapDescriptor.defaultMarkerWithHue(gmaps.BitmapDescriptor.hueOrange);
       case MarkerIcon.pink:
-        return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRose);
+        return gmaps.BitmapDescriptor.defaultMarkerWithHue(gmaps.BitmapDescriptor.hueRose);
       case MarkerIcon.custom:
-        return BitmapDescriptor.defaultMarker;
+        return gmaps.BitmapDescriptor.defaultMarker;
       default:
-        return BitmapDescriptor.defaultMarker;
+        return gmaps.BitmapDescriptor.defaultMarker;
     }
   }
 
@@ -179,9 +179,9 @@ class _MapWidgetState extends State<MapWidget> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(AppDimensions.borderRadiusL),
-        child: GoogleMap(
-          initialCameraPosition: CameraPosition(
-            target: _currentPosition,
+        child: gmaps.GoogleMap(
+          initialCameraPosition: gmaps.CameraPosition(
+            target: gmaps.LatLng(_currentPosition.latitude, _currentPosition.longitude),
             zoom: 15.0,
           ),
           markers: _googleMarkers,
@@ -202,10 +202,10 @@ class _MapWidgetState extends State<MapWidget> {
             _mapController = controller;
             widget.onMapCreated?.call();
           },
-          onTap: widget.onTap,
+          onTap: (pos) => widget.onTap?.call(LatLng(pos.latitude, pos.longitude)),
           onCameraMove: (position) {
             setState(() {
-              _currentPosition = position.target;
+              _currentPosition = LatLng(position.target.latitude, position.target.longitude);
             });
           },
           onCameraIdle: () {
@@ -216,24 +216,15 @@ class _MapWidgetState extends State<MapWidget> {
     );
   }
 
-  MapType _getMapType(MapType type) {
-    switch (type) {
-      case gmaps.MapType.satellite:
-        return gmaps.MapType.satellite;
-      case gmaps.MapType.terrain:
-        return gmaps.MapType.terrain;
-      case gmaps.MapType.hybrid:
-        return gmaps.MapType.hybrid;
-      default:
-        return gmaps.MapType.normal;
-    }
+  gmaps.MapType _getMapType(gmaps.MapType type) {
+    return type;
   }
 
   void animateToLocation(LatLng position, {double zoom = 15.0}) {
     _mapController.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: position,
+      gmaps.CameraUpdate.newCameraPosition(
+        gmaps.CameraPosition(
+          target: gmaps.LatLng(position.latitude, position.longitude),
           zoom: zoom,
         ),
       ),
@@ -242,10 +233,10 @@ class _MapWidgetState extends State<MapWidget> {
 
   void animateToBounds(MapBounds bounds, {double padding = 50.0}) {
     _mapController.animateCamera(
-      CameraUpdate.newLatLngBounds(
-        LatLngBounds(
-          southwest: bounds.southwest,
-          northeast: bounds.northeast,
+      gmaps.CameraUpdate.newLatLngBounds(
+        gmaps.LatLngBounds(
+          southwest: gmaps.LatLng(bounds.southwest.latitude, bounds.southwest.longitude),
+          northeast: gmaps.LatLng(bounds.northeast.latitude, bounds.northeast.longitude),
         ),
         padding,
       ),
@@ -255,10 +246,10 @@ class _MapWidgetState extends State<MapWidget> {
   void addMarker(MapMarker marker) {
     setState(() {
       _googleMarkers.add(
-        Marker(
-          markerId: MarkerId(marker.id),
-          position: marker.position,
-          infoWindow: InfoWindow(
+        gmaps.Marker(
+          markerId: gmaps.MarkerId(marker.id),
+          position: gmaps.LatLng(marker.position.latitude, marker.position.longitude),
+          infoWindow: gmaps.InfoWindow(
             title: marker.title,
             snippet: marker.snippet,
           ),
@@ -287,18 +278,13 @@ class _MapWidgetState extends State<MapWidget> {
   void addPolyline(MapPolyline polyline) {
     setState(() {
       _googlePolylines.add(
-        Polyline(
-          polylineId: PolylineId(polyline.id),
-          points: polyline.points,
+        gmaps.Polyline(
+          polylineId: gmaps.PolylineId(polyline.id),
+          points: polyline.points.map((p) => gmaps.LatLng(p.latitude, p.longitude)).toList(),
           color: _parseColor(polyline.color),
           width: polyline.width.toInt(),
           geodesic: polyline.isGeodesic,
-          patterns: polyline.patterns?.map((pattern) {
-            return PatternItem.fromJson({
-              'type': pattern.type.value,
-              'length': pattern.length,
-            });
-          }).toList(),
+          patterns: const <gmaps.PatternItem>[],
           onTap: () => widget.onPolylineTap?.call(polyline),
         ),
       );
@@ -320,10 +306,12 @@ class _MapWidgetState extends State<MapWidget> {
   void addPolygon(MapPolygon polygon) {
     setState(() {
       _googlePolygons.add(
-        Polygon(
-          polygonId: PolygonId(polygon.id),
-          points: polygon.points,
-          holes: polygon.holes,
+        gmaps.Polygon(
+          polygonId: gmaps.PolygonId(polygon.id),
+          points: polygon.points.map((p) => gmaps.LatLng(p.latitude, p.longitude)).toList(),
+          holes: polygon.holes
+              .map((ring) => ring.map((p) => gmaps.LatLng(p.latitude, p.longitude)).toList())
+              .toList(),
           strokeColor: _parseColor(polygon.strokeColor),
           fillColor: _parseColor(polygon.fillColor),
           strokeWidth: polygon.strokeWidth.toInt(),
@@ -377,7 +365,6 @@ class LocationPicker extends StatefulWidget {
 class _LocationPickerState extends State<LocationPicker> {
   late LatLng _selectedPosition;
   final TextEditingController _searchController = TextEditingController();
-  final MapWidget _mapWidget = MapWidget();
   bool _isLoading = false;
 
   @override
@@ -484,7 +471,8 @@ class _LocationPickerState extends State<LocationPicker> {
           _selectedPosition = result.position;
         });
 
-        _mapWidget.animateToLocation(result.position);
+        // ignore: invalid_use_of_visible_for_testing_member
+        (context.findAncestorStateOfType<_MapWidgetState>())?.animateToLocation(result.position);
       }
     } catch (e) {
       debugPrint('Search error: $e');
@@ -519,7 +507,8 @@ class _LocationPickerState extends State<LocationPicker> {
           _selectedPosition = LatLng(location.latitude, location.longitude);
         });
 
-        _mapWidget.animateToLocation(_selectedPosition);
+        // ignore: invalid_use_of_visible_for_testing_member
+        (context.findAncestorStateOfType<_MapWidgetState>())?.animateToLocation(_selectedPosition);
       }
     } catch (e) {
       debugPrint('Get current location error: $e');

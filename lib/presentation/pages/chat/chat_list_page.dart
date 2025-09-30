@@ -5,7 +5,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_dimensions.dart';
 import '../../blocs/chat/chat_bloc.dart';
+import '../../blocs/chat/chat_event.dart' as chat_event;
+import '../../blocs/chat/chat_state.dart' as chat_state;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../domain/entities/chat.dart';
+import '../../../domain/repositories/chat_repository.dart';
 
 class ChatListPage extends StatefulWidget {
   const ChatListPage({super.key});
@@ -22,6 +26,7 @@ class _ChatListPageState extends State<ChatListPage>
 
   bool _isSearching = false;
   String _searchQuery = '';
+  ChatTabType _currentTab = ChatTabType.all;
 
   @override
   void initState() {
@@ -55,7 +60,7 @@ class _ChatListPageState extends State<ChatListPage>
   }
 
   void _loadChats() {
-    context.read<ChatBloc>().add(const GetChatsRequested());
+    context.read<ChatBloc>().add(const chat_event.GetChatsRequested());
   }
 
   void _onSearchChanged() {
@@ -68,7 +73,7 @@ class _ChatListPageState extends State<ChatListPage>
   void _performSearch() {
     if (_searchQuery.isNotEmpty) {
       context.read<ChatBloc>().add(
-        SearchChatsRequested(SearchChatsRequest(query: _searchQuery)),
+        chat_event.SearchChatsRequested(SearchChatsRequest(query: _searchQuery)),
       );
     } else {
       _loadChats();
@@ -177,13 +182,13 @@ class _ChatListPageState extends State<ChatListPage>
     ];
   }
 
-  Widget _buildTabBar() {
+  PreferredSizeWidget _buildTabBar() {
     return PreferredSize(
       preferredSize: Size.fromHeight(48.h),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: AppDimensions.paddingL),
         decoration: BoxDecoration(
-          color: AppColors.primary.withOpacity(0.05),
+          color: AppColors.primary.withValues(alpha: 0.05),
           border: Border(
             bottom: BorderSide(
               color: AppColors.border,
@@ -203,7 +208,7 @@ class _ChatListPageState extends State<ChatListPage>
   }
 
   Widget _buildTabItem(String label, ChatTabType type) {
-    final isSelected = false; // TODO: Implement tab state
+    final isSelected = _currentTab == type;
 
     return Expanded(
       child: GestureDetector(
@@ -229,18 +234,18 @@ class _ChatListPageState extends State<ChatListPage>
   }
 
   Widget _buildBody() {
-    return BlocConsumer<ChatBloc, ChatState>(
+    return BlocConsumer<ChatBloc, chat_state.ChatState>(
       listener: (context, state) {
-        if (state is ChatError) {
+        if (state is chat_state.ChatError) {
           _showErrorDialog(state.message);
         }
       },
       builder: (context, state) {
-        if (state is ChatsLoading && state is! ChatsLoaded) {
+        if (state is chat_state.ChatsLoading) {
           return _buildLoadingState();
         }
 
-        if (state is ChatsLoaded) {
+        if (state is chat_state.ChatsLoaded) {
           if (state.chats.isEmpty) {
             return _buildEmptyState();
           }
@@ -248,7 +253,7 @@ class _ChatListPageState extends State<ChatListPage>
           return _buildChatsList(state.chats);
         }
 
-        if (state is ChatsSearched) {
+        if (state is chat_state.ChatsSearched) {
           if (state.chats.isEmpty) {
             return _buildNoSearchResults();
           }
@@ -384,12 +389,12 @@ class _ChatListPageState extends State<ChatListPage>
         color: AppColors.white,
         borderRadius: BorderRadius.circular(AppDimensions.borderRadiusL),
         border: Border.all(
-          color: chat.showUnreadBadge ? AppColors.primary.withOpacity(0.2) : AppColors.border,
+          color: chat.showUnreadBadge ? AppColors.primary.withValues(alpha: 0.2) : AppColors.border,
           width: 1.w,
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.shadow.withOpacity(0.1),
+            color: AppColors.shadow.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -539,7 +544,7 @@ class _ChatListPageState extends State<ChatListPage>
           backgroundImage: chat.participant.avatarUrl != null
               ? CachedNetworkImageProvider(chat.participant.avatarUrl!)
               : null,
-          backgroundColor: AppColors.primary.withOpacity(0.1),
+          backgroundColor: AppColors.primary.withValues(alpha: 0.1),
           child: chat.participant.avatarUrl == null
               ? Text(
                   chat.participant.displayName[0].toUpperCase(),
@@ -680,7 +685,10 @@ class _ChatListPageState extends State<ChatListPage>
   }
 
   void _onTabSelected(ChatTabType type) {
-    // TODO: Implement tab selection
+    setState(() {
+      _currentTab = type;
+    });
+    // TODO: Filter chats based on tab type
     debugPrint('Tab selected: $type');
   }
 

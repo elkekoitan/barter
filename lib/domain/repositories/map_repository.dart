@@ -1,6 +1,9 @@
 import 'package:dartz/dartz.dart';
+import 'package:equatable/equatable.dart';
+import 'package:latlong2/latlong.dart';
 import '../../core/errors/failures.dart';
 import '../entities/location.dart';
+import '../entities/location_entity.dart' as user_location_entity;
 
 abstract class MapRepository {
   // Location Operations
@@ -12,17 +15,17 @@ abstract class MapRepository {
 
   Future<Either<Failure, String>> reverseGeocode(double latitude, double longitude);
 
-  Future<Either<Failure, LocationEntity>> saveLocation(LocationEntity location);
+  Future<Either<Failure, user_location_entity.LocationEntity>> saveLocation(user_location_entity.LocationEntity location);
 
   Future<Either<Failure, void>> deleteLocation(String locationId);
 
-  Future<Either<Failure, List<LocationEntity>>> getSavedLocations(String userId);
+  Future<Either<Failure, List<user_location_entity.LocationEntity>>> getSavedLocations(String userId);
 
-  Future<Either<Failure, LocationEntity>> updateLocation(String locationId, LocationEntity location);
+  Future<Either<Failure, user_location_entity.LocationEntity>> updateLocation(String locationId, user_location_entity.LocationEntity location);
 
   // Place Operations
   Future<Either<Failure, List<PlaceEntity>>> searchPlaces({
-    String query,
+    required String query,
     LatLng? location,
     double? radius,
     PlaceType? type,
@@ -33,7 +36,7 @@ abstract class MapRepository {
   Future<Either<Failure, PlaceEntity>> getPlaceDetails(String placeId);
 
   Future<Either<Failure, List<PlaceEntity>>> getNearbyPlaces({
-    LatLng location,
+    required LatLng location,
     double radius = 1000,
     PlaceType? type,
     int limit = 20,
@@ -79,9 +82,9 @@ abstract class MapRepository {
 
   Future<Either<Failure, void>> enableLocationSharing(String userId, bool enabled);
 
-  Future<Either<Failure, void>> setHomeLocation(String userId, LocationEntity location);
+  Future<Either<Failure, void>> setHomeLocation(String userId, user_location_entity.LocationEntity location);
 
-  Future<Either<Failure, void>> setWorkLocation(String userId, LocationEntity location);
+  Future<Either<Failure, void>> setWorkLocation(String userId, user_location_entity.LocationEntity location);
 
   Future<Either<Failure, List<UserLocationEntity>>> getNearbyUsers(String userId, {
     double radius = 5000, // 5km
@@ -104,7 +107,7 @@ abstract class MapRepository {
 
   // Search Operations
   Future<Either<Failure, List<MapSearchResult>>> searchMap({
-    String query,
+    required String query,
     LatLng? location,
     double? radius,
     SearchType type = SearchType.general,
@@ -364,29 +367,6 @@ class OpenInMapsRequest {
   });
 
   String get addressOrCoordinates => address ?? '${location.latitude},${location.longitude}';
-}
-
-enum SearchType {
-  places('places', 'Yerler'),
-  addresses('addresses', 'Adresler'),
-  users('users', 'Kullanıcılar'),
-  all('all', 'Tümü');
-
-  const SearchType(this.value, this.displayName);
-  final String value;
-  final String displayName;
-}
-
-enum MapApp {
-  google('google', 'Google Maps'),
-  googleMaps('googleMaps', 'Google Maps'),
-  apple('apple', 'Apple Maps'),
-  waze('waze', 'Waze'),
-  other('other', 'Diğer');
-
-  const MapApp(this.value, this.displayName);
-  final String value;
-  final String displayName;
 }
 
 class MapDataRequest {

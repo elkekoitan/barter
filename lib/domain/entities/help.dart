@@ -29,7 +29,7 @@ class HelpArticle extends Equatable {
     required this.title,
     required this.content,
     required this.categoryId,
-    this.subcategoryId,
+    required this.subcategoryId,
     this.type = ArticleType.article,
     this.priority = ArticlePriority.medium,
     this.tags = const [],
@@ -71,6 +71,56 @@ class HelpArticle extends Equatable {
   String get excerpt => content.length > 150
       ? '${content.substring(0, 150)}...'
       : content;
+
+  HelpArticle copyWith({
+    String? id,
+    String? title,
+    String? content,
+    String? categoryId,
+    String? subcategoryId,
+    ArticleType? type,
+    ArticlePriority? priority,
+    List<String>? tags,
+    List<String>? relatedArticles,
+    String? videoUrl,
+    List<String>? images,
+    List<HelpStep>? steps,
+    bool? isPublished,
+    bool? requiresAuth,
+    int? viewCount,
+    int? helpfulCount,
+    int? notHelpfulCount,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? authorId,
+    String? lastEditorId,
+    Map<String, dynamic>? metadata,
+  }) {
+    return HelpArticle(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      content: content ?? this.content,
+      categoryId: categoryId ?? this.categoryId,
+      subcategoryId: subcategoryId ?? this.subcategoryId,
+      type: type ?? this.type,
+      priority: priority ?? this.priority,
+      tags: tags ?? this.tags,
+      relatedArticles: relatedArticles ?? this.relatedArticles,
+      videoUrl: videoUrl ?? this.videoUrl,
+      images: images ?? this.images,
+      steps: steps ?? this.steps,
+      isPublished: isPublished ?? this.isPublished,
+      requiresAuth: requiresAuth ?? this.requiresAuth,
+      viewCount: viewCount ?? this.viewCount,
+      helpfulCount: helpfulCount ?? this.helpfulCount,
+      notHelpfulCount: notHelpfulCount ?? this.notHelpfulCount,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      authorId: authorId ?? this.authorId,
+      lastEditorId: lastEditorId ?? this.lastEditorId,
+      metadata: metadata ?? this.metadata,
+    );
+  }
 
   @override
   List<Object?> get props => [

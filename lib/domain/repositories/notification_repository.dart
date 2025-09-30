@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
-import '../../core/errors/failures.dart';
+import 'package:equatable/equatable.dart';
 import '../entities/notification.dart';
+import '../../core/errors/failures.dart';
 
 abstract class NotificationRepository {
   // Basic CRUD Operations
@@ -200,6 +201,7 @@ class SendPushNotificationRequest {
 }
 
 class ScheduledPushNotificationRequest extends SendPushNotificationRequest {
+  @override
   final DateTime scheduledTime;
 
   const ScheduledPushNotificationRequest({
@@ -214,7 +216,7 @@ class ScheduledPushNotificationRequest extends SendPushNotificationRequest {
     super.priority,
     super.sound,
     super.channelId,
-  }) : super(isScheduled: true);
+  }) : super(title: title, message: message, isScheduled: true, scheduledTime: scheduledTime);
 }
 
 class PushNotificationMessage extends Equatable {

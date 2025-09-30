@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import '../../repositories/chat_repository.dart';
 import '../../../core/errors/failures.dart';
+import '../../entities/chat.dart';
 
 class GetChatsUseCase {
   final ChatRepository _repository;

@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+// import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'dart:async';
+import '../../../domain/entities/chat.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_dimensions.dart';
 import '../../blocs/chat/chat_bloc.dart';
+import '../../blocs/chat/chat_event.dart' as chat_event;
+import '../../blocs/chat/chat_state.dart' as chat_state;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../domain/repositories/chat_repository.dart';
 
 class ChatRoomPage extends StatefulWidget {
   final String chatId;
@@ -28,7 +33,7 @@ class _ChatRoomPageState extends State<ChatRoomPage>
   late ScrollController _scrollController;
   late FocusNode _messageFocusNode;
   late AnimationController _typingController;
-  late KeyboardVisibilityController _keyboardController;
+  // late KeyboardVisibilityController _keyboardController;
 
   bool _isTyping = false;
   Timer? _typingTimer;
@@ -55,7 +60,7 @@ class _ChatRoomPageState extends State<ChatRoomPage>
       vsync: this,
     );
 
-    _keyboardController = KeyboardVisibilityController();
+    // _keyboardController = KeyboardVisibilityController();
   }
 
   void _onMessageChanged() {
@@ -88,7 +93,7 @@ class _ChatRoomPageState extends State<ChatRoomPage>
 
   void _loadMessages() {
     context.read<ChatBloc>().add(
-      GetMessagesRequested(chatId: widget.chatId),
+      chat_event.GetMessagesRequested(chatId: widget.chatId),
     );
   }
 
@@ -215,22 +220,22 @@ class _ChatRoomPageState extends State<ChatRoomPage>
   }
 
   Widget _buildMessagesList() {
-    return BlocConsumer<ChatBloc, ChatState>(
+    return BlocConsumer<ChatBloc, chat_state.ChatState>(
       listener: (context, state) {
-        if (state is MessagesLoaded) {
+        if (state is chat_state.MessagesLoaded) {
           _scrollToBottom();
-        } else if (state is MessageReceivedInRealTime) {
+        } else if (state is chat_state.MessageReceivedInRealTime) {
           _scrollToBottom();
-        } else if (state is ChatError) {
+        } else if (state is chat_state.ChatError) {
           _showErrorSnackBar(state.message);
         }
       },
       builder: (context, state) {
-        if (state is MessagesLoading && state is! MessagesLoaded) {
+        if (state is chat_state.MessagesLoading && state is! chat_state.MessagesLoaded) {
           return _buildMessagesLoading();
         }
 
-        if (state is MessagesLoaded) {
+        if (state is chat_state.MessagesLoaded) {
           if (state.messages.isEmpty) {
             return _buildEmptyMessages();
           }
@@ -888,7 +893,7 @@ class _ChatRoomPageState extends State<ChatRoomPage>
         content: _messageController.text.trim(),
       );
 
-      context.read<ChatBloc>().add(SendMessageRequested(messageRequest));
+      context.read<ChatBloc>().add(chat_event.SendMessageRequested(messageRequest));
 
       _messageController.clear();
       _messageFocusNode.unfocus();

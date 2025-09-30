@@ -3,11 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_dimensions.dart';
-import '../home/tabs/explore_tab.dart';
-import '../home/tabs/categories_tab.dart';
-import '../home/tabs/create_listing_tab.dart';
-import '../home/tabs/messages_tab.dart';
-import '../home/tabs/profile_tab.dart';
+import './tabs/explore_tab.dart';
+import './tabs/categories_tab.dart';
+import './tabs/create_listing_tab.dart';
+import './tabs/messages_tab.dart';
+import './tabs/profile_tab.dart';
 import '../help/help_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -114,7 +114,7 @@ class _HomePageState extends State<HomePage>
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary.withOpacity(0.1) : AppColors.transparent,
+          color: isSelected ? AppColors.primary.withValues(alpha: 0.1) : AppColors.transparent,
           borderRadius: BorderRadius.circular(AppDimensions.borderRadiusL),
         ),
         child: Column(
@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage>
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withOpacity(0.3),
+            color: AppColors.primary.withValues(alpha: 0.3),
             blurRadius: 10,
             spreadRadius: 2,
             offset: const Offset(0, 4),

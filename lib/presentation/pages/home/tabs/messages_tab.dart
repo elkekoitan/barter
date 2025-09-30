@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_dimensions.dart';
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_dimensions.dart';
+import '../../../widgets/custom_button.dart';
 
 class MessagesTab extends StatelessWidget {
   const MessagesTab({super.key});
@@ -77,7 +78,7 @@ class MessagesTab extends StatelessWidget {
               itemCount: recentChats.length + 1,
               itemBuilder: (context, index) {
                 if (index == recentChats.length) {
-                  return _buildChatActions();
+                  return _buildChatActions(context);
                 }
 
                 final chat = recentChats[index];
@@ -140,7 +141,7 @@ class MessagesTab extends StatelessWidget {
     );
   }
 
-  Widget _buildChatActions() {
+  Widget _buildChatActions(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(AppDimensions.paddingM),
       child: CustomButton(

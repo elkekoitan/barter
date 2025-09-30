@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'dart:math';
 
 class LocationEntity extends Equatable {
   final String id;
@@ -47,38 +48,6 @@ class LocationEntity extends Equatable {
         isActive,
         type,
       ];
-
-  LocationEntity copyWith({
-    String? id,
-    String? userId,
-    double? latitude,
-    double? longitude,
-    String? address,
-    String? city,
-    String? district,
-    String? neighborhood,
-    String? country,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    bool? isActive,
-    LocationType? type,
-  }) {
-    return LocationEntity(
-      id: id ?? this.id,
-      userId: userId ?? this.userId,
-      latitude: latitude ?? this.latitude,
-      longitude: longitude ?? this.longitude,
-      address: address ?? this.address,
-      city: city ?? this.city,
-      district: district ?? this.district,
-      neighborhood: neighborhood ?? this.neighborhood,
-      country: country ?? this.country,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-      isActive: isActive ?? this.isActive,
-      type: type ?? this.type,
-    );
-  }
 
   Map<String, dynamic> toJson() {
     return {

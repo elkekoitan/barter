@@ -6,9 +6,7 @@ import '../../../core/constants/app_dimensions.dart';
 import '../../blocs/notification/notification_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../widgets/custom_button.dart';
-import '../../domain/entities/notification_settings.dart';
-import '../../domain/entities/notification_type.dart';
-import '../../domain/entities/notification_category_settings.dart';
+import '../../../domain/entities/notification.dart' as domain;
 
 class NotificationSettingsPage extends StatefulWidget {
   const NotificationSettingsPage({super.key});
@@ -23,7 +21,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
   late bool _smsEnabled;
   late bool _inAppEnabled;
 
-  late NotificationCategorySettings _categorySettings;
+  late domain.NotificationCategorySettings _categorySettings;
 
   @override
   void initState() {
@@ -32,7 +30,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
   }
 
   void _loadSettings() {
-    context.read<NotificationBloc>().add(const GetNotificationSettingsRequested());
+    context.read<NotificationBloc>().add(GetNotificationSettingsRequested());
   }
 
   @override
@@ -487,7 +485,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
     );
   }
 
-  void _loadSettingsFromState(NotificationSettings settings) {
+  void _loadSettingsFromState(domain.NotificationSettings settings) {
     setState(() {
       _pushEnabled = settings.pushEnabled;
       _emailEnabled = settings.emailEnabled;
@@ -498,7 +496,8 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
   }
 
   void _saveSettings() {
-    final request = UpdateSettingsRequest(
+    final settings = domain.NotificationSettings(
+      userId: 'current',
       pushEnabled: _pushEnabled,
       emailEnabled: _emailEnabled,
       smsEnabled: _smsEnabled,
@@ -506,9 +505,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
       categories: _categorySettings,
     );
 
-    context.read<NotificationBloc>().add(
-      UpdateNotificationSettingsRequested(request),
-    );
+    context.read<NotificationBloc>().add(UpdateNotificationSettingsRequested(settings));
   }
 
   void _resetToDefaults() {
@@ -517,7 +514,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
       _emailEnabled = true;
       _smsEnabled = false;
       _inAppEnabled = true;
-      _categorySettings = const NotificationCategorySettings();
+      _categorySettings = const domain.NotificationCategorySettings();
     });
   }
 

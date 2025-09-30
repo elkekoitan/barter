@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
-import '../../core/constants/app_colors.dart';
-import '../../core/constants/app_dimensions.dart';
+import '../../../core/constants/app_colors.dart';
+import '../../../core/constants/app_dimensions.dart';
 import '../../blocs/listing/listing_bloc.dart';
+import '../../blocs/listing/listing_event.dart';
+import '../../blocs/listing/listing_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../widgets/listing_card.dart';
-import '../widgets/search_bar.dart';
-import '../widgets/filter_sheet.dart';
+import '../../widgets/listing_card.dart';
+import '../../../../domain/repositories/listing_repository.dart';
+// Temporarily comment out missing widgets until implemented
+// import '../../widgets/search_bar.dart';
+// import '../../widgets/filter_sheet.dart';
 
 class ListingListPage extends StatefulWidget {
   const ListingListPage({super.key});
@@ -66,7 +70,7 @@ class _ListingListPageState extends State<ListingListPage> {
         ),
         actions: [
           IconButton(
-            onPressed: _showFilterSheet,
+            onPressed: () {},
             icon: Icon(
               Icons.filter_list,
               size: 24.w,
@@ -220,37 +224,11 @@ class _ListingListPageState extends State<ListingListPage> {
   }
 
   void _showSearchBar() {
-    showSearch(
-      context: context,
-      delegate: ListingSearchDelegate(
-        onSearch: (query) {
-          setState(() {
-            _searchQuery = query;
-          });
-          _performSearch(query);
-        },
-      ),
-    );
+    // TODO: implement search UI
   }
 
   void _showFilterSheet() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(AppDimensions.borderRadiusL),
-        ),
-      ),
-      builder: (context) => FilterSheet(
-        onFiltersApplied: (filters) {
-          // Apply filters to listings
-          context.read<ListingBloc>().add(
-            GetListingsRequested(params: filters),
-          );
-        },
-      ),
-    );
+    // TODO: implement filter UI
   }
 
   void _performSearch(String query) {
@@ -269,7 +247,7 @@ class _ListingListPageState extends State<ListingListPage> {
   }
 
   Future<void> _refreshListings() async {
-    context.read<ListingBloc>().add(const RefreshListingsRequested());
+    context.read<ListingBloc>().add(RefreshListingsRequested());
   }
 
   void _navigateToListingDetail(String listingId) {

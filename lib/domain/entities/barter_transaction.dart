@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'barter_offer.dart';
 
 class BarterTransactionEntity extends Equatable {
   final String id;

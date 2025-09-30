@@ -621,4 +621,28 @@ class HelpRepositoryImpl implements HelpRepository {
       return Left(ServerFailure(e.toString()));
     }
   }
+
+  @override
+  Stream<Either<Failure, HelpArticle>> subscribeToArticleUpdates(String articleId) {
+    // TODO: Implement real-time article updates subscription
+    return Stream.periodic(const Duration(seconds: 30), (_) {
+      return const Left(ServerFailure('Not implemented yet'));
+    });
+  }
+
+  @override
+  Stream<Either<Failure, List<HelpArticle>>> subscribeToCategoryArticles(String categoryId) {
+    // TODO: Implement real-time category articles subscription
+    return Stream.periodic(const Duration(seconds: 30), (_) {
+      return const Left(ServerFailure('Not implemented yet'));
+    });
+  }
+
+  @override
+  Stream<Either<Failure, HelpStats>> subscribeToHelpStats() {
+    // TODO: Implement real-time help stats subscription
+    return Stream.periodic(const Duration(seconds: 30), (_) {
+      return const Left(ServerFailure('Not implemented yet'));
+    });
+  }
 }

@@ -94,7 +94,7 @@ class StepProgressIndicator extends StatelessWidget {
                     color: isCompleted
                         ? AppColors.primary
                         : isCurrent
-                            ? AppColors.primary.withOpacity(0.1)
+                            ? AppColors.primary.withValues(alpha: 0.1)
                             : AppColors.inputBackground,
                     border: Border.all(
                       color: isCompleted || isCurrent
@@ -132,12 +132,12 @@ class StepProgressIndicator extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildStepTitle(1, 'category'.translate, currentStep >= 1),
-              _buildStepTitle(2, 'details'.translate, currentStep >= 2),
-              _buildStepTitle(3, 'media'.translate, currentStep >= 3),
-              _buildStepTitle(4, 'pricing'.translate, currentStep >= 4),
-              _buildStepTitle(5, 'delivery'.translate, currentStep >= 5),
-              _buildStepTitle(6, 'review'.translate, currentStep >= 6),
+              _buildStepTitle(1, 'category'.tr(), currentStep >= 1),
+              _buildStepTitle(2, 'details'.tr(), currentStep >= 2),
+              _buildStepTitle(3, 'media'.tr(), currentStep >= 3),
+              _buildStepTitle(4, 'pricing'.tr(), currentStep >= 4),
+              _buildStepTitle(5, 'delivery'.tr(), currentStep >= 5),
+              _buildStepTitle(6, 'review'.tr(), currentStep >= 6),
             ],
           ),
         ],

@@ -21,6 +21,8 @@ class UserEntity extends Equatable {
   final DateTime? lastLoginAt;
   final UserStatus status;
   final String? fcmToken;
+  final String? profileImageUrl;
+  final bool isVerified;
 
   const UserEntity({
     required this.id,
@@ -43,6 +45,8 @@ class UserEntity extends Equatable {
     this.lastLoginAt,
     required this.status,
     this.fcmToken,
+    this.profileImageUrl,
+    this.isVerified = false,
   });
 
   String get fullName => '$firstName $lastName';
@@ -75,6 +79,8 @@ class UserEntity extends Equatable {
         lastLoginAt,
         status,
         fcmToken,
+        profileImageUrl,
+        isVerified,
       ];
 }
 
@@ -99,17 +105,17 @@ class UserLocation extends Equatable {
 
 class UserStats extends Equatable {
   final int totalListings;
-  final int completedBarters;
-  final double rating;
-  final int reviewCount;
+  final int totalBarters;
+  final int totalReviews;
+  final double averageRating;
   final int favoriteCount;
   final int viewCount;
 
   const UserStats({
     this.totalListings = 0,
-    this.completedBarters = 0,
-    this.rating = 0.0,
-    this.reviewCount = 0,
+    this.totalBarters = 0,
+    this.totalReviews = 0,
+    this.averageRating = 0.0,
     this.favoriteCount = 0,
     this.viewCount = 0,
   });
@@ -117,9 +123,9 @@ class UserStats extends Equatable {
   @override
   List<Object?> get props => [
         totalListings,
-        completedBarters,
-        rating,
-        reviewCount,
+        totalBarters,
+        totalReviews,
+        averageRating,
         favoriteCount,
         viewCount,
       ];

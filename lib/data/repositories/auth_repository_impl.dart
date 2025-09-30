@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -7,14 +8,15 @@ import '../../core/errors/failures.dart';
 import '../../core/errors/error_handler.dart';
 import '../../core/network/api_client.dart';
 import '../../domain/entities/user.dart';
+import '../../domain/repositories/auth_repository.dart' as domain_auth;
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/local/auth_local_datasource.dart';
-import '../datasources/remote/auth_remote_datasource.dart';
+import '../datasources/remote/auth_remote_datasource.dart' as remote_auth;
 
-class AuthRepositoryImpl implements AuthRepository {
+class AuthRepositoryImpl implements domain_auth.AuthRepository {
   final ApiClient _apiClient;
   final AuthLocalDataSource _authLocalDataSource;
-  final AuthRemoteDataSource _authRemoteDataSource;
+  final remote_auth.AuthRemoteDataSource _authRemoteDataSource;
   final FlutterSecureStorage _secureStorage;
   final SharedPreferences _prefs;
 
@@ -27,7 +29,7 @@ class AuthRepositoryImpl implements AuthRepository {
   );
 
   @override
-  Future<Either<Failure, AuthTokens>> login(LoginRequest request) async {
+  Future<Either<Failure, domain_auth.AuthTokens>> login(domain_auth.LoginRequest request) async {
     try {
       final response = await _apiClient.post<Map<String, dynamic>>(
         '/auth/login',
@@ -41,7 +43,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
       if (response.statusCode == 200) {
         final data = response.data!['data'];
-        final tokens = AuthTokens(
+        final tokens = domain_auth.AuthTokens(
           accessToken: data['accessToken'],
           refreshToken: data['refreshToken'],
           tokenType: data['tokenType'],
@@ -67,7 +69,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, AuthTokens>> register(RegisterRequest request) async {
+  Future<Either<Failure, domain_auth.AuthTokens>> register(domain_auth.RegisterRequest request) async {
     try {
       final response = await _apiClient.post<Map<String, dynamic>>(
         '/auth/register',
@@ -85,7 +87,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
       if (response.statusCode == 201) {
         final data = response.data!['data'];
-        final tokens = AuthTokens(
+        final tokens = domain_auth.AuthTokens(
           accessToken: data['accessToken'],
           refreshToken: data['refreshToken'],
           tokenType: data['tokenType'],
@@ -130,7 +132,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, AuthTokens>> refreshToken(String refreshToken) async {
+  Future<Either<Failure, domain_auth.AuthTokens>> refreshToken(String refreshToken) async {
     try {
       final response = await _apiClient.post<Map<String, dynamic>>(
         '/auth/refresh',
@@ -139,7 +141,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
       if (response.statusCode == 200) {
         final data = response.data!['data'];
-        final tokens = AuthTokens(
+        final tokens = domain_auth.AuthTokens(
           accessToken: data['accessToken'],
           refreshToken: data['refreshToken'],
           tokenType: data['tokenType'],
@@ -177,7 +179,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, void>> verifyOTP(OTPVerificationRequest request) async {
+  Future<Either<Failure, void>> verifyOTP(domain_auth.OTPVerificationRequest request) async {
     try {
       await _apiClient.post<void>(
         '/auth/verify-otp',
@@ -209,7 +211,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, void>> resetPassword(ResetPasswordRequest request) async {
+  Future<Either<Failure, void>> resetPassword(domain_auth.ResetPasswordRequest request) async {
     try {
       await _apiClient.post<void>(
         '/auth/reset-password',
@@ -416,13 +418,13 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, AuthTokens>> loginWithGoogle() async {
+  Future<Either<Failure, domain_auth.AuthTokens>> loginWithGoogle() async {
     try {
       final response = await _apiClient.post<Map<String, dynamic>>('/auth/google');
 
       if (response.statusCode == 200) {
         final data = response.data!['data'];
-        final tokens = AuthTokens(
+        final tokens = domain_auth.AuthTokens(
           accessToken: data['accessToken'],
           refreshToken: data['refreshToken'],
           tokenType: data['tokenType'],
@@ -441,13 +443,13 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, AuthTokens>> loginWithApple() async {
+  Future<Either<Failure, domain_auth.AuthTokens>> loginWithApple() async {
     try {
       final response = await _apiClient.post<Map<String, dynamic>>('/auth/apple');
 
       if (response.statusCode == 200) {
         final data = response.data!['data'];
-        final tokens = AuthTokens(
+        final tokens = domain_auth.AuthTokens(
           accessToken: data['accessToken'],
           refreshToken: data['refreshToken'],
           tokenType: data['tokenType'],
@@ -466,13 +468,13 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, AuthTokens>> loginWithFacebook() async {
+  Future<Either<Failure, domain_auth.AuthTokens>> loginWithFacebook() async {
     try {
       final response = await _apiClient.post<Map<String, dynamic>>('/auth/facebook');
 
       if (response.statusCode == 200) {
         final data = response.data!['data'];
-        final tokens = AuthTokens(
+        final tokens = domain_auth.AuthTokens(
           accessToken: data['accessToken'],
           refreshToken: data['refreshToken'],
           tokenType: data['tokenType'],
@@ -491,7 +493,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   // Helper methods
-  Future<void> _storeTokens(AuthTokens tokens) async {
+  Future<void> _storeTokens(domain_auth.AuthTokens tokens) async {
     await _secureStorage.write(key: 'access_token', value: tokens.accessToken);
     await _secureStorage.write(key: 'refresh_token', value: tokens.refreshToken);
     await _prefs.setString('user_id', tokens.user.id);
@@ -526,9 +528,9 @@ class AuthRepositoryImpl implements AuthRepository {
       kycStatus: KYCStatus.fromString(data['kycStatus'] ?? 'not_started'),
       stats: UserStats(
         totalListings: data['stats']?['totalListings'] ?? 0,
-        completedBarters: data['stats']?['completedBarters'] ?? 0,
-        rating: (data['stats']?['rating'] ?? 0).toDouble(),
-        reviewCount: data['stats']?['reviewCount'] ?? 0,
+        totalBarters: data['stats']?['totalBarters'] ?? 0,
+        totalReviews: data['stats']?['totalReviews'] ?? 0,
+        averageRating: (data['stats']?['averageRating'] ?? 0).toDouble(),
         favoriteCount: data['stats']?['favoriteCount'] ?? 0,
         viewCount: data['stats']?['viewCount'] ?? 0,
       ),

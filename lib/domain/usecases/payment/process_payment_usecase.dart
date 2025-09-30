@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import '../../repositories/payment_repository.dart';
 import '../../entities/payment.dart';
 import '../../../core/errors/failures.dart';
+import '../../../core/constants/payment_constants.dart';
 
 class ProcessPaymentUsecase {
   final PaymentRepository _repository;
@@ -32,9 +33,11 @@ class ProcessPaymentUsecase {
       return ValidationFailure('Unsupported currency');
     }
 
-    if (!['papara', 'tosla', 'iyzico', 'paytr', 'bkm_express', 'paycell', 'param']
-        .contains(request.provider)) {
-      return ValidationFailure('Unsupported payment provider');
+    if (!PaymentConstants.SUPPORTED_PROVIDERS.contains(request.provider)) {
+      return ValidationFailure(
+        'Unsupported payment provider: ${request.provider}. '
+        'Supported providers: ${PaymentConstants.SUPPORTED_PROVIDERS.join(", ")}'
+      );
     }
 
     return null;

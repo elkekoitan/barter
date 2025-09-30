@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'location_entity.dart';
 
 class UserLocationEntity extends Equatable {
   final String userId;
@@ -20,6 +21,9 @@ class UserLocationEntity extends Equatable {
     required this.lastLocationUpdate,
     this.preferences,
   });
+
+  // Convenience getter for current/last known location
+  LocationEntity get location => lastKnownLocation ?? homeLocation;
 
   @override
   List<Object?> get props => [

@@ -4,6 +4,7 @@ import '../../../domain/usecases/notification/get_notifications_usecase.dart';
 import '../../../domain/usecases/notification/mark_as_read_usecase.dart';
 import '../../../domain/usecases/notification/mark_all_as_read_usecase.dart';
 import '../../../domain/usecases/notification/update_notification_settings_usecase.dart';
+import '../../../domain/entities/notification.dart' as domain;
 import '../../../domain/repositories/notification_repository.dart';
 import 'notification_event.dart';
 import 'notification_state.dart';
@@ -159,7 +160,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   ) async {
     emit(SettingsLoading());
 
-    final result = await _updateNotificationSettingsUseCase.call(event.settings);
+    final result = await _updateNotificationSettingsUseCase.call(_mapToEntity(event.settings));
 
     result.fold(
       (failure) => emit(NotificationError(failure.message)),
@@ -341,7 +342,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   }
 
   // Helper methods
-  void handleNotificationTap(BuildContext context, NotificationEntity notification) {
+  void handleNotificationTap(BuildContext context, domain.NotificationEntity notification) {
     // Perform notification action
     if (notification.actionUrl != null) {
       add(PerformNotificationActionRequested(notification.id, notification.data.action!));
@@ -351,7 +352,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     _navigateToNotificationTarget(context, notification);
   }
 
-  void _navigateToNotificationTarget(BuildContext context, NotificationEntity notification) {
+  void _navigateToNotificationTarget(BuildContext context, domain.NotificationEntity notification) {
     // TODO: Implement navigation based on notification type
     debugPrint('Navigating to: ${notification.type.displayName}');
   }
@@ -364,5 +365,24 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         (count) => add(UnreadCountLoaded(count) as NotificationEvent),
       );
     });
+  }
+
+  domain.NotificationSettingsEntity _mapToEntity(domain.NotificationSettings settings) {
+    return domain.NotificationSettingsEntity(
+      userId: settings.userId,
+      pushNotifications: settings.pushEnabled,
+      emailNotifications: settings.emailEnabled,
+      // Approximate mapping: any category enabled implies in-app enabled
+      categorySettings: {
+        'listings': settings.categories.listings,
+        'offers': settings.categories.offers,
+        'transactions': settings.categories.transactions,
+        'messages': settings.categories.messages,
+        'disputes': settings.categories.disputes,
+        'reviews': settings.categories.reviews,
+        'security': settings.categories.security,
+        'promotions': settings.categories.promotions,
+      },
+    );
   }
 }

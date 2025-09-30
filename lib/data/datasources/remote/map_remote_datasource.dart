@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' hide LatLng;
+import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart' as geolocator;
 import 'package:geocoding/geocoding.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import '../../../core/errors/failures.dart';
 import '../../../domain/repositories/map_repository.dart';
-import '../../../domain/entities/location_entity.dart' as location_entity;
+import '../../../domain/entities/location_entity.dart' as user_location_entity;
 import '../../../domain/entities/location.dart';
 
 abstract class MapRemoteDataSource {
@@ -16,10 +17,10 @@ abstract class MapRemoteDataSource {
   Future<Either<Failure, LocationEntity>> getLocationFromAddress(String address);
   Future<Either<Failure, List<GeocodingResult>>> geocodeAddress(String address);
   Future<Either<Failure, String>> reverseGeocode(double latitude, double longitude);
-  Future<Either<Failure, LocationEntity>> saveLocation(LocationEntity location);
+  Future<Either<Failure, user_location_entity.LocationEntity>> saveLocation(user_location_entity.LocationEntity location);
   Future<Either<Failure, void>> deleteLocation(String locationId);
-  Future<Either<Failure, List<LocationEntity>>> getSavedLocations(String userId);
-  Future<Either<Failure, LocationEntity>> updateLocation(String locationId, LocationEntity location);
+  Future<Either<Failure, List<user_location_entity.LocationEntity>>> getSavedLocations(String userId);
+  Future<Either<Failure, user_location_entity.LocationEntity>> updateLocation(String locationId, user_location_entity.LocationEntity location);
   Future<Either<Failure, List<PlaceEntity>>> searchPlaces(PlaceSearchRequest request);
   Future<Either<Failure, PlaceEntity>> getPlaceDetails(String placeId);
   Future<Either<Failure, List<PlaceEntity>>> getNearbyPlaces(NearbyPlacesRequest request);
@@ -30,10 +31,10 @@ abstract class MapRemoteDataSource {
   Future<Either<Failure, List<MapMarker>>> getMapMarkers(MapBounds bounds, MarkerRequest request);
   Future<Either<Failure, MapEntity>> updateMap(MapEntity map);
   Future<Either<Failure, UserLocationEntity>> getUserLocation(String userId);
-  Future<Either<Failure, UserLocationEntity>> updateUserLocation(String userId, location_entity.LocationEntity location);
+  Future<Either<Failure, UserLocationEntity>> updateUserLocation(String userId, user_location_entity.LocationEntity location);
   Future<Either<Failure, void>> enableLocationSharing(String userId, bool enabled);
-  Future<Either<Failure, void>> setHomeLocation(String userId, location_entity.LocationEntity location);
-  Future<Either<Failure, void>> setWorkLocation(String userId, location_entity.LocationEntity location);
+  Future<Either<Failure, void>> setHomeLocation(String userId, user_location_entity.LocationEntity location);
+  Future<Either<Failure, void>> setWorkLocation(String userId, user_location_entity.LocationEntity location);
   Future<Either<Failure, List<UserLocationEntity>>> getNearbyUsers(String userId, NearbyUsersRequest request);
   Future<Either<Failure, double>> calculateDistance(LatLng from, LatLng to);
   Future<Either<Failure, double>> calculateArea(List<LatLng> points);
@@ -254,11 +255,11 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
   }
 
   @override
-  Future<Either<Failure, LocationEntity>> saveLocation(LocationEntity location) async {
+  Future<Either<Failure, user_location_entity.LocationEntity>> saveLocation(user_location_entity.LocationEntity location) async {
     try {
       // In a real implementation, this would save to a backend API
       debugPrint('Saving location: ${location.address}');
-      return Right(location_entity.LocationEntity(
+      return Right(user_location_entity.LocationEntity(
         id: 'saved_${DateTime.now().millisecondsSinceEpoch}',
         userId: location.userId,
         latitude: location.latitude,
@@ -271,7 +272,7 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
         isActive: location.isActive,
-        type: location_entity.LocationType.current,
+        type: user_location_entity.LocationType.current,
       ));
     } catch (e) {
       return Left(ServerFailure(e.toString()));
@@ -289,7 +290,7 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
   }
 
   @override
-  Future<Either<Failure, List<LocationEntity>>> getSavedLocations(String userId) async {
+  Future<Either<Failure, List<user_location_entity.LocationEntity>>> getSavedLocations(String userId) async {
     try {
       // In a real implementation, this would fetch from backend API
       debugPrint('Getting saved locations for user: $userId');
@@ -300,10 +301,10 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
   }
 
   @override
-  Future<Either<Failure, LocationEntity>> updateLocation(String locationId, LocationEntity location) async {
+  Future<Either<Failure, user_location_entity.LocationEntity>> updateLocation(String locationId, user_location_entity.LocationEntity location) async {
     try {
       debugPrint('Updating location: $locationId');
-      return Right(location_entity.LocationEntity(
+      return Right(user_location_entity.LocationEntity(
         id: locationId,
         userId: location.userId,
         latitude: location.latitude,
@@ -316,7 +317,7 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
         createdAt: location.createdAt,
         updatedAt: DateTime.now(),
         isActive: location.isActive,
-        type: location_entity.LocationType.current,
+        type: user_location_entity.LocationType.current,
       ));
     } catch (e) {
       return Left(ServerFailure(e.toString()));
@@ -474,8 +475,8 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
       final destination = '${request.destination.latitude},${request.destination.longitude}';
 
       String waypoints = '';
-      if (request.waypoints != null && request.waypoints.isNotEmpty) {
-        waypoints = '&waypoints=${request.waypoints.map((w) => '${w.latitude},${w.longitude}').join('|')}';
+      if (request.waypoints != null && request.waypoints!.isNotEmpty) {
+        waypoints = '&waypoints=${request.waypoints!.map((w) => '${w.latitude},${w.longitude}').join('|')}';
       }
 
       final url = Uri.parse('https://maps.googleapis.com/maps/api/directions/json?origin=$origin&destination=$destination$waypoints&mode=${request.mode.value}&avoid=${request.avoidance.value}&key=$_googleMapsApiKey');
@@ -621,7 +622,7 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
   }
 
   @override
-  Future<Either<Failure, UserLocationEntity>> updateUserLocation(String userId, location_entity.LocationEntity location) async {
+  Future<Either<Failure, UserLocationEntity>> updateUserLocation(String userId, user_location_entity.LocationEntity location) async {
     try {
       debugPrint('Updating user location: $userId');
       // In a real implementation, this would update in backend
@@ -642,7 +643,7 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> setHomeLocation(String userId, location_entity.LocationEntity location) async {
+  Future<Either<Failure, void>> setHomeLocation(String userId, user_location_entity.LocationEntity location) async {
     try {
       debugPrint('Setting home location for user: $userId');
       return const Right(null);
@@ -652,7 +653,7 @@ class MapRemoteDataSourceImpl implements MapRemoteDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> setWorkLocation(String userId, location_entity.LocationEntity location) async {
+  Future<Either<Failure, void>> setWorkLocation(String userId, user_location_entity.LocationEntity location) async {
     try {
       debugPrint('Setting work location for user: $userId');
       return const Right(null);

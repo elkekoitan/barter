@@ -119,10 +119,7 @@ class _CustomButtonState extends State<CustomButton> with TickerProviderStateMix
           ),
           SizedBox(width: AppDimensions.marginS),
         ],
-        Text(
-          widget.text.tr(),
-          style: _getTextStyle(),
-        ),
+        Text(widget.text.tr(), style: _getTextStyle()),
       ],
     );
   }
@@ -145,10 +142,7 @@ class _CustomButtonState extends State<CustomButton> with TickerProviderStateMix
           ),
         ),
         SizedBox(width: AppDimensions.marginS),
-        Text(
-          'loading'.tr(),
-          style: _getTextStyle(),
-        ),
+        Text('loading'.tr(), style: _getTextStyle()),
       ],
     );
   }
@@ -326,10 +320,4 @@ class ButtonSizeData {
   });
 }
 
-// Extension method for easier translation
-extension ButtonTranslation on String {
-  String tr() {
-    // This will be handled by EasyLocalization in the actual app
-    return this;
-  }
-}
+// Removed custom tr() extension to avoid ambiguity with EasyLocalization

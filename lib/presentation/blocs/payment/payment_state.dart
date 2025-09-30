@@ -1,5 +1,3 @@
-part of 'payment_bloc.dart';
-
 import 'package:equatable/equatable.dart';
 import '../../../domain/entities/payment.dart';
 

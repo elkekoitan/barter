@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_dimensions.dart';
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_dimensions.dart';
 import '../../listing/listing_list_page.dart';
 
 class ExploreTab extends StatefulWidget {
@@ -22,22 +22,22 @@ class _ExploreTabState extends State<ExploreTab> {
     {
       'title': 'fashion'.tr(),
       'icon': Icons.checkroom,
-      'color': AppColors.papara,
+      'color': AppColors.secondary,
     },
     {
       'title': 'home_garden'.tr(),
       'icon': Icons.home,
-      'color': AppColors.iyzico,
+      'color': AppColors.info,
     },
     {
       'title': 'vehicles'.tr(),
       'icon': Icons.directions_car,
-      'color': AppColors.tosla,
+      'color': AppColors.warning,
     },
     {
       'title': 'services'.tr(),
       'icon': Icons.build,
-      'color': AppColors.paytr,
+      'color': AppColors.secondaryDark,
     },
     {
       'title': 'other'.tr(),
@@ -86,7 +86,7 @@ class _ExploreTabState extends State<ExploreTab> {
         color: AppColors.white,
         boxShadow: [
           BoxShadow(
-            color: AppColors.shadow.withOpacity(0.1),
+            color: AppColors.shadow.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -165,7 +165,7 @@ class _ExploreTabState extends State<ExploreTab> {
               height: 150.w,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.white.withOpacity(0.1),
+            color: AppColors.white.withValues(alpha: 0.1),
               ),
             ),
           ),
@@ -177,7 +177,7 @@ class _ExploreTabState extends State<ExploreTab> {
               height: 120.w,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.white.withOpacity(0.05),
+            color: AppColors.white.withValues(alpha: 0.05),
               ),
             ),
           ),
@@ -244,7 +244,7 @@ class _ExploreTabState extends State<ExploreTab> {
   Widget _buildQuickStats() {
     return Container(
       padding: EdgeInsets.all(AppDimensions.paddingL),
-      color: AppColors.primary.withOpacity(0.05),
+      color: AppColors.primary.withValues(alpha: 0.05),
       child: Row(
         children: [
           Expanded(
@@ -500,7 +500,7 @@ class _ExploreTabState extends State<ExploreTab> {
         border: Border.all(color: AppColors.border, width: 1.w),
         boxShadow: [
           BoxShadow(
-            color: AppColors.shadow.withOpacity(0.1),
+            color: AppColors.shadow.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -635,72 +635,4 @@ class _ExploreTabState extends State<ExploreTab> {
     );
   }
 
-  Widget _buildQuickActionCard({
-    required String title,
-    required String subtitle,
-    required IconData icon,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(AppDimensions.borderRadiusL),
-        border: Border.all(color: AppColors.border, width: 1.w),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.shadow.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Material(
-        color: AppColors.transparent,
-        borderRadius: BorderRadius.circular(AppDimensions.borderRadiusL),
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(AppDimensions.borderRadiusL),
-          child: Padding(
-            padding: EdgeInsets.all(AppDimensions.paddingL),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 48.w,
-                  height: 48.w,
-                  decoration: BoxDecoration(
-                    color: color.withOpacity(0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    icon,
-                    size: 24.w,
-                    color: color,
-                  ),
-                ),
-                SizedBox(height: AppDimensions.marginM),
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                SizedBox(height: 4.h),
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: AppColors.textSecondary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }

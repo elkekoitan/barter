@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_dimensions.dart';
-import '../../blocs/listing/listing_bloc.dart';
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_dimensions.dart';
+import '../../../blocs/listing/listing_bloc.dart';
+import '../../../blocs/listing/listing_event.dart';
+import '../../../blocs/listing/listing_state.dart';
+import '../../../../domain/repositories/listing_repository.dart';
+import '../../../../domain/entities/listing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'steps/category_step.dart';
-import 'steps/details_step.dart';
-import 'steps/media_step.dart';
-import 'steps/pricing_step.dart';
-import 'steps/delivery_step.dart';
-import 'steps/review_step.dart';
-import '../../widgets/step_progress_indicator.dart';
-import '../../widgets/custom_button.dart';
+// TODO: implement steps and widgets, temporary placeholders below
+// import 'steps/category_step.dart';
+// import 'steps/details_step.dart';
+// import 'steps/media_step.dart';
+// import 'steps/pricing_step.dart';
+// import 'steps/delivery_step.dart';
+// import 'steps/review_step.dart';
+// import '../../widgets/step_progress_indicator.dart';
+// import '../../widgets/custom_button.dart';
+import '../../../widgets/custom_button.dart';
+import '../../../widgets/step_progress_indicator.dart';
 
 class CreateListingPage extends StatefulWidget {
   const CreateListingPage({super.key});
@@ -100,65 +107,12 @@ class _CreateListingPageState extends State<CreateListingPage> {
           controller: _pageController,
           physics: const NeverScrollableScrollPhysics(),
           children: [
-            CategoryStep(
-              selectedCategoryId: _selectedCategoryId,
-              onCategorySelected: (categoryId) {
-                setState(() {
-                  _selectedCategoryId = categoryId;
-                });
-              },
-              onNext: () => _goToNextStep(),
-            ),
-            DetailsStep(
-              listingData: _listingData,
-              onDataChanged: (data) {
-                setState(() {
-                  _listingData.addAll(data);
-                });
-              },
-              onNext: () => _goToNextStep(),
-              onPrevious: () => _goToPreviousStep(),
-            ),
-            MediaStep(
-              listingData: _listingData,
-              onDataChanged: (data) {
-                setState(() {
-                  _listingData.addAll(data);
-                });
-              },
-              onNext: () => _goToNextStep(),
-              onPrevious: () => _goToPreviousStep(),
-            ),
-            PricingStep(
-              listingData: _listingData,
-              onDataChanged: (data) {
-                setState(() {
-                  _listingData.addAll(data);
-                });
-              },
-              onNext: () => _goToNextStep(),
-              onPrevious: () => _goToPreviousStep(),
-            ),
-            DeliveryStep(
-              listingData: _listingData,
-              onDataChanged: (data) {
-                setState(() {
-                  _listingData.addAll(data);
-                });
-              },
-              onNext: () => _goToNextStep(),
-              onPrevious: () => _goToPreviousStep(),
-            ),
-            ReviewStep(
-              listingData: _listingData,
-              onDataChanged: (data) {
-                setState(() {
-                  _listingData.addAll(data);
-                });
-              },
-              onSubmit: _submitListing,
-              onEdit: (step) => _goToStep(step),
-            ),
+            Center(child: Text('Kategori adımı (placeholder)')),
+            Center(child: Text('Detaylar adımı (placeholder)')),
+            Center(child: Text('Medya adımı (placeholder)')),
+            Center(child: Text('Fiyatlandırma adımı (placeholder)')),
+            Center(child: Text('Teslimat adımı (placeholder)')),
+            Center(child: Text('Gözden geçir adımı (placeholder)')),
           ],
         ),
         bottomNavigationBar: _buildBottomNavigation(),

@@ -1,6 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 import '../../domain/entities/location.dart';
+import '../../domain/entities/location_entity.dart' as user_location_entity;
 import '../../domain/repositories/map_repository.dart';
 import '../../core/errors/failures.dart';
 import '../datasources/remote/map_remote_datasource.dart';
@@ -47,7 +49,7 @@ class MapRepositoryImpl implements MapRepository {
   }
 
   @override
-  Future<Either<Failure, LocationEntity>> saveLocation(LocationEntity location) async {
+  Future<Either<Failure, user_location_entity.LocationEntity>> saveLocation(user_location_entity.LocationEntity location) async {
     try {
       return await _remoteDataSource.saveLocation(location);
     } catch (e) {
@@ -65,7 +67,7 @@ class MapRepositoryImpl implements MapRepository {
   }
 
   @override
-  Future<Either<Failure, List<LocationEntity>>> getSavedLocations(String userId) async {
+  Future<Either<Failure, List<user_location_entity.LocationEntity>>> getSavedLocations(String userId) async {
     try {
       return await _remoteDataSource.getSavedLocations(userId);
     } catch (e) {
@@ -74,7 +76,7 @@ class MapRepositoryImpl implements MapRepository {
   }
 
   @override
-  Future<Either<Failure, LocationEntity>> updateLocation(String locationId, LocationEntity location) async {
+  Future<Either<Failure, user_location_entity.LocationEntity>> updateLocation(String locationId, user_location_entity.LocationEntity location) async {
     try {
       return await _remoteDataSource.updateLocation(locationId, location);
     } catch (e) {
@@ -84,7 +86,7 @@ class MapRepositoryImpl implements MapRepository {
 
   @override
   Future<Either<Failure, List<PlaceEntity>>> searchPlaces({
-    String query,
+    required String query,
     LatLng? location,
     double? radius,
     PlaceType? type,
@@ -118,15 +120,14 @@ class MapRepositoryImpl implements MapRepository {
 
   @override
   Future<Either<Failure, List<PlaceEntity>>> getNearbyPlaces({
-    LatLng location,
+    required LatLng location,
     double radius = 1000,
     PlaceType? type,
     int limit = 20,
   }) async {
     try {
       final request = NearbyPlacesRequest(
-        latitude: location.latitude,
-        longitude: location.longitude,
+        center: location,
         radius: radius,
         type: type,
         limit: limit,
@@ -223,9 +224,10 @@ class MapRepositoryImpl implements MapRepository {
   }) async {
     try {
       final request = MarkerRequest(
+        type: MarkerType.all,
         bounds: bounds,
         categories: categories,
-        includeUserListings: includeUserListings,
+        includeUserMarkers: includeUserListings,
       );
 
       return await _remoteDataSource.getMapMarkers(bounds, request);
@@ -271,7 +273,7 @@ class MapRepositoryImpl implements MapRepository {
   }
 
   @override
-  Future<Either<Failure, void>> setHomeLocation(String userId, LocationEntity location) async {
+  Future<Either<Failure, void>> setHomeLocation(String userId, user_location_entity.LocationEntity location) async {
     try {
       return await _remoteDataSource.setHomeLocation(userId, location);
     } catch (e) {
@@ -280,7 +282,7 @@ class MapRepositoryImpl implements MapRepository {
   }
 
   @override
-  Future<Either<Failure, void>> setWorkLocation(String userId, LocationEntity location) async {
+  Future<Either<Failure, void>> setWorkLocation(String userId, user_location_entity.LocationEntity location) async {
     try {
       return await _remoteDataSource.setWorkLocation(userId, location);
     } catch (e) {
@@ -294,8 +296,15 @@ class MapRepositoryImpl implements MapRepository {
     int limit = 20,
   }) async {
     try {
+      // Get user's location first
+      final userLocationResult = await _remoteDataSource.getUserLocation(userId);
+      if (userLocationResult.isLeft()) {
+        return Left((userLocationResult as Left).value);
+      }
+      final userLocation = (userLocationResult as Right<Failure, UserLocationEntity>).value;
+      
       final request = NearbyUsersRequest(
-        userId: userId,
+        center: LatLng(userLocation.location.latitude, userLocation.location.longitude),
         radius: radius,
         limit: limit,
       );
@@ -362,7 +371,7 @@ class MapRepositoryImpl implements MapRepository {
 
   @override
   Future<Either<Failure, List<MapSearchResult>>> searchMap({
-    String query,
+    required String query,
     LatLng? location,
     double? radius,
     SearchType type = SearchType.general,
@@ -393,6 +402,7 @@ class MapRepositoryImpl implements MapRepository {
     try {
       final request = SearchSuggestionsRequest(
         query: query,
+        type: SearchType.general,
         location: location,
         limit: limit,
       );
@@ -457,10 +467,15 @@ class MapRepositoryImpl implements MapRepository {
     MapApp app = MapApp.googleMaps,
   }) async {
     try {
+      if (location == null && address == null) {
+        return const Left(ValidationFailure('Either location or address must be provided'));
+      }
+      
       final request = OpenInMapsRequest(
-        location: location,
-        address: address,
+        location: location ?? const LatLng(0, 0),
+        label: address ?? 'Location',
         app: app,
+        address: address,
       );
 
       return await _remoteDataSource.openInMaps(request);
@@ -482,6 +497,79 @@ class MapRepositoryImpl implements MapRepository {
   Future<Either<Failure, LatLng>> getCoordinatesFromAddress(String address) async {
     try {
       return await _remoteDataSource.getCoordinatesFromAddress(address);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  // Stream implementations
+  @override
+  Stream<Either<Failure, LocationEntity>> subscribeToUserLocation(String userId) {
+    // TODO: Implement real-time location subscription
+    return Stream.periodic(const Duration(seconds: 10), (_) {
+      return _remoteDataSource.getUserLocation(userId);
+    }).asyncMap((future) async => await future.then(
+      (result) => result.fold(
+        (failure) => Left(failure),
+        (userLocation) => Right(LocationEntity(
+          id: userLocation.location.id,
+          address: userLocation.location.address ?? '',
+          city: userLocation.location.city ?? '',
+          district: userLocation.location.district ?? '',
+          country: userLocation.location.country ?? '',
+          latitude: userLocation.location.latitude,
+          longitude: userLocation.location.longitude,
+          createdAt: DateTime.now(),
+        )),
+      ),
+    ));
+  }
+
+  @override
+  Stream<Either<Failure, List<MapMarker>>> subscribeToMapMarkers(MapBounds bounds) {
+    // TODO: Implement real-time marker subscription
+    return Stream.periodic(const Duration(seconds: 5), (_) {
+      return getMapMarkers(bounds);
+    }).asyncMap((future) => future);
+  }
+
+  @override
+  Stream<Either<Failure, List<UserLocationEntity>>> subscribeToNearbyUsers(String userId, double radius) {
+    // TODO: Implement real-time nearby users subscription
+    return Stream.periodic(const Duration(seconds: 10), (_) {
+      return getNearbyUsers(userId, radius: radius);
+    }).asyncMap((future) => future);
+  }
+
+  // Cache operations
+  @override
+  Future<Either<Failure, void>> refreshLocationCache(String userId) async {
+    try {
+      // TODO: Implement cache refresh
+      debugPrint('Refreshing location cache for user: $userId');
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> refreshMapCache(MapBounds bounds) async {
+    try {
+      // TODO: Implement map cache refresh
+      debugPrint('Refreshing map cache for bounds');
+      return const Right(null);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> clearMapCache() async {
+    try {
+      // TODO: Implement cache clearing
+      debugPrint('Clearing map cache');
+      return const Right(null);
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }

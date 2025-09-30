@@ -181,8 +181,6 @@ class ListingPricing extends Equatable {
 
   double? get price => cashPrice;
 
-  String get currency => this.currency;
-
   @override
   List<Object?> get props => [cashPrice, currency, isNegotiable, barterOptions];
 }

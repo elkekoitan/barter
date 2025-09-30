@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_dimensions.dart';
 import '../../blocs/notification/notification_bloc.dart';
+import '../../blocs/notification/notification_event.dart';
+import '../../blocs/notification/notification_state.dart';
+import '../../../domain/entities/notification.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../widgets/custom_button.dart';
 import 'notification_settings_page.dart';
@@ -24,6 +26,7 @@ class _NotificationListPageState extends State<NotificationListPage>
   late ScrollController _scrollController;
 
   bool _isRefreshing = false;
+  NotificationFilterType _currentFilter = NotificationFilterType.all;
 
   @override
   void initState() {
@@ -52,7 +55,6 @@ class _NotificationListPageState extends State<NotificationListPage>
 
   void _onScroll() {
     final offset = _scrollController.offset;
-    final alpha = (offset / 100).clamp(0.0, 1.0);
 
     // Update FAB visibility based on scroll position
     if (offset > 100 && _fabController.value == 1.0) {
@@ -104,7 +106,7 @@ class _NotificationListPageState extends State<NotificationListPage>
           onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const NotificationSettingsPage(),
+              builder: (context) => NotificationSettingsPage(),
             ),
           ),
           icon: Icon(
@@ -142,7 +144,7 @@ class _NotificationListPageState extends State<NotificationListPage>
   }
 
   Widget _buildFilterTab(String label, NotificationFilterType type) {
-    final isSelected = false; // TODO: Implement filter state
+    final bool isSelected = _currentFilter == type;
 
     return Expanded(
       child: GestureDetector(
@@ -181,7 +183,7 @@ class _NotificationListPageState extends State<NotificationListPage>
         }
       },
       builder: (context, state) {
-        if (state is NotificationsLoading && state is! NotificationsLoaded) {
+        if (state is NotificationsLoading) {
           return _buildLoadingState();
         }
 
@@ -246,7 +248,7 @@ class _NotificationListPageState extends State<NotificationListPage>
     );
   }
 
-  Widget _buildNotificationsList(List notifications) {
+  Widget _buildNotificationsList(List<NotificationEntity> notifications) {
     return ListView.builder(
       controller: _scrollController,
       padding: EdgeInsets.all(AppDimensions.paddingL),
@@ -262,7 +264,7 @@ class _NotificationListPageState extends State<NotificationListPage>
     );
   }
 
-  Widget _buildNotificationItem(notification) {
+  Widget _buildNotificationItem(NotificationEntity notification) {
     return Slidable(
       key: ValueKey(notification.id),
       endActionPane: ActionPane(
@@ -392,7 +394,7 @@ class _NotificationListPageState extends State<NotificationListPage>
     );
   }
 
-  Widget _buildNotificationIcon(notification) {
+  Widget _buildNotificationIcon(NotificationEntity notification) {
     return Container(
       width: 48.w,
       height: 48.w,
@@ -513,17 +515,19 @@ class _NotificationListPageState extends State<NotificationListPage>
   }
 
   void _onFilterSelected(NotificationFilterType type) {
-    // TODO: Implement filter selection
+    setState(() {
+      _currentFilter = type;
+    });
     debugPrint('Filter selected: $type');
   }
 
-  void _markAsRead(notification) {
+  void _markAsRead(NotificationEntity notification) {
     context.read<NotificationBloc>().add(
       MarkAsReadRequested(notification.id),
     );
   }
 
-  void _deleteNotification(notification) {
+  void _deleteNotification(NotificationEntity notification) {
     context.read<NotificationBloc>().add(
       DeleteNotificationRequested(notification.id),
     );
@@ -531,11 +535,11 @@ class _NotificationListPageState extends State<NotificationListPage>
 
   void _markAllAsRead() {
     context.read<NotificationBloc>().add(
-      const MarkAllAsReadRequested(),
+      MarkAllAsReadRequested(),
     );
   }
 
-  void _onNotificationTap(notification) {
+  void _onNotificationTap(NotificationEntity notification) {
     context.read<NotificationBloc>().handleNotificationTap(context, notification);
   }
 

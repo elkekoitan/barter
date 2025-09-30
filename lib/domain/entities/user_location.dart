@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:equatable/equatable.dart';
 
 class UserLocation extends Equatable {

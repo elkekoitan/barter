@@ -1,43 +1,41 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:equatable/equatable.dart';
 import '../../../domain/usecases/payment/process_payment_usecase.dart';
-import '../../../domain/repositories/payment_repository.dart';
-import 'payment_event.dart';
-import 'payment_state.dart';
+import 'payment_event.dart' as payment_event;
+import 'payment_state.dart' as payment_state;
 
-class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
+class PaymentBloc extends Bloc<payment_event.PaymentEvent, payment_state.PaymentState> {
   final ProcessPaymentUsecase _processPaymentUsecase;
 
   PaymentBloc({
     required ProcessPaymentUsecase processPaymentUsecase,
   })  : _processPaymentUsecase = processPaymentUsecase,
-        super(PaymentInitial()) {
-    on<ProcessPaymentRequested>(_onProcessPaymentRequested);
-    on<PaymentCompleted>(_onPaymentCompleted);
-    on<PaymentError>(_onPaymentError);
-    on<ResetPaymentState>(_onResetPaymentState);
+        super(payment_state.PaymentInitial()) {
+    on<payment_event.ProcessPaymentRequested>(_onProcessPaymentRequested);
+    on<payment_event.PaymentCompleted>(_onPaymentCompleted);
+    on<payment_event.PaymentError>(_onPaymentError);
+    on<payment_event.ResetPaymentState>(_onResetPaymentState);
   }
 
   Future<void> _onProcessPaymentRequested(
-    ProcessPaymentRequested event,
-    Emitter<PaymentState> emit,
+    payment_event.ProcessPaymentRequested event,
+    Emitter<payment_state.PaymentState> emit,
   ) async {
-    emit(PaymentInProgress());
+    emit(payment_state.PaymentInProgress());
 
     try {
       final result = await _processPaymentUsecase.call(event.request);
 
       result.fold(
-        (failure) => emit(PaymentFailed(failure.message)),
+        (failure) => emit(payment_state.PaymentFailed(failure.message)),
         (payment) {
           if (payment.status == 'pending' && payment.metadata.additionalData?['requiresRedirect'] == true) {
-            emit(PaymentSuccess(
+            emit(payment_state.PaymentSuccess(
               paymentId: payment.id,
               redirectUrl: payment.metadata.additionalData?['redirectUrl'],
               payment: payment,
             ));
           } else {
-            emit(PaymentSuccess(
+            emit(payment_state.PaymentSuccess(
               paymentId: payment.id,
               payment: payment,
             ));
@@ -45,22 +43,22 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
         },
       );
     } catch (e) {
-      emit(PaymentFailed('Payment processing failed: ${e.toString()}'));
+      emit(payment_state.PaymentFailed('Payment processing failed: ${e.toString()}'));
     }
   }
 
-  void _onPaymentCompleted(PaymentCompleted event, Emitter<PaymentState> emit) {
-    emit(PaymentSuccess(
+  void _onPaymentCompleted(payment_event.PaymentCompleted event, Emitter<payment_state.PaymentState> emit) {
+    emit(payment_state.PaymentSuccess(
       paymentId: event.paymentId,
       redirectUrl: event.redirectUrl,
     ));
   }
 
-  void _onPaymentError(PaymentError event, Emitter<PaymentState> emit) {
-    emit(PaymentFailed(event.errorMessage));
+  void _onPaymentError(payment_event.PaymentError event, Emitter<payment_state.PaymentState> emit) {
+    emit(payment_state.PaymentFailed(event.errorMessage));
   }
 
-  void _onResetPaymentState(ResetPaymentState event, Emitter<PaymentState> emit) {
-    emit(PaymentInitial());
+  void _onResetPaymentState(payment_event.ResetPaymentState event, Emitter<payment_state.PaymentState> emit) {
+    emit(payment_state.PaymentInitial());
   }
 }
