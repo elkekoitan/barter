@@ -5,6 +5,12 @@ allprojects {
     }
 }
 
+buildscript {
+    extra.apply {
+        set("kotlin_version", "1.9.22")
+    }
+}
+
 val newBuildDir: Directory = rootProject.layout.buildDirectory.dir("../../build").get()
 rootProject.layout.buildDirectory.value(newBuildDir)
 
@@ -15,6 +21,9 @@ subprojects {
 subprojects {
     project.evaluationDependsOn(":app")
 }
+
+// Set Kotlin version for all subprojects
+extra.set("kotlin_version", "1.9.22")
 
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)

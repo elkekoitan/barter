@@ -27,17 +27,20 @@
         "flutter_screenutil",
         "flutter_secure_storage",
         "flutter_slidable",
+        "flutter_staggered_animations",
         "flutter_svg",
         "geocoding",
         "geolocator",
         "get_it",
         "google_maps_flutter",
+        "google_sign_in",
         "hive",
         "hive_flutter",
         "http",
         "image_picker",
         "injectable",
         "intl",
+        "latlong2",
         "lottie",
         "mask_text_input_formatter",
         "photo_view",
@@ -307,6 +310,13 @@
       ]
     },
     {
+      "name": "flutter_staggered_animations",
+      "version": "1.1.1",
+      "dependencies": [
+        "flutter"
+      ]
+    },
+    {
       "name": "image_picker",
       "version": "1.2.0",
       "dependencies": [
@@ -389,6 +399,13 @@
       ]
     },
     {
+      "name": "latlong2",
+      "version": "0.9.1",
+      "dependencies": [
+        "intl"
+      ]
+    },
+    {
       "name": "http",
       "version": "1.5.0",
       "dependencies": [
@@ -432,6 +449,17 @@
         "geolocator_platform_interface",
         "geolocator_web",
         "geolocator_windows"
+      ]
+    },
+    {
+      "name": "google_sign_in",
+      "version": "6.3.0",
+      "dependencies": [
+        "flutter",
+        "google_sign_in_android",
+        "google_sign_in_ios",
+        "google_sign_in_platform_interface",
+        "google_sign_in_web"
       ]
     },
     {
@@ -1605,6 +1633,42 @@
       ]
     },
     {
+      "name": "google_sign_in_web",
+      "version": "0.12.4+4",
+      "dependencies": [
+        "flutter",
+        "flutter_web_plugins",
+        "google_identity_services_web",
+        "google_sign_in_platform_interface",
+        "http",
+        "web"
+      ]
+    },
+    {
+      "name": "google_sign_in_platform_interface",
+      "version": "2.5.0",
+      "dependencies": [
+        "flutter",
+        "plugin_platform_interface"
+      ]
+    },
+    {
+      "name": "google_sign_in_ios",
+      "version": "5.9.0",
+      "dependencies": [
+        "flutter",
+        "google_sign_in_platform_interface"
+      ]
+    },
+    {
+      "name": "google_sign_in_android",
+      "version": "6.2.1",
+      "dependencies": [
+        "flutter",
+        "google_sign_in_platform_interface"
+      ]
+    },
+    {
       "name": "google_maps_flutter_web",
       "version": "0.5.14+2",
       "dependencies": [
@@ -2259,6 +2323,14 @@
       "name": "rxdart",
       "version": "0.28.0",
       "dependencies": []
+    },
+    {
+      "name": "google_identity_services_web",
+      "version": "0.3.3+1",
+      "dependencies": [
+        "meta",
+        "web"
+      ]
     },
     {
       "name": "sanitize_html",

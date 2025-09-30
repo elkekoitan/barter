@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' show LatLng;
 import '../../repositories/map_repository.dart';
 import '../../../core/errors/failures.dart';
 import '../../entities/location.dart';
