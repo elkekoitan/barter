@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import '../../../domain/entities/chat.dart';
 import '../../../domain/repositories/chat_repository.dart';
 
 abstract class ChatEvent extends Equatable {
