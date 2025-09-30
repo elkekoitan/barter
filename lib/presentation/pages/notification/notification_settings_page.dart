@@ -30,7 +30,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
   }
 
   void _loadSettings() {
-    context.read<NotificationBloc>().add(GetNotificationSettingsRequested());
+    context.read<NotificationBloc>().add(const GetNotificationSettingsRequested());
   }
 
   @override
@@ -63,16 +63,16 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
       ),
       body: BlocConsumer<NotificationBloc, NotificationState>(
         listener: (context, state) {
-          if (state is SettingsLoaded) {
+          if (state is NotificationSettingsLoaded) {
             _loadSettingsFromState(state.settings);
-          } else if (state is SettingsUpdated) {
+          } else if (state is NotificationSettingsUpdated) {
             _showSuccessDialog();
           } else if (state is NotificationError) {
             _showErrorDialog(state.message);
           }
         },
         builder: (context, state) {
-          if (state is SettingsLoading) {
+          if (state is NotificationLoading) {
             return _buildLoadingState();
           }
 
@@ -505,7 +505,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
       categories: _categorySettings,
     );
 
-    context.read<NotificationBloc>().add(UpdateNotificationSettingsRequested(settings));
+    context.read<NotificationBloc>().add(UpdateNotificationSettings(settings));
   }
 
   void _resetToDefaults() {

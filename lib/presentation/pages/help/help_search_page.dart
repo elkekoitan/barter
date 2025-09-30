@@ -96,12 +96,11 @@ class _HelpSearchPageState extends State<HelpSearchPage> {
         children: [
           CustomTextField(
             controller: _searchController,
-            labelText: 'Ne arıyorsunuz?',
+            label: 'Ne arıyorsunuz?',
             prefixIcon: Icons.search,
             suffixIcon: _searchController.text.isNotEmpty
                 ? Icons.clear
                 : null,
-            onSuffixIconTap: _clearSearch,
             onChanged: _onSearchChanged,
             onSubmitted: _performSearch,
           ),

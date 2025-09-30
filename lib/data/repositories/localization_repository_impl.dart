@@ -328,7 +328,7 @@ class LocalizationRepositoryImpl implements LocalizationRepository {
 
   String _formatDateWithPattern(DateTime date, String pattern, String locale) {
     // Simple date formatting - in a real app, you'd use intl package
-    final Map<String, String> monthNames = {
+    final Map<String, Map<String, String>> monthNames = {
       'tr': {
         '1': 'Ocak', '2': 'Şubat', '3': 'Mart', '4': 'Nisan', '5': 'Mayıs', '6': 'Haziran',
         '7': 'Temmuz', '8': 'Ağustos', '9': 'Eylül', '10': 'Ekim', '11': 'Kasım', '12': 'Aralık'
@@ -351,7 +351,8 @@ class LocalizationRepositoryImpl implements LocalizationRepository {
         .replaceAll('mm', date.minute.toString().padLeft(2, '0'));
 
     // Replace month names
-    final String? monthName = monthNames[locale]?[date.month.toString()];
+    final int monthIndex = date.month;
+    final String? monthName = monthNames[locale]?[monthIndex.toString()];
     if (monthName != null) {
       formatted = formatted.replaceAll('MMMM', monthName);
     }

@@ -83,6 +83,7 @@ class _HelpPageState extends State<HelpPage> {
       title: 'İlk İlanınızı Nasıl Oluşturursunuz?',
       content: 'Adım adım ilan oluşturma rehberi...',
       categoryId: 'listing-management',
+      subcategoryId: 'basics',
       type: ArticleType.tutorial,
       priority: ArticlePriority.high,
       createdAt: DateTime.now(),
@@ -97,6 +98,7 @@ class _HelpPageState extends State<HelpPage> {
       title: 'Takas Sistemi Nasıl Çalışır?',
       content: 'Takas teklifleri ve emanet sistemi açıklaması...',
       categoryId: 'barter-system',
+      subcategoryId: 'basics',
       type: ArticleType.guide,
       priority: ArticlePriority.high,
       createdAt: DateTime.now(),
@@ -111,6 +113,7 @@ class _HelpPageState extends State<HelpPage> {
       title: 'Güvenlik İpuçları',
       content: 'Hesabınızı ve işlemlerinizi koruma rehberi...',
       categoryId: 'payment-security',
+      subcategoryId: 'tips',
       type: ArticleType.tip,
       priority: ArticlePriority.urgent,
       createdAt: DateTime.now(),
@@ -218,11 +221,6 @@ class _HelpPageState extends State<HelpPage> {
             onPressed: _showSearch,
             type: ButtonType.outline,
             icon: Icons.search,
-            buttonStyle: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.white,
-              foregroundColor: AppColors.primary,
-              side: BorderSide(color: AppColors.white, width: 1.w),
-            ),
           ),
         ],
       ),
@@ -696,10 +694,6 @@ class _HelpPageState extends State<HelpPage> {
             onPressed: _showFAQ,
             type: ButtonType.outline,
             icon: Icons.question_answer,
-            buttonStyle: ElevatedButton.styleFrom(
-              foregroundColor: AppColors.info,
-              side: BorderSide(color: AppColors.info, width: 1.w),
-            ),
           ),
         ],
       ),
@@ -779,10 +773,6 @@ class _HelpPageState extends State<HelpPage> {
                         onPressed: _sendEmailSupport,
                         type: ButtonType.outline,
                         icon: Icons.email,
-                        buttonStyle: ElevatedButton.styleFrom(
-                          foregroundColor: AppColors.primary,
-                          side: BorderSide(color: AppColors.primary, width: 1.w),
-                        ),
                       ),
                     ),
                     SizedBox(width: AppDimensions.marginM),
@@ -881,7 +871,7 @@ class _HelpPageState extends State<HelpPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => HelpCategoryPage(category: category),
+        builder: (context) => HelpCategoryPage(categoryId: category.id),
       ),
     );
   }
@@ -890,7 +880,7 @@ class _HelpPageState extends State<HelpPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => HelpArticleDetailPage(article: article),
+        builder: (context) => HelpArticleDetailPage(articleId: article.id),
       ),
     );
   }
